@@ -1,0 +1,89 @@
+{
+  "_instrucciones": "Cada pregunta: q = pregunta, o = 3 opciones, a = índice de la correcta (0, 1 o 2), e = explicación que se muestra siempre. Las opciones se barajan solas en el juego.",
+  "proyectos": {
+    "1": {
+      "A": {"q": "Antes de firmar con un proveedor, ¿qué debe hacer el área legal?", "o": ["Firmarlo rápido para no frenar al negocio", "Revisar condiciones y riesgos, y dejarlo registrado", "Guardarlo en el correo del abogado"], "a": 1, "e": "El contrato es un activo de la empresa: se revisa y queda registrado donde todos lo encuentren."},
+      "B": {"q": "El proveedor incumple la entrega. ¿Qué permite actuar rápido?", "o": ["Preguntarle al abogado que lo firmó", "Buscar en el correo", "Un registro compartido con fechas, responsables y documentos"], "a": 2, "e": "La información no puede depender de una sola persona: debe estar en un registro compartido."},
+      "C": {"q": "¿Qué indicador ayuda a gestionar los contratos?", "o": ["Número de contratos al mes y tiempo de revisión", "Cantidad de abogados contratados", "Ninguno, lo legal no se mide"], "a": 0, "e": "Medir el trabajo permite tomar decisiones y demostrar el valor del área legal."}
+    },
+    "3": {
+      "A": {"q": "Recursos Humanos necesita 20 contratos laborales para mañana. ¿Qué haría un área legal bien gestionada?", "o": ["Pedir más abogados de inmediato", "Tener formatos estandarizados y un proceso claro para generarlos rápido", "Decir que no se puede y que esperen"], "a": 1, "e": "Estandarizar y sistematizar procesos permite responder rápido. Más gente no siempre es más eficiencia."},
+      "B": {"q": "Un empleado pide copia de su contrato y nadie sabe dónde está. ¿Qué falló?", "o": ["El empleado lo perdió", "La gestión de la información: no hay reglas de dónde y cómo se guardan los documentos", "Faltó contratar un abogado más"], "a": 1, "e": "Todo trabajo del abogado termina en un documento; sin gobernanza de la información, nadie lo encuentra."},
+      "C": {"q": "Para mejorar el servicio a Recursos Humanos (cliente interno), ¿qué conviene medir?", "o": ["Tiempo de entrega de cada contrato y satisfacción del área", "Cuántas horas pasa cada abogado en la oficina", "Nada, con que salgan basta"], "a": 0, "e": "La experiencia del cliente interno se gestiona midiendo tiempos y satisfacción."}
+    },
+    "4": {
+      "A": {"q": "Un área dice: 'No lo mandemos a legal, ellos solo frenan todo'. ¿Cómo se llama ese problema?", "o": ["Ser un 'stopper': legal se ve como un obstáculo", "Exceso de presupuesto", "Falta de abogados"], "a": 0, "e": "Cuando las demás áreas evitan a legal, es señal de una mala experiencia del servicio legal."},
+      "B": {"q": "El acuerdo de confidencialidad está vigente. ¿Quién debe poder acceder al documento?", "o": ["Cualquiera de la empresa", "Solo quienes lo necesitan, con permisos definidos y registro de quién lo tiene", "Solo el abogado que lo redactó, en su computador"], "a": 1, "e": "Gestionar información y tecnología incluye definir quién accede y quién resguarda cada documento."},
+      "C": {"q": "¿Cómo reducir el tiempo de firma de estos acuerdos?", "o": ["Plantillas aprobadas y firma en línea", "Imprimirlos y enviarlos por mensajería", "Que cada abogado redacte uno distinto cada vez"], "a": 0, "e": "Tendencia: los procesos de contratación serán totalmente en línea."}
+    },
+    "7": {
+      "A": {"q": "Llega una demanda. Antes de actuar, ¿qué debe tener claro el área legal?", "o": ["Solo el nombre del abogado que la lleve", "Los hechos, plazos, responsable y dónde quedará registrado el caso", "Nada, se responde cuando haya tiempo"], "a": 1, "e": "Un caso bien gestionado empieza con información organizada: plazos, responsable y registro."},
+      "B": {"q": "El director pregunta: '¿Cómo va la demanda?' ¿Qué respuesta muestra buena gestión?", "o": ["'Creo que bien, la lleva Martínez'", "'No sé, hay que buscar el expediente'", "'Estado, próxima audiencia, riesgo estimado y costo a la fecha'"], "a": 2, "e": "Reportar con datos claros permite decidir. Hay directores que piden el reporte en un WhatsApp de 180 caracteres."},
+      "C": {"q": "Cada mes llegan más demandas. ¿Qué haría primero un buen gestor?", "o": ["Diagnosticar la causa raíz de por qué aumentan", "Contratar 5 abogados más", "Comprar un software"], "a": 0, "e": "Hay que atacar la causa y no la consecuencia: primero el diagnóstico."}
+    },
+    "9": {
+      "A": {"q": "Para asumir la defensa de un caso laboral, ¿qué hay que gestionar además de la ley?", "o": ["Solo el Código del Trabajo", "La carga de trabajo del equipo, el presupuesto y las herramientas", "La toga del abogado"], "a": 1, "e": "La gestión legal administra 5 ejes: estrategia, personal, recursos, información y tecnología."},
+      "B": {"q": "El abogado que lleva el caso renuncia. ¿Qué evita perder el caso?", "o": ["Rogarle que se quede", "Empezar el caso de nuevo", "Que la información esté en un sistema compartido y no en su cabeza o su PC"], "a": 2, "e": "Gestión del conocimiento: aunque 'fulanito' no esté, se sabe qué pasó y dónde está todo."},
+      "C": {"q": "¿Qué indicador ayuda a mejorar la defensa en casos laborales?", "o": ["Casos ganados, duración promedio y costo por caso", "Número de páginas escritas", "Cantidad de reuniones"], "a": 0, "e": "Con KPIs, el equipo legal se mide como el resto del negocio."}
+    },
+    "10": {
+      "A": {"q": "¿Por qué una conciliación puede ser buena gestión?", "o": ["Porque el abogado trabaja menos", "Porque resuelve el conflicto más rápido y barato, cuidando la relación con el cliente", "Nunca lo es, siempre hay que litigar"], "a": 1, "e": "La eficiencia (tiempo y presupuesto) y la experiencia del cliente son parte de la gestión legal."},
+      "B": {"q": "En plena conciliación, el cliente pide un dato urgente. ¿Qué lo deja satisfecho?", "o": ["Responderle en minutos con el dato exacto", "Responderle en 3 días", "Pedirle que llame después"], "a": 0, "e": "Los clientes eligen al despacho que más rápido entrega la información cuando la necesitan."},
+      "C": {"q": "Para la próxima conciliación, ¿qué conviene guardar?", "o": ["Nada, cada caso es distinto", "Solo el acta final en un cajón", "Qué funcionó, plazos y acuerdos, para reutilizarlo"], "a": 2, "e": "Gestionar el conocimiento convierte la experiencia en un activo del área."}
+    },
+    "13": {
+      "A": {"q": "¿Cuáles son los 3 tipos de clientes del área legal?", "o": ["Jueces, abogados y secretarias", "Cliente interno, cliente externo/socios y la autoridad", "Solo el gerente"], "a": 1, "e": "El área legal es un centro que atiende a todos: interno, externo y autoridad."},
+      "B": {"q": "La autoridad da 5 días para responder. ¿Qué garantiza cumplir?", "o": ["Un registro con fecha límite, responsable y alertas", "Confiar en la memoria del abogado", "Esperar a que la autoridad recuerde"], "a": 0, "e": "Procesos y datos claros evitan incumplimientos, que traen sanciones."},
+      "C": {"q": "¿Qué le muestra al director que legal cumple bien con la autoridad?", "o": ["Que nadie se ha quejado todavía", "El tamaño de la oficina", "Requerimientos respondidos a tiempo vs. vencidos"], "a": 2, "e": "Medir el cumplimiento permite demostrar valor con datos."}
+    },
+    "15": {
+      "A": {"q": "Antes de manejar datos personales de clientes, ¿qué debe definir legal?", "o": ["Quién accede, cómo se guardan y para qué se usan", "Nada, los datos son de la empresa", "Solo una contraseña"], "a": 0, "e": "La gobernanza de datos es parte de la gestión de la información."},
+      "B": {"q": "Un empleado guarda la base de clientes en su USB personal. ¿Qué es?", "o": ["Algo normal", "Una buena práctica de respaldo", "Un riesgo: la información debe estar en sistemas controlados por la empresa"], "a": 2, "e": "Los documentos y datos son activos de la empresa y deben estar bajo su resguardo."},
+      "C": {"q": "¿Cómo debería entrar la tecnología para proteger los datos?", "o": ["Comprar la herramienta de moda", "Primero diagnosticar necesidades y procesos, luego elegir", "Que cada área compre la suya"], "a": 1, "e": "Comprar tecnología sin diagnóstico es como comprar un carro que no cabe en el garaje."}
+    },
+    "16": {
+      "A": {"q": "Necesitan una licencia para abrir una sede. ¿Qué hace un área legal alineada con la estrategia?", "o": ["Planea los permisos con tiempo según hacia dónde va la empresa", "Espera a que la sede esté construida", "Lo deja a otra área"], "a": 0, "e": "Legal debe ir al mismo rumbo que la empresa, con su propia estrategia legal."},
+      "B": {"q": "Una licencia vence la próxima semana y nadie lo notó. ¿Qué señal de alerta es?", "o": ["Exceso de abogados", "No lograr los objetivos a tiempo por falta de control", "Buen desempeño"], "a": 1, "e": "No lograr objetivos a tiempo es un foco rojo de ineficiencia en la gestión."},
+      "C": {"q": "¿Qué perfil puede ayudar a gestionar las 50 licencias de la empresa?", "o": ["Solo otro abogado", "Nadie, que cada sede vea", "Un perfil de procesos/operaciones (incluso no abogado) con herramientas de seguimiento"], "a": 2, "e": "Tendencia KPMG: la mitad del staff legal no será abogado, por el peso administrativo."}
+    },
+    "19": {
+      "A": {"q": "¿Por qué el archivo de expedientes es parte de la gestión legal?", "o": ["Porque todo el trabajo del abogado termina en un documento, y ese documento es un activo", "Porque ocupa espacio", "No lo es"], "a": 0, "e": "Los documentos son el acervo legal de la empresa y responsabilidad del área legal."},
+      "B": {"q": "Piden 'el caso de hace 3 años' y tardan días en encontrarlo. ¿Qué falta?", "o": ["Más archivadores", "Gobernanza: reglas para nombrar, clasificar y guardar documentos", "Más paciencia"], "a": 1, "e": "Un despacho bien gestionado entrega esa información en 5 minutos."},
+      "C": {"q": "Para digitalizar el archivo, ¿cuál es el orden correcto?", "o": ["Comprar software y luego ver", "Escanear todo sin orden", "Entender el proceso, sistematizarlo y luego automatizar"], "a": 2, "e": "Como darle instrucciones exactas a una máquina: primero el proceso, luego la tecnología."}
+    },
+    "21": {
+      "A": {"q": "Según las tendencias, ¿qué será la base tecnológica del área legal?", "o": ["Las redes sociales", "Software de gestión de contratos (CLM)", "La máquina de escribir"], "a": 1, "e": "Según KPMG, el software de gestión de contratos será la base tecnológica del área legal."},
+      "B": {"q": "Compraron el software pero nadie lo usa. ¿Cuál fue el error?", "o": ["No hubo diagnóstico ni capacitación, y no se ajustó a sus procesos", "El software era muy barato", "Hay pocos abogados"], "a": 0, "e": "Comprar tecnología es como un carro nuevo: si no sabes manejar o no cabe en el garaje, no sirve."},
+      "C": {"q": "¿Qué conviene aprovechar del software para gestionar mejor?", "o": ["Solo el color de la interfaz", "Imprimir todo", "Los datos que genera: contratos por mes, tiempos y vencimientos"], "a": 2, "e": "Analizar datos será tan importante como leer términos legales."}
+    },
+    "22": {
+      "A": {"q": "¿Qué es un KPI?", "o": ["Un tipo de demanda", "Un indicador que mide el desempeño, por ejemplo casos atendidos al mes", "Un software legal"], "a": 1, "e": "Los KPIs miden el desempeño; el equipo legal será medido con indicadores como el resto de la empresa."},
+      "B": {"q": "El director general, que es ingeniero, no entiende los reportes de legal. ¿Qué hacer?", "o": ["Convertir el reporte en números e indicadores claros", "Hablar más técnico", "No reportar"], "a": 0, "e": "Cuando legal reportó en números, el director dijo: 'por fin entiendo a qué se dedican'."},
+      "C": {"q": "Un área solo hace contratos y no sabe cuántos hace al mes. ¿Qué le pasa?", "o": ["Está muy bien organizada", "Necesita más sillas", "No conoce su carga de trabajo y no puede demostrar su valor"], "a": 2, "e": "Si no mides tu trabajo, no sabes tu carga ni puedes demostrar tu valor."}
+    }
+  },
+  "generales": {
+    "alerta": [
+      {"q": "¿Cuál es una señal de alerta de mala gestión legal?", "o": ["Los clientes internos se quejan del servicio", "Los casos se entregan a tiempo", "El director entiende los reportes"], "a": 0, "e": "La insatisfacción del cliente es el primer foco rojo."},
+      {"q": "Finanzas dice: 'Están gastando mucho, ¿en qué?'. Esto es:", "o": ["Una felicitación", "Presión de recorte: faltan datos que muestren el valor de legal", "Algo sin importancia"], "a": 1, "e": "Los recortes de presupuesto son una señal de alerta; los datos ayudan a defender el presupuesto."},
+      {"q": "Los directivos piden datos de la operación y legal no los tiene. Es:", "o": ["Normal en legal", "Culpa de sistemas", "Un foco rojo de gestión"], "a": 2, "e": "No tener datos cuando te los piden es una señal clara de ineficiencia."},
+      {"q": "Prometes responder en 5 días y solo recibes quejas. ¿Qué haces primero?", "o": ["Diagnosticar dónde se atora el proceso", "Prometer 3 días", "Ignorar las quejas"], "a": 0, "e": "Primero diagnóstico: encontrar la raíz del problema, no atacar la consecuencia."}
+    ],
+    "kpi": [
+      {"q": "Tu jefe pide tu reporte en un WhatsApp de 180 caracteres. ¿Qué debe tener?", "o": ["Una historia larga del caso", "Datos concretos: casos, tiempos y costos", "Muchos emojis"], "a": 1, "e": "La información debe ser concreta y estar lista en el momento en que la piden."},
+      {"q": "Un equipo de 5 abogados pasó a números todo lo que hacía. ¿Qué descubrió?", "o": ["Que trabajaba poco", "Nada útil", "Por qué tenía tanto trabajo: su carga real"], "a": 2, "e": "Ver el trabajo en números cambia radicalmente la toma de decisiones."},
+      {"q": "¿Para qué sirve generar datos en el área legal?", "o": ["Para tomar decisiones y demostrar valor a la empresa", "Para llenar archivos", "Para castigar a los abogados"], "a": 0, "e": "Los datos permiten decidir y mostrar el valor del área legal."},
+      {"q": "¿Cuál es un buen indicador para el área legal?", "o": ["Color de las carpetas", "Tiempo promedio de respuesta a solicitudes", "Número de cafés al día"], "a": 1, "e": "Un buen KPI mide algo que importa al cliente y al negocio."}
+    ],
+    "info": [
+      {"q": "El licenciado Martínez renunció y nadie sabe dónde quedaron sus casos. ¿Qué lo evitaría?", "o": ["No dejarlo renunciar", "Gestión del conocimiento: información en sistemas compartidos", "Contratar a otro Martínez"], "a": 1, "e": "La información del área no puede quedar en la cabeza o el PC de una persona."},
+      {"q": "¿De quién son los documentos que produce un abogado en la empresa?", "o": ["Del abogado", "De nadie", "De la empresa: son un activo bajo responsabilidad del área legal"], "a": 2, "e": "Los documentos son activos de la empresa."},
+      {"q": "¿Qué significa gobernanza de la información?", "o": ["Reglas para crear, nombrar, guardar y dar acceso a los documentos", "Que el gobierno revise los documentos", "Borrar documentos viejos"], "a": 0, "e": "Sin reglas de gobernanza, nadie encuentra nada."}
+    ],
+    "autoridad": [
+      {"q": "¿Por qué la autoridad es un 'cliente' del área legal?", "o": ["Porque paga honorarios", "Porque legal debe responderle y cumplir sus requerimientos a tiempo", "No lo es"], "a": 1, "e": "Los 3 clientes de legal: interno, externo/socios y autoridad."},
+      {"q": "La gestión legal tiene 5 ejes. ¿Cuál NO es uno de ellos?", "o": ["Estrategia", "Información", "Publicidad en redes"], "a": 2, "e": "Los 5 ejes son: estrategia, personal, recursos, información y tecnología."},
+      {"q": "¿Qué es Legal Operations (gestión operativa legal)?", "o": ["Administrar el área legal: estrategia, personal, recursos, información y tecnología", "Operaciones quirúrgicas", "Solo litigar"], "a": 0, "e": "Legal Operations es administrar el área legal como una empresa de servicios."}
+    ]
+  }
+}

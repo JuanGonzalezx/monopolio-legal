@@ -1,0 +1,19 @@
+{
+  "name": "monopolio-legal",
+  "version": "1.0.0",
+  "description": "Monopolio Legal: juego didáctico de Gestión Legal en red local (Gestión de Proyectos, Universidad de Caldas)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "simular": "node scripts/simular.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.7.5"
+  },
+  "license": "MIT"
+}

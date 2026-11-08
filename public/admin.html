@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monopolio Legal · Moderador</title>
+<style>
+  body { margin:0; font-family:-apple-system, system-ui, "Segoe UI", Roboto, sans-serif; background:#F3F5F8; color:#1d2733; }
+  header { background:#0B1F33; color:#fff; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; }
+  main { padding:16px; max-width:1200px; margin:0 auto; }
+  .card { background:#fff; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h2 { margin:0 0 10px; font-size:16px; }
+  button { font:inherit; border:0; border-radius:8px; padding:9px 14px; cursor:pointer; background:#E9EDF2; margin:3px; }
+  .primary { background:#0B1F33; color:#fff; } .danger { background:#D1495B; color:#fff; }
+  input, select { font:inherit; padding:8px; border:1px solid #ccd4de; border-radius:8px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid #E2E7EE; vertical-align:top; }
+  th { background:#F3F6FA; position:sticky; top:0; }
+  .ok { color:#2E9E5B; font-weight:700; } .bad { color:#D1495B; font-weight:700; }
+  .scroll { max-height:60vh; overflow:auto; }
+  .muted { color:#6b7785; font-size:13px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; }
+  .g { border:1px solid #E2E7EE; border-radius:10px; padding:10px; font-size:13px; }
+</style>
+</head>
+<body>
+<header><b>🛠️ Panel del moderador</b><span id="st"></span></header>
+<main>
+  <div class="card" id="login">
+    <h2>PIN del moderador</h2>
+    <input id="pin" type="password" placeholder="PIN" style="width:140px"> <button class="primary" onclick="savePin()">Entrar</button>
+    <p class="muted">Por defecto es 1234 (se cambia con ADMIN_PIN al iniciar el servidor).</p>
+  </div>
+  <div id="panel" style="display:none">
+    <div class="card">
+      <h2>Control del juego</h2>
+      Duración: <input id="min" type="number" value="40" style="width:70px"> min (0 = sin límite)
+      <button class="primary" onclick="post('start',{min:+$('min').value})">▶️ Iniciar / reiniciar reloj</button>
+      <button onclick="post('pause')">⏸ Pausar</button><button onclick="post('resume')">⏯ Reanudar</button>
+      <button onclick="post('addtime')">+5 min</button>
+      <button class="danger" onclick="confirm('¿Terminar el juego para todos?') && post('end')">🏁 Terminar</button>
+      <p class="muted">Pantalla del TV: <a href="/tv" target="_blank">/tv</a> · <a id="csv" href="#">⬇️ Descargar respuestas (CSV para Excel)</a> · <button onclick="post('reload-questions')">↻ Recargar preguntas.json</button></p>
+    </div>
+    <div class="card"><h2>Partidas</h2><div class="grid" id="games"></div></div>
+    <div class="card">
+      <h2>Trazabilidad de respuestas <span class="muted" id="cnt"></span></h2>
+      Filtrar equipo: <select id="ft" onchange="drawLog()"><option value="">Todos</option></select>
+      <label><input type="checkbox" id="onlyBad" onchange="drawLog()"> Solo incorrectas</label>
+      <div class="scroll" style="margin-top:8px"><table><thead><tr><th>Hora</th><th>Eq.</th><th>Jugador</th><th>Tema</th><th>Pregunta</th><th>Respondió</th><th>Correcta</th><th></th></tr></thead><tbody id="log"></tbody></table></div>
+    </div>
+    <div class="card"><button class="danger" onclick="confirm('¿Borrar TODAS las partidas y respuestas?') && post('reset-all')">🗑 Reiniciar todo</button></div>
+  </div>
+</main>
+<script>
+const $ = (s) => document.getElementById(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+let PIN = ''; try { PIN = localStorage.getItem('ml_pin') || ''; } catch (e) {}
+let L = null;
+function savePin() { PIN = $('pin').value; try { localStorage.setItem('ml_pin', PIN); } catch (e) {} load(); }
+async function post(a, body = {}) {
+  const r = await fetch('/api/admin/' + a, { method:'POST', headers:{ 'Content-Type':'application/json', 'x-pin':PIN }, body:JSON.stringify(body) });
+  const j = await r.json(); if (j.error) alert(j.error); load();
+}
+async function load() {
+  if (!PIN) return;
+  const r = await fetch('/api/admin/log', { headers:{ 'x-pin':PIN } });
+  if (r.status === 401) { $('login').style.display = ''; $('panel').style.display = 'none'; return; }
+  L = await r.json(); $('login').style.display = 'none'; $('panel').style.display = '';
+  $('csv').href = '/export.csv?pin=' + encodeURIComponent(PIN);
+  $('st').textContent = { lobby:'En espera', paused:'⏸ Pausado', playing:'▶️ En juego', ended:'🏁 Terminado' }[L.status];
+  $('games').innerHTML = L.games.length ? L.games.sort((a, b) => a.team - b.team).map((g) => `<div class="g"><b>Equipo ${g.team}</b> · ${g.turns} turnos<br>${g.players.map((p, i) => `${esc(p.name)}: $${p.money} <button onclick="money(${g.team},${i})">±$</button>`).join('<br>')}
+     <br><button onclick="post('skip-turn',{team:${g.team}})">⏭ Saltar turno</button><button class="danger" onclick="confirm('¿Borrar la partida del equipo ${g.team}?') && post('reset-team',{team:${g.team}})">Borrar</button></div>`).join('') : '<span class="muted">Aún no hay partidas creadas.</span>';
+  const teams = [...new Set(L.log.map((l) => l.team))].sort((a, b) => a - b), sel = $('ft'), cur = sel.value;
+  sel.innerHTML = '<option value="">Todos</option>' + teams.map((t) => `<option ${String(t) === cur ? 'selected' : ''}>${t}</option>`).join('');
+  drawLog();
+}
+function money(team, player) { const v = prompt('Monto a sumar (negativo para restar):', '100'); if (v !== null) post('money', { team, player, amount:+v }); }
+function drawLog() {
+  if (!L) return;
+  const ft = $('ft').value, bad = $('onlyBad').checked;
+  const rows = L.log.filter((l) => (!ft || String(l.team) === ft) && (!bad || !l.correct));
+  $('cnt').textContent = `(${rows.length})`;
+  $('log').innerHTML = rows.map((l) => `<tr><td>${new Date(l.ts).toLocaleTimeString('es-CO')}</td><td>${l.team}</td><td>${esc(l.player)}</td><td>${esc(l.cat)}</td><td>${esc(l.question)}</td><td>${esc(l.chosen)}${l.pista ? ' 💡' : ''}</td><td>${esc(l.correctText)}</td><td class="${l.correct ? 'ok' : 'bad'}">${l.correct ? '✔' : '✘'}</td></tr>`).join('');
+}
+load(); setInterval(load, 4000);
+</script>
+</body>
+</html>

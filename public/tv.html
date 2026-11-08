@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monopolio Legal · Dashboard</title>
+<style>
+  :root { --bg:#0B1F33; --card:#132B45; --card2:#183552; --ink:#EAF0F7; --muted:#8FA3B8; --ok:#3CC47C; --bad:#FF6B7A; --gold:#F2B53A; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font-family:-apple-system, system-ui, "Segoe UI", Roboto, sans-serif; overflow:hidden; }
+  .wrap { display:grid; grid-template-columns: 1fr 25vw; gap:1vw; height:100vh; padding:1vw; }
+  .top { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:.8vw; }
+  .top h1 { margin:0; font-size:2vw; letter-spacing:.05vw; }
+  .top .sub { color:var(--muted); font-size:1vw; }
+  .grid { display:grid; grid-template-columns:repeat(5, 1fr); grid-template-rows:repeat(2, 1fr); gap:.8vw; height:calc(100vh - 5.5vw); }
+  .team { background:var(--card); border-radius:.8vw; padding:.8vw; display:flex; flex-direction:column; min-height:0; position:relative; overflow:hidden; }
+  .team.off { opacity:.45; justify-content:center; align-items:center; }
+  .team .hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5vw; }
+  .team .hd b { font-size:1.35vw; }
+  .badge { font-size:.95vw; font-weight:700; padding:.15vw .5vw; border-radius:1vw; background:var(--card2); }
+  .badge.hi { background:rgba(60,196,124,.2); color:var(--ok); } .badge.lo { background:rgba(255,107,122,.18); color:var(--bad); }
+  .p { display:grid; grid-template-columns: 1fr auto; align-items:center; padding:.35vw 0; border-bottom:1px solid rgba(255,255,255,.07); font-size:1.05vw; }
+  .p .n { display:flex; align-items:center; gap:.4vw; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
+  .p .v { font-variant-numeric:tabular-nums; font-weight:700; text-align:right; }
+  .p .s { grid-column:1/3; font-size:.8vw; color:var(--muted); }
+  .dot { width:.75vw; height:.75vw; border-radius:50%; flex:none; display:inline-block; }
+  .ft { margin-top:auto; font-size:.8vw; color:var(--muted); line-height:1.35; padding-top:.4vw; }
+  .ft .last { color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+  .side { display:flex; flex-direction:column; gap:.8vw; min-height:0; }
+  .box { background:var(--card); border-radius:.8vw; padding:.8vw; }
+  .box h3 { margin:0 0 .5vw; font-size:1vw; text-transform:uppercase; letter-spacing:.08vw; color:var(--muted); }
+  .clock { font-size:3.6vw; font-weight:800; text-align:center; font-variant-numeric:tabular-nums; line-height:1; }
+  .clock.warn { color:var(--gold); }
+  .state { text-align:center; color:var(--muted); font-size:1vw; margin-top:.3vw; }
+  .join { display:flex; gap:.8vw; align-items:center; }
+  .join .qr { width:7vw; height:7vw; background:#fff; border-radius:.5vw; padding:.3vw; flex:none; }
+  .join .qr svg { width:100%; height:100%; display:block; }
+  .join .url { font-size:1.15vw; font-weight:700; word-break:break-all; }
+  .join .hint { font-size:.85vw; color:var(--muted); margin-top:.3vw; }
+  .kpis { display:grid; grid-template-columns:1fr 1fr; gap:.5vw; }
+  .kpi { background:var(--card2); border-radius:.5vw; padding:.5vw; text-align:center; }
+  .kpi b { display:block; font-size:1.8vw; } .kpi span { font-size:.8vw; color:var(--muted); }
+  ol { margin:0; padding-left:1.4vw; font-size:.95vw; } ol li { padding:.15vw 0; }
+  ol li .r { float:right; font-weight:700; font-variant-numeric:tabular-nums; }
+  .hard { font-size:.8vw; padding:.25vw 0; border-bottom:1px solid rgba(255,255,255,.07); }
+  .hard .pc { color:var(--bad); font-weight:700; }
+  .feed { font-size:.85vw; flex:1; min-height:0; overflow:hidden; }
+  .feed div { padding:.25vw 0; border-bottom:1px solid rgba(255,255,255,.06); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .empty { color:var(--muted); font-size:.9vw; }
+  .crown { color:var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="top"><h1>🎲 Monopolio Legal · Gestión Legal</h1><span class="sub" id="sub"></span></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <div class="side">
+    <div class="box"><div class="clock" id="clock">--:--</div><div class="state" id="state"></div></div>
+    <div class="box"><h3>Únete a tu partida</h3><div class="join"><div class="qr" id="qr"></div><div><div class="url" id="url"></div><div class="hint">Conéctate al hotspot, escanea y elige tu número de equipo.</div></div></div></div>
+    <div class="box"><div class="kpis"><div class="kpi"><b id="kAns">0</b><span>respuestas</span></div><div class="kpi"><b id="kAcc">–</b><span>aciertos</span></div></div></div>
+    <div class="box"><h3>🎯 Mejor precisión</h3><ol id="topAcc"></ol></div>
+    <div class="box"><h3>⚠️ Preguntas más falladas</h3><div id="hard"></div></div>
+    <div class="box feed"><h3>Últimas respuestas</h3><div id="feed"></div></div>
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const $ = (s) => document.getElementById(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const money = (n) => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('es-CO');
+let D = null, offset = 0;
+const sock = io({ transports: ['websocket', 'polling'] });
+sock.on('connect', () => sock.emit('tv'));
+sock.on('tv', (d) => { D = d; offset = d.now - Date.now(); render(); });
+
+function clock() {
+  if (!D) return;
+  const el = $('clock');
+  const st = { lobby: 'Esperando que el moderador inicie', playing: 'En juego', paused: '⏸ En pausa', ended: '🏁 Juego terminado' }[D.status];
+  $('state').textContent = st;
+  if (D.status === 'playing' && D.endsAt) {
+    const ms = Math.max(0, D.endsAt - (Date.now() + offset));
+    const m = Math.floor(ms / 60000), s = Math.floor((ms % 60000) / 1000);
+    el.textContent = `${m}:${String(s).padStart(2, '0')}`; el.className = 'clock' + (ms < 5 * 60000 ? ' warn' : '');
+  } else if (D.status === 'paused') el.textContent = '⏸'; else el.textContent = D.status === 'ended' ? 'FIN' : D.status === 'playing' ? '∞' : '--:--';
+}
+setInterval(clock, 500);
+
+function render() {
+  const active = D.teams.filter((t) => t.active).length;
+  $('sub').textContent = `${active} de ${D.numTeams} partidas activas`;
+  $('grid').innerHTML = D.teams.map((t) => {
+    if (!t.active) return `<div class="team off"><b style="font-size:1.4vw">Equipo ${t.team}</b><span class="empty">Esperando…</span></div>`;
+    const acc = t.accuracy == null ? '–' : t.accuracy + '%';
+    const cls = t.accuracy == null ? '' : t.accuracy >= 70 ? 'hi' : t.accuracy < 50 ? 'lo' : '';
+    const ps = t.players.slice().sort((a, b) => b.patrimonio - a.patrimonio);
+    return `<div class="team"><div class="hd"><b>Equipo ${t.team}</b><span class="badge ${cls}">🎯 ${acc}</span></div>
+      ${ps.map((p, i) => `<div class="p"><span class="n"><span class="dot" style="background:${p.color}"></span>${i === 0 && t.turns > 0 ? '<span class="crown">👑</span>' : ''}${esc(p.name)}${p.jailed ? ' 🚨' : ''}</span><span class="v">${money(p.patrimonio)}</span>
+        <span class="s">✅ ${p.correct} · ❌ ${p.wrong} · 🏢 ${p.projects}</span></div>`).join('')}
+      <div class="ft">Turno: <b style="color:#fff">${esc(t.turnName)}</b> · ${t.turns} turnos · ${t.owned}/12 proyectos<span class="last">${esc(t.last)}</span></div></div>`;
+  }).join('');
+  $('qr').innerHTML = D.qrSvg; $('url').textContent = D.joinUrl;
+  $('kAns').textContent = D.totals.answers; $('kAcc').textContent = D.totals.accuracy == null ? '–' : D.totals.accuracy + '%';
+  $('topAcc').innerHTML = D.topAcc.length ? D.topAcc.map((p) => `<li><span class="dot" style="background:${p.color}"></span> ${esc(p.name)} <span style="color:var(--muted)">(E${p.team})</span><span class="r">${p.acc}% · ${p.correct}/${p.total}</span></li>`).join('') : '<span class="empty">Se muestra desde 3 respuestas por jugador</span>';
+  $('hard').innerHTML = D.hardest.length ? D.hardest.map((q) => `<div class="hard"><span class="pc">${Math.round(q.wrong / q.total * 100)}% falló</span> · ${esc(q.question)}</div>`).join('') : '<span class="empty">Aún no hay errores</span>';
+  $('feed').innerHTML = D.feed.length ? D.feed.map((l) => `<div>${l.correct ? '✅' : '❌'} <b>E${l.team}</b> ${esc(l.player)} — ${esc(l.cat)}</div>`).join('') : '<span class="empty">Sin respuestas todavía</span>';
+  clock();
+}
+</script>
+</body>
+</html>
