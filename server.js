@@ -795,7 +795,9 @@ function resolveTile(game) {
           tile: tile.i,
           title: `Tu proyecto: ${tile.name}`,
           text:
-            `Responde bien la carta Mejorar y paga ${money(OFFICE_COST)} para construir una oficina.`
+            `Responde bien la carta Mejorar y paga ${money(OFFICE_COST)} para construir una oficina. ` +
+            `El peaje de este proyecto sube de ${money(rent(game, tile.i))} a ` +
+            `${money(rent(game, tile.i) / ([1, 2, 3][game.owners[tile.i].offices]) * ([1, 2, 3][game.owners[tile.i].offices + 1]))}.`
         };
       }
 
@@ -945,7 +947,7 @@ function onAnswer(game, pending, correct) {
         owner.money += amount;
 
         effect =
-          `${owner.name} gestiona bien su proyecto. ${visitor.name} paga ${money(amount)} de honorarios.`;
+          `${owner.name} gestiona bien su proyecto. ${visitor.name} paga ${money(amount)} de peaje.`;
 
         feed(
           game,
@@ -957,7 +959,7 @@ function onAnswer(game, pending, correct) {
 
       if (game.owners[ctx.tile].offices >= 2) {
         effect =
-          `${owner.name} falló, pero el proyecto está blindado. No hay robo ni honorarios esta vez.`;
+          `${owner.name} falló, pero el proyecto está blindado. No hay robo ni peaje esta vez.`;
 
         break;
       }
@@ -1048,8 +1050,8 @@ function onAnswer(game, pending, correct) {
 
         effect =
           offices === 2
-            ? `"${tile.name}" queda BLINDADO con dos oficinas.`
-            : `Construiste una oficina en "${tile.name}". Sus honorarios se duplican.`;
+            ? `"${tile.name}" queda BLINDADO con dos oficinas. Ahora su peaje es ${money(rent(game, ctx.tile))}.`
+            : `Construiste una oficina en "${tile.name}". Su peaje sube a ${money(rent(game, ctx.tile))}.`;
 
         feed(
           game,

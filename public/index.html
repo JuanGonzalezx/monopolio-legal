@@ -2584,6 +2584,15 @@
         font-size: 28px !important;
       }
     }
+
+    .cell .tile-fee {
+      font-weight: 800;
+      background: rgba(0, 0, 0, 0.28);
+      color: #FFFFFF;
+      border-radius: 4px;
+      padding: 0 3px;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
@@ -3292,6 +3301,21 @@
       recorte: '📉'
     };
 
+    // Peaje (honorarios) de un proyecto: la mitad del precio,
+    // ×2 si el dueño tiene el área completa, ×2 con 1 oficina
+    // y ×3 con 2 oficinas. Igual que rent() en server.js.
+    function tileFee(game, index) {
+      const owner = game.owners[index];
+      if (!owner) return 0;
+
+      const tile = S.board[index];
+      const fullArea = S.board
+        .filter((t) => t.area === tile.area)
+        .every((t) => game.owners[t.i] && game.owners[t.i].player === owner.player);
+
+      return (tile.price / 2) * (fullArea ? 2 : 1) * ([1, 2, 3][owner.offices] || 1);
+    }
+
     function boardHtml(game) {
       let html = '<div class="board">';
 
@@ -3349,7 +3373,9 @@
         </span>
 
         ${isProject
-            ? `<span class="tile-price">${money(tile.price)}</span>`
+            ? (owner
+                ? `<span class="tile-price tile-fee" title="Peaje que paga quien caiga aquí">Peaje ${money(tileFee(game, index))}</span>`
+                : `<span class="tile-price">${money(tile.price)}</span>`)
             : ''
           }
 
