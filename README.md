@@ -37,9 +37,10 @@ Moderador:   http://localhost:3000/admin   (PIN: 1234)
 
 Luego:
 
-1. Abre **http://localhost:3000/admin**, escribe el PIN **1234** y presiona **▶️ Iniciar**.
+1. Abre **http://localhost:3000/admin** y escribe el PIN **1234**.
 2. Abre **http://localhost:3000/tv** para ver el dashboard.
-3. Abre **http://localhost:3000** (en otra pestaña o en tu celular conectado a la misma red) para jugar: elige un equipo, escribe 2 a 4 nombres y juega.
+3. Abre **http://localhost:3000** (en otra pestaña o en tu celular conectado a la misma red): elige un equipo, escribe 2 a 4 nombres y **cada jugador elige su ficha y su color**.
+4. Cuando todos los equipos tengan fichas y colores, el moderador presiona **▶️ Iniciar** (si falta alguno, el panel dice qué equipo).
 
 > **Atajo:** en macOS puedes dar doble clic a `iniciar.command`; en Windows, a `iniciar.bat`. Instalan las dependencias la primera vez y arrancan el servidor.
 
@@ -51,7 +52,7 @@ Con el servidor corriendo, abre **otra terminal** en la misma carpeta y ejecuta:
 npm run simular
 ```
 
-Simula 10 equipos respondiendo al azar durante 45 segundos (`EQUIPOS=5 SEGUNDOS=90 npm run simular` para cambiarlo). Míralo en `/tv` y `/admin`. Para limpiar: moderador → **🗑 Reiniciar todo**.
+Crea 10 equipos (con fichas y colores), inicia el juego si estaba en espera y los pone a responder al azar durante 45 segundos (`EQUIPOS=5 SEGUNDOS=90 npm run simular` para cambiarlo). Míralo en `/tv` y `/admin`. Para limpiar: moderador → **🗑 Reiniciar todo**.
 
 ---
 
@@ -66,8 +67,8 @@ Simula 10 equipos respondiendo al azar durante 45 segundos (`EQUIPOS=5 SEGUNDOS=
 1. **Hotspot:** preferible **Android** (red `192.168.x.x`, clase C, admite más dispositivos). El iPhone usa `172.20.10.x/28` y admite ~13 dispositivos. Sube el límite de conexiones del hotspot al máximo.
 2. Conecta el computador al hotspot y ejecuta `npm start` (o el `iniciar`).
 3. Proyecta **`/tv`** en el TV a pantalla completa. El TV muestra un **QR** con la dirección correcta.
-4. Cada equipo se conecta al hotspot, **escanea el QR**, elige su número y escribe los nombres.
-5. Moderador (`/admin`) → **Iniciar** (40 min por defecto).
+4. Cada equipo se conecta al hotspot, **escanea el QR**, elige su número, escribe los nombres y cada jugador elige **ficha y color**.
+5. Moderador (`/admin`) → **Iniciar** (40 min por defecto). Solo se puede iniciar cuando todos los equipos creados terminaron de elegir fichas y colores.
 
 > ⚠️ **Antes de la clase prueben con 3–4 celulares.** Algunos hotspots aíslan a los dispositivos entre sí: si ningún celular abre la página, usen otro celular o un router.
 > La primera vez, macOS/Windows pedirá permitir conexiones entrantes para Node: acepten.
@@ -76,6 +77,7 @@ Simula 10 equipos respondiendo al azar durante 45 segundos (`EQUIPOS=5 SEGUNDOS=
 
 ## 🎮 Cómo se juega
 
+- Cada pregunta tiene **30 segundos**; si se acaba el tiempo cuenta como incorrecta (el reloj se congela cuando el moderador pausa).
 - Cada jugador empieza con **$1.000**; se tira **un dado** y se avanza por un tablero de **24 casillas**. Pasar por Inicio: **+$200**.
 - **12 proyectos** en 4 áreas: Contratos ($100), Litigios ($150), Cumplimiento ($200) e Información y tecnología ($250).
 - Cada proyecto tiene **3 cartas**:

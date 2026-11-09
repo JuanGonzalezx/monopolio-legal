@@ -1422,6 +1422,16 @@ function act(team, type, payload = {}) {
   if (
     pending &&
     pending.kind === 'question' &&
+    Number.isFinite(Number(pending.timerStartsAt)) &&
+    Date.now() < Number(pending.timerStartsAt) &&
+    (type === 'answer' || type === 'pista')
+  ) {
+    return 'Espera a que termine el lanzamiento del dado';
+  }
+
+  if (
+    pending &&
+    pending.kind === 'question' &&
     !Number.isFinite(pending.deadlineAt)
   ) {
     const startAt = Number(pending.timerStartsAt);
@@ -1498,8 +1508,12 @@ function act(team, type, payload = {}) {
     if (game.pending.kind === 'question') {
       // Espera la animación del dado antes de iniciar
       // los 30 segundos disponibles para responder.
-      game.pending.deadlineAt = null;
+      // El plazo se fija desde ya (animación + 30 s) para que el
+      // servidor no tenga que enviar otro estado a los 2,2 s, lo
+      // que redibujaba la pregunta justo cuando se iba a tocar.
       game.pending.timerStartsAt = Date.now() + 2200;
+      game.pending.deadlineAt =
+        game.pending.timerStartsAt + QUESTION_TIME_MS;
     } else {
       armQuestionTimer(game.pending);
     }
@@ -2403,19 +2417,46 @@ function emitTeam(team) {
 }
 
 let broadcastTimer = null;
+let dirtyTeams = new Set();
+let dirtyAll = false;
 
-function broadcast() {
+// Envía el estado solo a quien lo necesita.
+//
+// broadcast(team): cambió una sola partida → solo ese equipo
+// (y el TV) recibe el estado. Así los celulares de los demás
+// equipos no se redibujan cada vez que otro equipo juega, lo
+// que hacía que los botones se reemplazaran mientras se tocaban.
+//
+// broadcast(): cambio global (moderador, reloj, equipo nuevo)
+// → todos los equipos, la sala de selección y el TV.
+function broadcast(team) {
+  if (team === undefined || team === null) {
+    dirtyAll = true;
+  } else {
+    dirtyTeams.add(Number(team));
+  }
+
   clearTimeout(broadcastTimer);
 
   broadcastTimer = setTimeout(() => {
-    for (let team = 1; team <= NUM_TEAMS; team++) {
-      emitTeam(team);
+    const all = dirtyAll;
+    const teams = all
+      ? Array.from({ length: NUM_TEAMS }, (_, i) => i + 1)
+      : [...dirtyTeams];
+
+    dirtyAll = false;
+    dirtyTeams = new Set();
+
+    for (const t of teams) {
+      emitTeam(t);
     }
 
-    io.to('lobby').emit('state', {
-      ...common(),
-      game: null
-    });
+    if (all) {
+      io.to('lobby').emit('state', {
+        ...common(),
+        game: null
+      });
+    }
 
     io.to('tv').emit('tv', tvSummary());
   }, 60);
@@ -2576,7 +2617,7 @@ io.on('connection', (socket) => {
     }
 
     save();
-    broadcast();
+    broadcast(team);
 
     callback && callback({ ok: true });
   });
@@ -2600,12 +2641,12 @@ setInterval(() => {
   for (const game of Object.values(state.games)) {
     if (expireQuestion(game)) {
       changed = true;
+      broadcast(game.team);
     }
   }
 
   if (changed) {
     save();
-    broadcast();
   }
 }, 250);
 

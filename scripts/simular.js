@@ -8,10 +8,15 @@ const EQUIPOS = Number(process.env.EQUIPOS || 10);
 const SEGUNDOS = Number(process.env.SEGUNDOS || 45);
 const NOMBRES = ['Ana', 'Luis', 'Sara', 'Juan', 'Vale', 'Pipe', 'Caro', 'Mateo', 'Lina', 'Kevin', 'Laura', 'Tomás', 'Majo', 'Sebas', 'Isa', 'Nico', 'Dani', 'Paula', 'Ale', 'Cami', 'Simón', 'Mía', 'Jero', 'Santi', 'Luisa', 'Felipe', 'Sofi', 'Andrés', 'Darío', 'Manu'];
 
+const FICHAS = ['gavel', 'scales', 'book', 'shield', 'star'];
+const COLORES = ['blue', 'red', 'green', 'purple', 'orange'];
+const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+const admin = (accion, body = {}) => fetch(`${URL}/api/admin/${accion}`, { method: 'POST', headers: { 'x-pin': PIN, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then((r) => r.json());
+
 (async () => {
   const st = await fetch(`${URL}/api/admin/log`, { headers: { 'x-pin': PIN } }).then((r) => r.json()).catch(() => null);
   if (!st || st.error) { console.error('No se pudo conectar al servidor o el PIN es incorrecto. ¿Está corriendo npm start?'); process.exit(1); }
-  if (st.status !== 'playing') await fetch(`${URL}/api/admin/start`, { method: 'POST', headers: { 'x-pin': PIN, 'Content-Type': 'application/json' }, body: JSON.stringify({ min: 40 }) });
+  const enEspera = st.status === 'lobby';
   console.log(`Simulando ${EQUIPOS} equipos durante ${SEGUNDOS} s… abre ${URL}/tv para verlo`);
   let acciones = 0, errores = 0;
   for (let t = 1; t <= EQUIPOS; t++) {
@@ -19,7 +24,10 @@ const NOMBRES = ['Ana', 'Luis', 'Sara', 'Juan', 'Vale', 'Pipe', 'Caro', 'Mateo',
     s.on('connect', () => {
       s.emit('join', { team: t });
       const names = Array.from({ length: 3 }, (_, i) => NOMBRES[(t * 3 + i) % NOMBRES.length]);
-      s.emit('setup', { team: t, names }, () => {});
+      s.emit('setup', { team: t, names }, () => {
+        // Antes de iniciar, cada jugador debe elegir ficha y color.
+        names.forEach((_, i) => s.emit('action', { team: t, type: 'customize', payload: { player: i, token: FICHAS[i], color: COLORES[i] } }, () => {}));
+      });
     });
     let last = null, busy = false;
     s.on('state', (st) => {
@@ -42,11 +50,17 @@ const NOMBRES = ['Ana', 'Luis', 'Sara', 'Juan', 'Vale', 'Pipe', 'Caro', 'Mateo',
         acciones++;
         s.emit('action', { team: t, type, payload }, (r) => {
           busy = false;
-          if (r && r.error) errores++;
+          if (r && r.error && !/lanzamiento del dado/.test(r.error)) errores++;
+          if (r && r.error) setTimeout(() => s.emit('join', { team: t }), 800);
           else if (last && last.game && last.game.phase !== 'ended') s.emit('join', { team: t }); // pide estado fresco
         });
       }, 400 + Math.random() * 900);
     });
   }
+  if (enEspera) {
+    await esperar(1500);
+    const r = await admin('start', { min: 40 });
+    if (r.error) console.log('No se pudo iniciar el juego:', r.error);
+  } else if (st.status === 'paused') console.log('El juego está en pausa: reanúdalo desde /admin.');
   setTimeout(() => { console.log(`Listo: ${acciones} acciones, ${errores} errores.`); process.exit(0); }, SEGUNDOS * 1000);
 })();

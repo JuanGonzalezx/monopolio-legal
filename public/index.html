@@ -2477,7 +2477,7 @@
       <div class="brand-mark">⚖</div>
       <div>
         <h1>Monopolio Legal</h1>
-        <p>Gestión Legal · Equipo 4</p>
+        <p>Gestión Legal · Gestión de Proyectos</p>
       </div>
     </div>
 
@@ -2627,11 +2627,41 @@
       $('#offline').style.display = 'block';
     });
 
+    // Firma del último estado dibujado. Si llega un estado
+    // idéntico (por ejemplo, por un cambio global), no se
+    // redibuja la pantalla: así no se reemplazan los botones
+    // mientras alguien los está tocando.
+    let lastRenderedSig = null;
+
+    function stateSignature(state) {
+      return JSON.stringify({
+        team,
+        status: state.status,
+        endsAt: state.endsAt,
+        teamsTaken: team ? null : state.teamsTaken,
+        game: state.game
+      });
+    }
+
     sock.on('state', (state) => {
+      const wasBusy = busy;
+      const signature = stateSignature(state);
+
       S = state;
 
       offset = Number(state.now || Date.now()) - Date.now();
       busy = false;
+
+      if (
+        signature === lastRenderedSig &&
+        !wasBusy &&
+        !awaitingRollAnimation
+      ) {
+        updateLiveClocks();
+        return;
+      }
+
+      lastRenderedSig = signature;
 
       if (awaitingRollAnimation && S.game) {
         const signature = rollSignature(S.game);
@@ -4390,7 +4420,7 @@
         </div>
 
         <p class="footer-note">
-          Monopolio Legal · Equipo 4 · Gestión de Proyectos · Universidad de Caldas
+          Monopolio Legal · Hecho por el Equipo 4 · Gestión de Proyectos · Universidad de Caldas
         </p>
       `;
 
