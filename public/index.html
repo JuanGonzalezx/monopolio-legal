@@ -2550,6 +2550,20 @@
     let diceAnimationTimeout = null;
     let feedBeforeRoll = null;
 
+    // Posiciones que se dibujan mientras gira el dado y la ficha
+    // avanza casilla por casilla. null = usar la posición real.
+    let displayPos = null;
+    let walking = false;
+    let walkTimer = null;
+    const STEP_MS = 250; // debe coincidir con el servidor
+
+    function shownPos(game, index) {
+      if (displayPos && displayPos[index] !== undefined) {
+        return displayPos[index];
+      }
+      return game.players[index].pos;
+    }
+
     try {
       team = Number(localStorage.getItem('ml_team')) || null;
     } catch (error) {
@@ -2597,17 +2611,44 @@
         }
       }, 75);
 
-      // La duración visual de la tirada es de 2 segundos.
+      // 1) El dado gira 2 segundos (la ficha NO se mueve todavía).
+      // 2) Se muestra el número y la ficha avanza casilla por casilla.
+      // 3) Al llegar, se muestra lo que pasó en esa casilla.
       diceAnimationTimeout = setTimeout(() => {
         clearInterval(diceAnimationInterval);
 
-        diceAnimating = false;
         animatedDiceFace = Number(move.dice);
+        walking = true;
 
-        feedBeforeRoll = null;
-        // Renderiza la cara final que decidió el servidor.
+        const mover = Number(move.player);
+        let steps = Number(move.dice);
+
         render();
-        updateLiveClocks();
+
+        clearInterval(walkTimer);
+        walkTimer = setInterval(() => {
+          if (displayPos && displayPos[mover] !== undefined && steps > 0) {
+            displayPos[mover] = (displayPos[mover] + 1) % S.board.length;
+            steps--;
+            render();
+            if (steps > 0) return;
+          }
+
+          clearInterval(walkTimer);
+
+          // Pausa corta en la casilla de llegada y luego el resultado.
+          setTimeout(() => {
+            walking = false;
+            diceAnimating = false;
+            displayPos = null;
+            feedBeforeRoll = null;
+
+            // Renderiza la posición final que decidió el servidor
+            // (por ejemplo, si cayó en "Vaya a Sanción").
+            render();
+            updateLiveClocks();
+          }, 350);
+        }, STEP_MS);
       }, 2000);
     }
 
@@ -2645,6 +2686,10 @@
 
     sock.on('state', (state) => {
       const wasBusy = busy;
+      const previousPositions =
+        S && S.game && S.game.team === (state.game && state.game.team)
+          ? S.game.players.map((player) => player.pos)
+          : null;
       const signature = stateSignature(state);
 
       S = state;
@@ -2672,6 +2717,11 @@
         ) {
           awaitingRollAnimation = false;
           awaitingRollSignature = null;
+
+          // La ficha arranca desde donde estaba antes del lanzamiento.
+          displayPos = previousPositions
+            ? [...previousPositions]
+            : null;
 
           startDiceAnimation(S.game.lastMove);
         } else if (
@@ -3137,8 +3187,10 @@
         ? animatedDiceFace
         : game.dice;
 
-      const rollInfo = diceAnimating
+      const rollInfo = diceAnimating && !walking
         ? 'El dado está girando...'
+        : walking && roller
+          ? `${roller.name} sacó ${lastMove.dice}… avanzando`
         : lastMove && roller
           ? `${roller.name} sacó ${lastMove.dice}`
           : 'Esperando el lanzamiento';
@@ -3160,7 +3212,7 @@
           : `sp ${tile.type}`;
 
         const tokens = game.players
-          .filter((player) => player.pos === index)
+          .filter((player) => shownPos(game, game.players.indexOf(player)) === index)
           .map((player) => boardToken(player))
           .join('');
 
@@ -3221,7 +3273,7 @@
       </div>
 
       <div id="centerDieFace"
-           class="center-dice ${diceAnimating ? 'rolling' : ''}">
+           class="center-dice ${diceAnimating && !walking ? 'rolling' : ''}">
         ${visibleFace ? DICE[visibleFace] : '🎲'}
       </div>
 
@@ -3273,7 +3325,7 @@
                       </span>
 
                       <span class="player-position">
-                        Casilla ${player.pos + 1}
+                        Casilla ${shownPos(game, game.players.indexOf(player)) + 1}
                       </span>
 
                       ${player.jailed
@@ -3775,6 +3827,23 @@
             <h2>Esperando acción</h2>
             <p class="action-message">
               Esperando el siguiente estado del juego.
+            </p>
+          </section>
+        `;
+      }
+
+      // Mientras el dado gira y la ficha avanza no se revela
+      // dónde cayó ni lo que pasa en la casilla.
+      if (diceAnimating && game.lastMove) {
+        const rollerName = esc(game.players[game.lastMove.player].name);
+        return `
+          <section class="card action-card">
+            <div class="result-symbol">🎲</div>
+            <h2 class="result-heading">${walking ? `¡Sacó ${game.lastMove.dice}!` : 'Lanzamiento en curso'}</h2>
+            <p class="action-message">
+              ${walking
+                ? `La ficha de ${rollerName} avanza ${game.lastMove.dice} casillas…`
+                : `${rollerName} está tirando el dado…`}
             </p>
           </section>
         `;

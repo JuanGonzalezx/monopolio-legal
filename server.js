@@ -1511,7 +1511,9 @@ function act(team, type, payload = {}) {
       // El plazo se fija desde ya (animación + 30 s) para que el
       // servidor no tenga que enviar otro estado a los 2,2 s, lo
       // que redibujaba la pregunta justo cuando se iba a tocar.
-      game.pending.timerStartsAt = Date.now() + 2200;
+      // 2 s de dado + 250 ms por casilla que avanza la ficha + llegada.
+      game.pending.timerStartsAt =
+        Date.now() + 2000 + dice * 250;
       game.pending.deadlineAt =
         game.pending.timerStartsAt + QUESTION_TIME_MS;
     } else {
