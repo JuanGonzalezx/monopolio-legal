@@ -1,89 +1,1511 @@
 {
-  "_instrucciones": "Cada pregunta: q = pregunta, o = 3 opciones, a = índice de la correcta (0, 1 o 2), e = explicación que se muestra siempre. Las opciones se barajan solas en el juego.",
+  "_instrucciones": "Cada carta (A, B, C) de un proyecto es una LISTA de preguntas: en cada partida se sacan al azar sin repetir. Cada pregunta: q = pregunta, o = 3 opciones, a = índice de la correcta (0, 1 o 2), e = explicación que se muestra siempre. Las opciones se barajan solas. Procura que las 3 opciones tengan un largo parecido para que la correcta no se adivine por ser la más larga.",
   "proyectos": {
     "1": {
-      "A": {"q": "Antes de firmar con un proveedor, ¿qué debe hacer el área legal?", "o": ["Firmarlo rápido para no frenar al negocio", "Revisar condiciones y riesgos, y dejarlo registrado", "Guardarlo en el correo del abogado"], "a": 1, "e": "El contrato es un activo de la empresa: se revisa y queda registrado donde todos lo encuentren."},
-      "B": {"q": "El proveedor incumple la entrega. ¿Qué permite actuar rápido?", "o": ["Preguntarle al abogado que lo firmó", "Buscar en el correo", "Un registro compartido con fechas, responsables y documentos"], "a": 2, "e": "La información no puede depender de una sola persona: debe estar en un registro compartido."},
-      "C": {"q": "¿Qué indicador ayuda a gestionar los contratos?", "o": ["Número de contratos al mes y tiempo de revisión", "Cantidad de abogados contratados", "Ninguno, lo legal no se mide"], "a": 0, "e": "Medir el trabajo permite tomar decisiones y demostrar el valor del área legal."}
+      "A": [
+        {
+          "q": "Compras necesita firmar hoy con un proveedor nuevo y legal tiene 15 contratos en cola sin prioridad. ¿Cuál es la decisión de gestión más sólida?",
+          "o": [
+            "Atenderlo primero porque Compras es el área que más presiona",
+            "Clasificar la cola por riesgo y urgencia con criterios conocidos",
+            "Contratar un abogado externo para vaciar la cola lo antes posible"
+          ],
+          "a": 1,
+          "e": "Priorizar con criterios claros (riesgo, urgencia, valor) es gestión. Atender al que más presiona o sumar gente sin orden solo traslada el problema."
+        },
+        {
+          "q": "Antes de aprobar un contrato con un proveedor, ¿qué información le sirve más a legal para gestionar el riesgo después?",
+          "o": [
+            "Fechas clave, responsable interno, valor y obligaciones registradas",
+            "El contrato firmado en PDF guardado en la carpeta personal del abogado",
+            "Una copia impresa archivada en Compras en orden alfabético"
+          ],
+          "a": 0,
+          "e": "Sin datos estructurados (fechas, responsable, valor, obligaciones) no hay seguimiento ni alertas. Un PDF suelto no es información gestionable."
+        },
+        {
+          "q": "Un proveedor envía su propio formato de contrato y Compras quiere usarlo tal cual. ¿Qué haría un área legal bien gestionada?",
+          "o": [
+            "Aceptarlo para no ser 'stopper' y revisarlo solo si hay problemas",
+            "Rechazarlo siempre y exigir únicamente la plantilla interna",
+            "Revisarlo contra una lista de cláusulas críticas ya definida"
+          ],
+          "a": 2,
+          "e": "Ni frenar todo ni dejar pasar todo: una lista de cláusulas críticas permite revisar rápido y con criterio."
+        }
+      ],
+      "B": [
+        {
+          "q": "Un contrato de suministro se renovó automáticamente con un precio que ya no convenía. ¿Cuál es la causa raíz más probable?",
+          "o": [
+            "El proveedor actuó de mala fe al no avisar de la renovación",
+            "No había registro de vencimientos con alertas y responsables",
+            "El abogado que lo firmó no leyó bien la cláusula de prórroga"
+          ],
+          "a": 1,
+          "e": "Culpar al proveedor o a una persona es atacar la consecuencia. La raíz es no tener un sistema de vencimientos con alertas."
+        },
+        {
+          "q": "El proveedor incumple y el gerente pregunta qué penalidad se puede cobrar. Legal tarda dos días en responder. ¿Qué revela?",
+          "o": [
+            "Las obligaciones del contrato no están extraídas ni registradas",
+            "El área necesita contratar un especialista en proveedores",
+            "El gerente debió leer el contrato antes de hacer la pregunta"
+          ],
+          "a": 0,
+          "e": "Si obligaciones y penalidades estuvieran registradas, la respuesta tomaría minutos. Es un problema de información, no de personal."
+        },
+        {
+          "q": "Durante la ejecución del contrato, ¿qué práctica reduce más el riesgo de incumplimientos que nadie detecta?",
+          "o": [
+            "Revisar todos los contratos completos una vez al año",
+            "Esperar a que el área usuaria reporte cuando algo falle",
+            "Seguimiento de hitos con responsable y alertas previas"
+          ],
+          "a": 2,
+          "e": "El seguimiento proactivo anticipa problemas; la revisión anual o reaccionar a quejas llega tarde."
+        }
+      ],
+      "C": [
+        {
+          "q": "Legal quiere demostrar que mejoró la gestión de contratos de proveedores. ¿Qué indicador lo demuestra mejor?",
+          "o": [
+            "Cantidad total de contratos firmados durante el año",
+            "Tiempo promedio de revisión antes y después del cambio",
+            "Número de abogados asignados a contratos de proveedores"
+          ],
+          "a": 1,
+          "e": "Mejorar se demuestra comparando desempeño antes y después. El volumen o el tamaño del equipo no muestran eficiencia."
+        },
+        {
+          "q": "Para reducir el tiempo de revisión de contratos de bajo riesgo, ¿qué medida es más coherente con la gestión legal?",
+          "o": [
+            "Plantillas preaprobadas que el negocio usa sin pasar por legal",
+            "Que cada abogado revise más rápido para cumplir una meta diaria",
+            "Eliminar la revisión legal de todos los contratos de proveedores"
+          ],
+          "a": 0,
+          "e": "Estandarizar lo de bajo riesgo libera a legal para lo complejo. Presionar al abogado o eliminar controles no es gestión."
+        },
+        {
+          "q": "Legal ve en sus datos que el 60% de los contratos se devuelven por información incompleta. ¿Cuál es la mejora más efectiva?",
+          "o": [
+            "Contratar un asistente que llame a cada área a pedir los datos faltantes",
+            "Un formulario de solicitud con campos obligatorios desde el inicio",
+            "Devolver los contratos más rápido para que las áreas corrijan"
+          ],
+          "a": 1,
+          "e": "Atacar la causa: si la solicitud exige los datos desde el inicio, desaparecen los reprocesos."
+        }
+      ]
     },
     "3": {
-      "A": {"q": "Recursos Humanos necesita 20 contratos laborales para mañana. ¿Qué haría un área legal bien gestionada?", "o": ["Pedir más abogados de inmediato", "Tener formatos estandarizados y un proceso claro para generarlos rápido", "Decir que no se puede y que esperen"], "a": 1, "e": "Estandarizar y sistematizar procesos permite responder rápido. Más gente no siempre es más eficiencia."},
-      "B": {"q": "Un empleado pide copia de su contrato y nadie sabe dónde está. ¿Qué falló?", "o": ["El empleado lo perdió", "La gestión de la información: no hay reglas de dónde y cómo se guardan los documentos", "Faltó contratar un abogado más"], "a": 1, "e": "Todo trabajo del abogado termina en un documento; sin gobernanza de la información, nadie lo encuentra."},
-      "C": {"q": "Para mejorar el servicio a Recursos Humanos (cliente interno), ¿qué conviene medir?", "o": ["Tiempo de entrega de cada contrato y satisfacción del área", "Cuántas horas pasa cada abogado en la oficina", "Nada, con que salgan basta"], "a": 0, "e": "La experiencia del cliente interno se gestiona midiendo tiempos y satisfacción."}
+      "A": [
+        {
+          "q": "RR. HH. pide 40 contratos laborales para una temporada alta en dos días. ¿Qué preparación habría evitado la urgencia?",
+          "o": [
+            "Tener más abogados disponibles en las temporadas altas",
+            "Exigir a RR. HH. que avise con un mes de anticipación",
+            "Un proceso con plantillas y datos que RR. HH. completa"
+          ],
+          "a": 2,
+          "e": "Sistematizar el proceso permite responder a picos sin contratar ni depender de avisos: se diseña el proceso, no se aumenta la gente."
+        },
+        {
+          "q": "Antes de generar contratos laborales, ¿qué decisión corresponde a la estrategia legal y no solo a la redacción?",
+          "o": [
+            "Definir tipos de contrato y cláusulas estándar según la política",
+            "Escoger la fuente y el formato del documento para el trabajador",
+            "Decidir qué abogado del equipo firma cada contrato que llega"
+          ],
+          "a": 0,
+          "e": "La estrategia legal se alinea con el rumbo de la empresa: define modelos y reglas. Lo demás es operación."
+        },
+        {
+          "q": "RR. HH. modifica las plantillas laborales por su cuenta 'para agilizar'. ¿Qué riesgo de gestión aparece?",
+          "o": [
+            "Que RR. HH. termine haciendo el trabajo que le toca a legal",
+            "Versiones sin control y cláusulas no validadas en circulación",
+            "Que los contratos salgan con un formato distinto al oficial"
+          ],
+          "a": 1,
+          "e": "La gobernanza de documentos define quién cambia una plantilla y cuál es la versión vigente."
+        }
+      ],
+      "B": [
+        {
+          "q": "Un trabajador demanda y nadie encuentra la versión firmada de su contrato, solo borradores. ¿Qué eje de la gestión legal falló?",
+          "o": [
+            "Personal: el abogado responsable no hizo bien su trabajo",
+            "Tecnología: la empresa no tiene un software laboral",
+            "Información: no hay reglas para guardar la versión final"
+          ],
+          "a": 2,
+          "e": "Es gobernanza de la información: qué versión se guarda, dónde y con qué nombre. Un software sin reglas no lo resuelve."
+        },
+        {
+          "q": "RR. HH. dice que legal 'se demora mucho' con los otrosíes, pero legal siente que trabaja al máximo. ¿Qué haría primero?",
+          "o": [
+            "Medir el tiempo de cada etapa para ver dónde se atasca",
+            "Explicarle a RR. HH. la carga de trabajo que tiene legal",
+            "Pedir presupuesto para otro abogado para los otrosíes"
+          ],
+          "a": 0,
+          "e": "Diagnóstico con datos antes de actuar: medir revela si el cuello de botella está en legal, en RR. HH. o en las aprobaciones."
+        },
+        {
+          "q": "Vence el periodo de prueba de 25 trabajadores el mismo mes. ¿Qué evita decisiones tardías?",
+          "o": [
+            "Que cada jefe recuerde el vencimiento de su trabajador",
+            "Alertas desde un registro con fechas y responsables",
+            "Que legal revise todos los contratos cada fin de mes"
+          ],
+          "a": 1,
+          "e": "Datos estructurados con alertas: la memoria de las personas o las revisiones masivas no escalan."
+        }
+      ],
+      "C": [
+        {
+          "q": "¿Qué indicador refleja mejor la experiencia del cliente interno (RR. HH.) con los contratos laborales?",
+          "o": [
+            "Contratos laborales redactados por cada abogado al mes",
+            "Número de reuniones entre legal y RR. HH. en el mes",
+            "Tiempo de entrega frente al acuerdo de servicio pactado"
+          ],
+          "a": 2,
+          "e": "Comparar el tiempo real contra lo prometido (acuerdo de nivel de servicio) mide la experiencia del cliente interno."
+        },
+        {
+          "q": "Legal quiere automatizar los contratos laborales. Según el orden correcto, ¿qué debe existir antes?",
+          "o": [
+            "Un proceso definido y plantillas validadas y estables",
+            "Un software de firma electrónica ya instalado en la empresa",
+            "El presupuesto de tecnología aprobado para el siguiente año"
+          ],
+          "a": 0,
+          "e": "Proceso → sistematizar → automatizar. Automatizar un proceso desordenado solo produce desorden más rápido."
+        },
+        {
+          "q": "Tras estandarizar, los contratos laborales salen en 1 día en vez de 5. ¿Cómo comunicarlo al director general?",
+          "o": [
+            "Un informe con la historia completa del proyecto de mejora",
+            "Una presentación sobre lo complejo del derecho laboral",
+            "Tiempo antes y después y horas liberadas al mes"
+          ],
+          "a": 2,
+          "e": "Reportar en números entendibles para el negocio: el director quiere el dato, no la narrativa."
+        }
+      ]
     },
     "4": {
-      "A": {"q": "Un área dice: 'No lo mandemos a legal, ellos solo frenan todo'. ¿Cómo se llama ese problema?", "o": ["Ser un 'stopper': legal se ve como un obstáculo", "Exceso de presupuesto", "Falta de abogados"], "a": 0, "e": "Cuando las demás áreas evitan a legal, es señal de una mala experiencia del servicio legal."},
-      "B": {"q": "El acuerdo de confidencialidad está vigente. ¿Quién debe poder acceder al documento?", "o": ["Cualquiera de la empresa", "Solo quienes lo necesitan, con permisos definidos y registro de quién lo tiene", "Solo el abogado que lo redactó, en su computador"], "a": 1, "e": "Gestionar información y tecnología incluye definir quién accede y quién resguarda cada documento."},
-      "C": {"q": "¿Cómo reducir el tiempo de firma de estos acuerdos?", "o": ["Plantillas aprobadas y firma en línea", "Imprimirlos y enviarlos por mensajería", "Que cada abogado redacte uno distinto cada vez"], "a": 0, "e": "Tendencia: los procesos de contratación serán totalmente en línea."}
+      "A": [
+        {
+          "q": "Comercial necesita un acuerdo de confidencialidad para una reunión mañana y legal lo entrega en una semana. ¿Qué señal de alerta es?",
+          "o": [
+            "Que comercial no planea sus reuniones con tiempo suficiente",
+            "Riesgo de que el negocio vea a legal como un 'stopper'",
+            "Que los acuerdos de confidencialidad son muy complejos"
+          ],
+          "a": 1,
+          "e": "Cuando el negocio siente que legal frena, empieza a evitarlo: esa es la señal del 'stopper'."
+        },
+        {
+          "q": "¿Qué tratamiento es más adecuado para acuerdos de confidencialidad estándar y de bajo riesgo?",
+          "o": [
+            "Revisión completa del abogado senior en cada caso",
+            "Que comercial redacte su propia versión para cada cliente",
+            "Plantilla preaprobada y autoservicio con reglas de uso"
+          ],
+          "a": 2,
+          "e": "Autoservicio con reglas: rápido para el negocio y controlado para legal."
+        },
+        {
+          "q": "Al aprobar un modelo de acuerdo de confidencialidad, ¿qué define la gobernanza de ese documento?",
+          "o": [
+            "Quién puede usarlo, cuándo escalar a legal y dónde se registra",
+            "El logotipo, la fuente y el formato institucional del modelo",
+            "La cantidad máxima de páginas que puede tener cada acuerdo"
+          ],
+          "a": 0,
+          "e": "Gobernanza son las reglas de uso, escalamiento y registro; el formato es lo de menos."
+        }
+      ],
+      "B": [
+        {
+          "q": "Se filtra información de un cliente y nadie sabe si se había firmado acuerdo de confidencialidad. ¿Qué faltó?",
+          "o": [
+            "Un abogado dedicado solo a revisar estos acuerdos",
+            "Un registro central de acuerdos firmados y consultable",
+            "Una capacitación a comercial sobre la reserva de datos"
+          ],
+          "a": 1,
+          "e": "Si no está registrado, para la empresa no existe: es un problema de información."
+        },
+        {
+          "q": "Un acuerdo vigente permite usar datos 'solo para evaluación'. Comercial quiere usarlos en una campaña. ¿Qué debería pasar?",
+          "o": [
+            "Usarlos, porque el acuerdo está vigente y firmado por ambos",
+            "Usarlos siempre que no se mencione el nombre del cliente",
+            "Consultar el alcance registrado y escalar a legal antes"
+          ],
+          "a": 2,
+          "e": "Cumplir el alcance pactado exige conocerlo: obligaciones registradas y una ruta clara para escalar."
+        },
+        {
+          "q": "¿Cuál es la mejor forma de saber quién tiene acceso a la información protegida por un acuerdo de confidencialidad?",
+          "o": [
+            "Preguntarle a cada área en el momento en que haga falta",
+            "Permisos definidos y registro de accesos en el repositorio",
+            "Confiar en que solo la abren quienes firmaron el acuerdo"
+          ],
+          "a": 1,
+          "e": "Gestionar información y tecnología incluye permisos y trazabilidad de acceso."
+        }
+      ],
+      "C": [
+        {
+          "q": "Legal recibe 200 acuerdos de confidencialidad al año y el 90% no tiene cambios. ¿Qué mejora libera más capacidad?",
+          "o": [
+            "Contratar un practicante dedicado solo a estos acuerdos",
+            "Revisarlos por lotes una vez a la semana para ahorrarle tiempo al equipo",
+            "Firma en línea con plantilla fija y revisión solo si hay cambios"
+          ],
+          "a": 2,
+          "e": "Separar lo estándar (automático) de lo excepcional (revisión) es la base de la eficiencia legal."
+        },
+        {
+          "q": "¿Qué datos le permitirían a legal decidir si vale la pena automatizar los acuerdos de confidencialidad?",
+          "o": [
+            "Volumen anual, tiempo por acuerdo y porcentaje con cambios",
+            "La opinión del área comercial sobre el servicio de legal",
+            "El costo de las licencias de firma electrónica del mercado"
+          ],
+          "a": 0,
+          "e": "Decidir con datos de la propia operación: volumen, tiempo y variación."
+        },
+        {
+          "q": "Tras automatizar, comercial firma acuerdos en minutos. ¿Qué control NO se debe perder?",
+          "o": [
+            "Que cada acuerdo pase igual por la firma de un abogado",
+            "Registro automático de cada acuerdo y sus vencimientos",
+            "Que comercial imprima y archive una copia de cada uno"
+          ],
+          "a": 1,
+          "e": "Automatizar no es perder trazabilidad: el registro debe alimentarse solo."
+        }
+      ]
     },
     "7": {
-      "A": {"q": "Llega una demanda. Antes de actuar, ¿qué debe tener claro el área legal?", "o": ["Solo el nombre del abogado que la lleve", "Los hechos, plazos, responsable y dónde quedará registrado el caso", "Nada, se responde cuando haya tiempo"], "a": 1, "e": "Un caso bien gestionado empieza con información organizada: plazos, responsable y registro."},
-      "B": {"q": "El director pregunta: '¿Cómo va la demanda?' ¿Qué respuesta muestra buena gestión?", "o": ["'Creo que bien, la lleva Martínez'", "'No sé, hay que buscar el expediente'", "'Estado, próxima audiencia, riesgo estimado y costo a la fecha'"], "a": 2, "e": "Reportar con datos claros permite decidir. Hay directores que piden el reporte en un WhatsApp de 180 caracteres."},
-      "C": {"q": "Cada mes llegan más demandas. ¿Qué haría primero un buen gestor?", "o": ["Diagnosticar la causa raíz de por qué aumentan", "Contratar 5 abogados más", "Comprar un software"], "a": 0, "e": "Hay que atacar la causa y no la consecuencia: primero el diagnóstico."}
+      "A": [
+        {
+          "q": "Llega una demanda y el director pregunta cuánto podría costarle a la empresa. ¿Qué permite responder rápido y con fundamento?",
+          "o": [
+            "La opinión del abogado con más experiencia del despacho",
+            "Datos de casos similares: duración, costo y resultado",
+            "Esperar la primera audiencia para tener más elementos"
+          ],
+          "a": 1,
+          "e": "Los datos históricos convierten la intuición en estimaciones defendibles."
+        },
+        {
+          "q": "Al recibir una demanda, ¿qué debe quedar registrado primero para no perder el control del caso?",
+          "o": [
+            "Plazos procesales, responsable, riesgo estimado y expediente",
+            "El nombre del juez y los antecedentes del abogado contrario",
+            "Un resumen de los hechos enviado por correo al área afectada"
+          ],
+          "a": 0,
+          "e": "Plazos, responsable y riesgo son lo mínimo para gestionar el caso; lo demás complementa."
+        },
+        {
+          "q": "Legal debe decidir si lleva la demanda internamente o con un despacho externo. ¿Qué criterio es de gestión?",
+          "o": [
+            "Llevarla siempre interna porque el despacho externo es caro",
+            "Enviarla al despacho de más prestigio que conozca el gerente",
+            "Comparar costo, especialidad requerida y carga del equipo"
+          ],
+          "a": 2,
+          "e": "Decidir con criterios (costo, capacidad, especialidad) y no por costumbre o prestigio."
+        }
+      ],
+      "B": [
+        {
+          "q": "Se venció un término procesal porque el abogado estaba de vacaciones. ¿Cuál es la causa raíz?",
+          "o": [
+            "El abogado no dejó su trabajo al día antes de salir",
+            "Los plazos dependían de una persona y no de un sistema",
+            "El juzgado notificó en una fecha poco conveniente"
+          ],
+          "a": 1,
+          "e": "Si los plazos dependen de una persona, cualquier ausencia es un riesgo: gestión del conocimiento."
+        },
+        {
+          "q": "La gerencia pide el estado del caso en un WhatsApp de 180 caracteres. ¿Cuál es el mejor mensaje?",
+          "o": [
+            "'Contestada; audiencia 12/03; riesgo medio; costo a hoy $8M'",
+            "'Va bien, el equipo trabaja duro y todo está bajo control'",
+            "'Le envío el expediente completo para que lo revise con calma'"
+          ],
+          "a": 0,
+          "e": "Estado, próximo hito, riesgo y costo: concreto y en números."
+        },
+        {
+          "q": "A mitad del proceso aparece la opción de conciliar. ¿Qué necesita legal para recomendarla?",
+          "o": [
+            "La opinión del área afectada sobre si quiere seguir peleando",
+            "La probabilidad de ganar según el abogado del proceso",
+            "Costo de seguir vs. acuerdo, riesgo de perder y duración"
+          ],
+          "a": 2,
+          "e": "Recomendar con análisis de costo y riesgo, no solo con intuición u opinión."
+        }
+      ],
+      "C": [
+        {
+          "q": "Cada año aumentan las demandas de clientes por el mismo motivo. ¿Qué mejora ataca la causa?",
+          "o": [
+            "Contratar más litigantes para atender el aumento de demandas",
+            "Analizar los motivos y corregir el proceso que las origina",
+            "Buscar un despacho externo que cobre menos por cada caso nuevo"
+          ],
+          "a": 1,
+          "e": "Diagnóstico de la raíz: si el origen es un proceso del negocio, corregirlo reduce las demandas."
+        },
+        {
+          "q": "¿Qué indicador ayuda a la gerencia a entender el valor del área de litigios?",
+          "o": [
+            "Ahorro logrado frente a lo que se pedía en las demandas",
+            "Número de escritos presentados por el equipo en el año",
+            "Horas trabajadas por los abogados en procesos judiciales"
+          ],
+          "a": 0,
+          "e": "El valor se muestra en términos del negocio (ahorro, riesgo evitado), no en actividad."
+        },
+        {
+          "q": "Legal quiere un tablero de litigios para la gerencia. ¿Qué debe existir primero?",
+          "o": [
+            "Un software de inteligencia de negocios con licencias",
+            "Un diseñador que haga el tablero visualmente atractivo",
+            "Datos de cada caso capturados de forma uniforme"
+          ],
+          "a": 2,
+          "e": "Sin datos uniformes no hay tablero que sirva; la herramienta va después."
+        }
+      ]
     },
     "9": {
-      "A": {"q": "Para asumir la defensa de un caso laboral, ¿qué hay que gestionar además de la ley?", "o": ["Solo el Código del Trabajo", "La carga de trabajo del equipo, el presupuesto y las herramientas", "La toga del abogado"], "a": 1, "e": "La gestión legal administra 5 ejes: estrategia, personal, recursos, información y tecnología."},
-      "B": {"q": "El abogado que lleva el caso renuncia. ¿Qué evita perder el caso?", "o": ["Rogarle que se quede", "Empezar el caso de nuevo", "Que la información esté en un sistema compartido y no en su cabeza o su PC"], "a": 2, "e": "Gestión del conocimiento: aunque 'fulanito' no esté, se sabe qué pasó y dónde está todo."},
-      "C": {"q": "¿Qué indicador ayuda a mejorar la defensa en casos laborales?", "o": ["Casos ganados, duración promedio y costo por caso", "Número de páginas escritas", "Cantidad de reuniones"], "a": 0, "e": "Con KPIs, el equipo legal se mide como el resto del negocio."}
+      "A": [
+        {
+          "q": "Llegan 12 demandas laborales en un mes y el equipo tiene 2 abogados. ¿Cuál es el primer paso de gestión?",
+          "o": [
+            "Pedir de inmediato dos abogados más para el aumento",
+            "Clasificar los casos por riesgo y cuantía para asignarlos",
+            "Repartir las 12 demandas en partes iguales entre los dos"
+          ],
+          "a": 1,
+          "e": "Priorizar con criterio antes de pedir recursos; repartir parejo ignora el riesgo de cada caso."
+        },
+        {
+          "q": "Además del conocimiento jurídico, ¿qué recurso es clave para asumir bien una defensa laboral?",
+          "o": [
+            "Acceso oportuno a la documentación del trabajador en RR. HH.",
+            "Una oficina más amplia para reunirse con los testigos del caso",
+            "Un abogado con muchos años de experiencia en todos los temas"
+          ],
+          "a": 0,
+          "e": "La defensa depende de información de otras áreas: coordinar con el cliente interno también es gestión."
+        },
+        {
+          "q": "Antes de asumir una defensa, legal nota que RR. HH. no guarda las actas de descargos. ¿Qué debería hacer?",
+          "o": [
+            "Asumir el caso y pedir las actas solo si el juez las exige",
+            "Advertir el riesgo a la gerencia y no hacer nada más",
+            "Definir con RR. HH. un proceso para registrar las actas"
+          ],
+          "a": 2,
+          "e": "Gestionar la causa: si falta información en el origen, se corrige el proceso con el cliente interno."
+        }
+      ],
+      "B": [
+        {
+          "q": "En plena defensa renuncia el abogado del caso. ¿Qué evita que se pierda el conocimiento?",
+          "o": [
+            "Hacerle firmar un compromiso de entregar todo antes de irse",
+            "Expediente actualizado en repositorio común y bitácora",
+            "Que el nuevo abogado lo llame cada vez que tenga dudas"
+          ],
+          "a": 1,
+          "e": "Gestión del conocimiento: lo que está en un sistema compartido no se va con la persona."
+        },
+        {
+          "q": "El gerente pregunta cuántas demandas laborales activas hay y legal no lo sabe con certeza. ¿Qué indica?",
+          "o": [
+            "Falta de un registro centralizado y de indicadores",
+            "Que legal tiene más casos de los que puede manejar",
+            "Que el gerente debería preguntarle a cada abogado"
+          ],
+          "a": 0,
+          "e": "No tener el dato cuando lo piden es un foco rojo: faltan registro e indicadores."
+        },
+        {
+          "q": "Se acerca una audiencia y faltan testigos confirmados. ¿Qué práctica evita esta situación?",
+          "o": [
+            "Confirmar a los testigos el mismo día de la audiencia",
+            "Que el abogado recuerde llamarlos unos días antes",
+            "Tareas con fechas y responsables por cada etapa"
+          ],
+          "a": 2,
+          "e": "Planear el caso como un proyecto: tareas, fechas y responsables."
+        }
+      ],
+      "C": [
+        {
+          "q": "Legal descubre que el 70% de sus demandas laborales vienen de una misma sede. ¿Qué haría un buen gestor?",
+          "o": [
+            "Investigar con RR. HH. qué práctica de esa sede las genera",
+            "Asignar un abogado exclusivo para todas las demandas de esa sede",
+            "Esperar a ver si la tendencia sigue el próximo semestre"
+          ],
+          "a": 0,
+          "e": "Los datos sirven para encontrar la causa y prevenir, no solo para reaccionar."
+        },
+        {
+          "q": "¿Qué indicador muestra si la defensa laboral está mejorando?",
+          "o": [
+            "Cantidad de demandas laborales recibidas en el año",
+            "Número de audiencias a las que asistió el equipo",
+            "Casos favorables y costo promedio por caso"
+          ],
+          "a": 2,
+          "e": "Resultado y costo miden el desempeño; el volumen recibido no depende de la defensa."
+        },
+        {
+          "q": "Legal escribe una guía de lecciones aprendidas al cerrar cada caso. ¿Qué eje fortalece principalmente?",
+          "o": [
+            "Recursos, porque reduce los gastos de papelería y archivo del área",
+            "Información y conocimiento: la experiencia queda como activo",
+            "Tecnología, porque obliga a usar un software de gestión"
+          ],
+          "a": 1,
+          "e": "Documentar lecciones aprendidas es gestión del conocimiento."
+        }
+      ]
     },
     "10": {
-      "A": {"q": "¿Por qué una conciliación puede ser buena gestión?", "o": ["Porque el abogado trabaja menos", "Porque resuelve el conflicto más rápido y barato, cuidando la relación con el cliente", "Nunca lo es, siempre hay que litigar"], "a": 1, "e": "La eficiencia (tiempo y presupuesto) y la experiencia del cliente son parte de la gestión legal."},
-      "B": {"q": "En plena conciliación, el cliente pide un dato urgente. ¿Qué lo deja satisfecho?", "o": ["Responderle en minutos con el dato exacto", "Responderle en 3 días", "Pedirle que llame después"], "a": 0, "e": "Los clientes eligen al despacho que más rápido entrega la información cuando la necesitan."},
-      "C": {"q": "Para la próxima conciliación, ¿qué conviene guardar?", "o": ["Nada, cada caso es distinto", "Solo el acta final en un cajón", "Qué funcionó, plazos y acuerdos, para reutilizarlo"], "a": 2, "e": "Gestionar el conocimiento convierte la experiencia en un activo del área."}
+      "A": [
+        {
+          "q": "Antes de proponer una conciliación, ¿qué análisis es el más importante?",
+          "o": [
+            "Costo y duración del litigio frente al acuerdo posible",
+            "La disposición emocional del cliente a llegar a un acuerdo",
+            "El prestigio que gana el área si logra conciliar el caso"
+          ],
+          "a": 0,
+          "e": "Conciliar es una decisión de gestión: comparar costo, tiempo y riesgo."
+        },
+        {
+          "q": "Para conciliar, el apoderado necesita un tope de negociación. ¿Quién debe definirlo y cómo?",
+          "o": [
+            "El apoderado, según su intuición durante la audiencia",
+            "Gerencia y legal, con datos de riesgo y costo del caso",
+            "El área afectada, según cuánto quiera pagar ese mes"
+          ],
+          "a": 1,
+          "e": "Decisiones con datos y responsables claros, no improvisadas en la audiencia."
+        },
+        {
+          "q": "Una empresa concilia todos sus casos para 'ahorrar tiempo'. ¿Cuál es el riesgo de gestión?",
+          "o": [
+            "Que los abogados pierdan práctica en audiencias",
+            "Que la autoridad empiece a ver con malos ojos a la empresa",
+            "Incentivar reclamos y pagar casos que se podían ganar"
+          ],
+          "a": 2,
+          "e": "Una política sin análisis caso a caso puede salir más cara: hay que decidir con criterio."
+        }
+      ],
+      "B": [
+        {
+          "q": "En la audiencia, el apoderado no sabe cuánto se le pagó antes al reclamante. ¿Qué falló?",
+          "o": [
+            "El apoderado no preparó bien la audiencia de conciliación",
+            "El reclamante no presentó todas sus pruebas",
+            "Los datos financieros no estaban en el expediente"
+          ],
+          "a": 2,
+          "e": "La información de otras áreas debe estar en el expediente; no es solo culpa de la persona."
+        },
+        {
+          "q": "En plena conciliación el cliente externo pide el historial de pagos y el despacho lo entrega en 5 minutos. ¿Qué demuestra?",
+          "o": [
+            "Información organizada y accesible que genera confianza",
+            "Que el despacho tiene muchos abogados disponibles siempre",
+            "Que el cliente estaba pidiendo algo poco razonable"
+          ],
+          "a": 0,
+          "e": "Los clientes eligen al despacho que entrega la información cuando la necesitan."
+        },
+        {
+          "q": "Se firmó un acuerdo conciliatorio con pagos en cuotas. ¿Qué sigue en la gestión del caso?",
+          "o": [
+            "Archivar el caso, porque con el acuerdo terminó el conflicto",
+            "Seguimiento de cada cuota con fecha, responsable y soporte",
+            "Dejar que tesorería se encargue sin informar nada a legal"
+          ],
+          "a": 1,
+          "e": "El caso no termina con la firma: hay obligaciones que seguir y registrar."
+        }
+      ],
+      "C": [
+        {
+          "q": "¿Qué indicador ayuda a decidir si la estrategia de conciliación funciona?",
+          "o": [
+            "Audiencias de conciliación programadas en el año",
+            "Ahorro frente a la pretensión y tiempo hasta el cierre",
+            "Cantidad de abogados que participan en conciliaciones"
+          ],
+          "a": 1,
+          "e": "Ahorro y tiempo miden el resultado; la actividad no."
+        },
+        {
+          "q": "Legal quiere replicar las conciliaciones exitosas. ¿Qué debe registrar de cada una?",
+          "o": [
+            "Solo el acta final firmada por las partes",
+            "El nombre del conciliador y la sede donde se hizo",
+            "Argumentos, rangos ofrecidos, tiempos y resultado"
+          ],
+          "a": 2,
+          "e": "Registrar el cómo y el resultado convierte la experiencia en conocimiento reutilizable."
+        },
+        {
+          "q": "El 80% de las conciliaciones fracasan por falta de autorización a tiempo. ¿Qué mejora es más efectiva?",
+          "o": [
+            "Protocolo previo con topes aprobados por tipo de caso",
+            "Pedir aplazamientos hasta que la gerencia autorice",
+            "Enviar al gerente a todas las audiencias de conciliación"
+          ],
+          "a": 0,
+          "e": "Diseñar el proceso de autorización ataca la causa del fracaso."
+        }
+      ]
     },
     "13": {
-      "A": {"q": "¿Cuáles son los 3 tipos de clientes del área legal?", "o": ["Jueces, abogados y secretarias", "Cliente interno, cliente externo/socios y la autoridad", "Solo el gerente"], "a": 1, "e": "El área legal es un centro que atiende a todos: interno, externo y autoridad."},
-      "B": {"q": "La autoridad da 5 días para responder. ¿Qué garantiza cumplir?", "o": ["Un registro con fecha límite, responsable y alertas", "Confiar en la memoria del abogado", "Esperar a que la autoridad recuerde"], "a": 0, "e": "Procesos y datos claros evitan incumplimientos, que traen sanciones."},
-      "C": {"q": "¿Qué le muestra al director que legal cumple bien con la autoridad?", "o": ["Que nadie se ha quejado todavía", "El tamaño de la oficina", "Requerimientos respondidos a tiempo vs. vencidos"], "a": 2, "e": "Medir el cumplimiento permite demostrar valor con datos."}
+      "A": [
+        {
+          "q": "Llega un requerimiento de la autoridad con 10 días hábiles de plazo. ¿Qué se registra primero?",
+          "o": [
+            "El tema del oficio y el nombre del funcionario que lo envía",
+            "Fecha límite, responsable, áreas involucradas y documentos",
+            "Una copia escaneada del oficio en la carpeta compartida"
+          ],
+          "a": 1,
+          "e": "Plazo, responsable e insumos son lo que permite cumplir a tiempo."
+        },
+        {
+          "q": "¿Por qué la autoridad se considera uno de los 'clientes' del área legal?",
+          "o": [
+            "Porque legal debe atenderla con calidad y a tiempo",
+            "Porque la autoridad paga los servicios de legal",
+            "Porque la autoridad define la estrategia legal"
+          ],
+          "a": 0,
+          "e": "Los 3 clientes son el interno, el externo/socios y la autoridad. A todos se les debe un buen servicio."
+        },
+        {
+          "q": "El requerimiento pide información que tienen tres áreas distintas. ¿Qué rol cumple legal?",
+          "o": [
+            "Recibir lo que cada área quiera enviar y reenviarlo",
+            "Pedirle a la autoridad que solicite a cada área",
+            "Coordinar fechas internas, consolidar y validar"
+          ],
+          "a": 2,
+          "e": "Legal es el centro que conecta a todos: coordina, consolida y responde."
+        }
+      ],
+      "B": [
+        {
+          "q": "La respuesta salió un día tarde porque Finanzas entregó su parte el último día. ¿Qué mejora ataca la causa?",
+          "o": [
+            "Llamarle la atención a Finanzas por entregar tarde",
+            "Plazos internos antes del vencimiento, con alertas",
+            "Pedir siempre prórroga a la autoridad para tener margen"
+          ],
+          "a": 1,
+          "e": "Diseñar el proceso con plazos internos y alertas; reprender no evita que se repita."
+        },
+        {
+          "q": "El director pide el estado de todos los requerimientos abiertos. ¿Qué lo hace posible en minutos?",
+          "o": [
+            "Un abogado que se sabe todos los casos de memoria",
+            "Revisar el correo electrónico de cada persona del área",
+            "Un registro con estado, plazo y responsable de cada uno"
+          ],
+          "a": 2,
+          "e": "Información estructurada significa respuesta inmediata."
+        },
+        {
+          "q": "La autoridad pide documentos de hace 6 años. ¿Qué determina si se encuentran rápido?",
+          "o": [
+            "Reglas de archivo y nomenclatura aplicadas siempre",
+            "La memoria de los empleados más antiguos",
+            "Que la empresa haya digitalizado todo su archivo"
+          ],
+          "a": 0,
+          "e": "Gobernanza: reglas aplicadas de forma constante. Digitalizar sin reglas no garantiza encontrar."
+        }
+      ],
+      "C": [
+        {
+          "q": "¿Qué indicador muestra mejor el cumplimiento frente a la autoridad?",
+          "o": [
+            "Cantidad de requerimientos recibidos en el año",
+            "Respuestas a tiempo y sin requerimiento adicional",
+            "Número de reuniones con funcionarios del ente"
+          ],
+          "a": 1,
+          "e": "La oportunidad y la calidad de la respuesta miden el desempeño."
+        },
+        {
+          "q": "Cada año llegan requerimientos sobre los mismos temas. ¿Qué mejora es más inteligente?",
+          "o": [
+            "Asignar siempre al mismo abogado los temas repetidos",
+            "Esperar a que lleguen y responderlos más rápido",
+            "Banco de respuestas y soportes para temas frecuentes"
+          ],
+          "a": 2,
+          "e": "Reutilizar conocimiento ante lo repetitivo es eficiencia."
+        },
+        {
+          "q": "Legal quiere mostrar a la junta el valor de su gestión ante la autoridad. ¿Qué dato es más convincente?",
+          "o": [
+            "Sanciones evitadas y su valor frente al año anterior",
+            "Lo complejo que es el marco regulatorio del sector",
+            "Las horas extra que trabajó el equipo legal en el año"
+          ],
+          "a": 0,
+          "e": "Valor en el lenguaje del negocio: riesgo y dinero evitados."
+        }
+      ]
     },
     "15": {
-      "A": {"q": "Antes de manejar datos personales de clientes, ¿qué debe definir legal?", "o": ["Quién accede, cómo se guardan y para qué se usan", "Nada, los datos son de la empresa", "Solo una contraseña"], "a": 0, "e": "La gobernanza de datos es parte de la gestión de la información."},
-      "B": {"q": "Un empleado guarda la base de clientes en su USB personal. ¿Qué es?", "o": ["Algo normal", "Una buena práctica de respaldo", "Un riesgo: la información debe estar en sistemas controlados por la empresa"], "a": 2, "e": "Los documentos y datos son activos de la empresa y deben estar bajo su resguardo."},
-      "C": {"q": "¿Cómo debería entrar la tecnología para proteger los datos?", "o": ["Comprar la herramienta de moda", "Primero diagnosticar necesidades y procesos, luego elegir", "Que cada área compre la suya"], "a": 1, "e": "Comprar tecnología sin diagnóstico es como comprar un carro que no cabe en el garaje."}
+      "A": [
+        {
+          "q": "Mercadeo quiere lanzar una campaña con la base de datos de clientes. ¿Qué debe validar legal antes?",
+          "o": [
+            "Que la base esté completa, actualizada y sin registros repetidos",
+            "Que la campaña tenga buen diseño y mensaje atractivo",
+            "Autorización de uso, finalidad y quién accede a los datos"
+          ],
+          "a": 2,
+          "e": "La gobernanza de datos define para qué y quién usa la información."
+        },
+        {
+          "q": "¿Quién debería tener acceso a la base de datos de clientes?",
+          "o": [
+            "Todos los empleados, porque los datos son de la empresa",
+            "Solo quien los necesita, con permisos y registro de acceso",
+            "Solo el área de sistemas, que es la que administra la base"
+          ],
+          "a": 1,
+          "e": "Mínimo acceso necesario y trazabilidad: control sin frenar el negocio."
+        },
+        {
+          "q": "Una empresa quiere comprar una herramienta de protección de datos porque 'todos la usan'. ¿Qué falta?",
+          "o": [
+            "Diagnosticar qué datos maneja, dónde están y sus riesgos",
+            "Comparar el precio con otras herramientas del mercado",
+            "Capacitar al equipo en la herramienta antes de comprarla"
+          ],
+          "a": 0,
+          "e": "Diagnóstico antes que tecnología: si no, es el carro que no cabe en el garaje."
+        }
+      ],
+      "B": [
+        {
+          "q": "Un empleado se envía la base de clientes a su correo personal para trabajar en casa. ¿Qué causa raíz atendería legal?",
+          "o": [
+            "La falta de compromiso de ese empleado con las reglas",
+            "Que la empresa permite el trabajo en casa sin controles",
+            "No hay un canal seguro definido ni reglas claras de uso"
+          ],
+          "a": 2,
+          "e": "Sancionar a la persona no evita que otros lo repitan: hay que dar el canal y las reglas."
+        },
+        {
+          "q": "Un cliente pide saber qué datos suyos tiene la empresa y legal tarda un mes en responder. ¿Qué revela?",
+          "o": [
+            "Que el cliente hizo una solicitud demasiado amplia",
+            "No hay inventario de datos ni proceso para atenderlo",
+            "Que legal necesita un abogado de protección de datos"
+          ],
+          "a": 1,
+          "e": "Sin inventario ni proceso, cada solicitud se convierte en una búsqueda manual."
+        },
+        {
+          "q": "Se detecta un incidente de seguridad con datos personales. ¿Qué evita la improvisación?",
+          "o": [
+            "Protocolo con responsables, plazos de aviso y pasos",
+            "Reunir a todos los jefes para decidir qué hacer",
+            "Esperar a confirmar si hubo daño antes de actuar"
+          ],
+          "a": 0,
+          "e": "Procesos definidos antes de la crisis permiten una respuesta rápida y ordenada."
+        }
+      ],
+      "C": [
+        {
+          "q": "¿Qué indicador muestra madurez real en protección de datos?",
+          "o": [
+            "Número de políticas escritas que tiene la empresa",
+            "Bases inventariadas con responsable y permisos",
+            "Cantidad de capacitaciones dictadas por legal"
+          ],
+          "a": 1,
+          "e": "Lo que importa es la implementación medible, no la cantidad de documentos."
+        },
+        {
+          "q": "Legal quiere reducir el tiempo de respuesta a las solicitudes de los titulares. ¿Qué mejora es más efectiva?",
+          "o": [
+            "Asignarlas al abogado que tenga menos trabajo ese día",
+            "Responder con una carta estándar sin revisar cada caso",
+            "Formulario único, inventario de datos y flujo definido"
+          ],
+          "a": 2,
+          "e": "Proceso estandarizado más información disponible."
+        },
+        {
+          "q": "Tras implementar controles, ¿cómo demostrarle al director que valió la pena?",
+          "o": [
+            "Incidentes y tiempos de respuesta antes y después",
+            "La cantidad de documentos generados en el proyecto",
+            "Un informe narrativo sobre la importancia de los datos"
+          ],
+          "a": 0,
+          "e": "Antes y después, con datos."
+        }
+      ]
     },
     "16": {
-      "A": {"q": "Necesitan una licencia para abrir una sede. ¿Qué hace un área legal alineada con la estrategia?", "o": ["Planea los permisos con tiempo según hacia dónde va la empresa", "Espera a que la sede esté construida", "Lo deja a otra área"], "a": 0, "e": "Legal debe ir al mismo rumbo que la empresa, con su propia estrategia legal."},
-      "B": {"q": "Una licencia vence la próxima semana y nadie lo notó. ¿Qué señal de alerta es?", "o": ["Exceso de abogados", "No lograr los objetivos a tiempo por falta de control", "Buen desempeño"], "a": 1, "e": "No lograr objetivos a tiempo es un foco rojo de ineficiencia en la gestión."},
-      "C": {"q": "¿Qué perfil puede ayudar a gestionar las 50 licencias de la empresa?", "o": ["Solo otro abogado", "Nadie, que cada sede vea", "Un perfil de procesos/operaciones (incluso no abogado) con herramientas de seguimiento"], "a": 2, "e": "Tendencia KPMG: la mitad del staff legal no será abogado, por el peso administrativo."}
+      "A": [
+        {
+          "q": "La empresa planea abrir 3 sedes el próximo año. ¿Cuándo debería involucrarse legal con las licencias?",
+          "o": [
+            "Cuando las sedes estén listas para empezar a operar",
+            "Desde la planeación, alineado con el cronograma",
+            "Cuando la autoridad haga la primera inspección"
+          ],
+          "a": 1,
+          "e": "Estrategia legal alineada con el rumbo de la empresa: anticiparse."
+        },
+        {
+          "q": "¿Qué información mínima debe tener el registro de cada licencia?",
+          "o": [
+            "Vencimiento, requisitos de renovación y responsable",
+            "El nombre y el cargo del funcionario que la otorgó",
+            "Una foto del documento colgado en la pared de la sede"
+          ],
+          "a": 0,
+          "e": "Para gestionar la renovación se necesitan fechas, requisitos y responsable."
+        },
+        {
+          "q": "La gerencia propone que cada sede gestione sus licencias sin legal. ¿Cuál es el principal riesgo?",
+          "o": [
+            "Que las sedes tarden más en tramitar sus licencias",
+            "Que legal pierda importancia y poder dentro de la organización",
+            "Criterios distintos y sin visión central de vencimientos"
+          ],
+          "a": 2,
+          "e": "Descentralizar sin reglas ni registro común elimina el control."
+        }
+      ],
+      "B": [
+        {
+          "q": "Se venció una licencia de funcionamiento y sellaron la sede. ¿Cuál es la causa raíz más probable?",
+          "o": [
+            "La autoridad no avisó a tiempo sobre el vencimiento",
+            "No había alertas de vencimiento ni responsable asignado",
+            "El administrador de la sede olvidó hacer la renovación"
+          ],
+          "a": 1,
+          "e": "Depender de que alguien recuerde es el problema: faltaba el sistema."
+        },
+        {
+          "q": "En una inspección piden el soporte de una licencia y nadie lo encuentra. ¿Qué eje falló?",
+          "o": [
+            "Información: los soportes no tenían un lugar definido",
+            "Personal: el encargado no estaba en ese momento",
+            "Recursos: la sede no tenía suficientes archivadores"
+          ],
+          "a": 0,
+          "e": "La información debe estar disponible sin depender de una persona."
+        },
+        {
+          "q": "Renovar un permiso exige un certificado que tarda 30 días. ¿Cómo gestionarlo?",
+          "o": [
+            "Pedirlo cuando falte una semana para el vencimiento",
+            "Que el área técnica lo tenga listo siempre por si acaso",
+            "Calcular hacia atrás y programar la alerta con margen"
+          ],
+          "a": 2,
+          "e": "Planear con los tiempos reales de cada requisito."
+        }
+      ],
+      "C": [
+        {
+          "q": "Legal gestiona 50 licencias en hojas de cálculo distintas. ¿Cuál es el primer paso para mejorar?",
+          "o": [
+            "Comprar un software de gestión de licencias ya mismo",
+            "Unificar en un registro con campos estándar y responsables",
+            "Contratar a alguien que revise todas las hojas cada mes"
+          ],
+          "a": 1,
+          "e": "Primero proceso y datos unificados; la tecnología viene después."
+        },
+        {
+          "q": "¿Qué perfil aporta más a gestionar 50 licencias con vencimientos y trámites?",
+          "o": [
+            "Un perfil de procesos u operaciones, apoyado por legal",
+            "Un abogado litigante con experiencia en tribunales",
+            "Un practicante que rota cada seis meses por el área"
+          ],
+          "a": 0,
+          "e": "Tendencia: la mitad del staff legal no serán abogados; gestionar es otra habilidad."
+        },
+        {
+          "q": "¿Qué indicador muestra que la gestión de licencias mejoró?",
+          "o": [
+            "Número de licencias que tiene la empresa este año",
+            "Cantidad de trámites radicados ante la autoridad",
+            "Renovadas a tiempo frente a vencidas o sancionadas"
+          ],
+          "a": 2,
+          "e": "El cumplimiento a tiempo es el resultado que importa."
+        }
+      ]
     },
     "19": {
-      "A": {"q": "¿Por qué el archivo de expedientes es parte de la gestión legal?", "o": ["Porque todo el trabajo del abogado termina en un documento, y ese documento es un activo", "Porque ocupa espacio", "No lo es"], "a": 0, "e": "Los documentos son el acervo legal de la empresa y responsabilidad del área legal."},
-      "B": {"q": "Piden 'el caso de hace 3 años' y tardan días en encontrarlo. ¿Qué falta?", "o": ["Más archivadores", "Gobernanza: reglas para nombrar, clasificar y guardar documentos", "Más paciencia"], "a": 1, "e": "Un despacho bien gestionado entrega esa información en 5 minutos."},
-      "C": {"q": "Para digitalizar el archivo, ¿cuál es el orden correcto?", "o": ["Comprar software y luego ver", "Escanear todo sin orden", "Entender el proceso, sistematizarlo y luego automatizar"], "a": 2, "e": "Como darle instrucciones exactas a una máquina: primero el proceso, luego la tecnología."}
+      "A": [
+        {
+          "q": "Legal quiere ordenar su archivo de expedientes. ¿Qué se debe definir primero?",
+          "o": [
+            "Reglas de clasificación, nombres y tiempos de conservación",
+            "El proveedor de almacenamiento en la nube más económico",
+            "La cantidad de estantes y cajas que hay que comprar"
+          ],
+          "a": 0,
+          "e": "Primero las reglas (gobernanza); el soporte viene después."
+        },
+        {
+          "q": "¿Por qué el archivo de expedientes es un activo y no solo papeles?",
+          "o": [
+            "Porque ocupa espacio físico y genera costos de almacenamiento",
+            "Porque contiene la historia y el soporte legal de la empresa",
+            "Porque la ley obliga a guardar todo para siempre"
+          ],
+          "a": 1,
+          "e": "Todo el trabajo legal termina en documentos: son el acervo de la empresa."
+        },
+        {
+          "q": "Cada abogado nombra sus archivos a su manera. ¿Cuál es la consecuencia principal?",
+          "o": [
+            "Que el archivo se vea desordenado ante la gerencia",
+            "Que se gaste más en almacenamiento digital",
+            "Que solo su autor pueda encontrarlos con facilidad"
+          ],
+          "a": 2,
+          "e": "Sin nomenclatura común, la información depende de la persona."
+        }
+      ],
+      "B": [
+        {
+          "q": "Piden 'el caso de hace 3 años': el despacho externo lo entrega en 5 minutos y el equipo interno tarda días. ¿Cuál es la diferencia?",
+          "o": [
+            "El despacho externo tiene más personal disponible",
+            "El despacho gestiona su información con reglas y sistema",
+            "El despacho externo cobra un valor extra por responder rápido"
+          ],
+          "a": 1,
+          "e": "La diferencia no es la gente, es la gestión de la información."
+        },
+        {
+          "q": "Un expediente existe en tres versiones distintas en carpetas diferentes. ¿Qué regla falta?",
+          "o": [
+            "Una fuente única de verdad con control de versiones",
+            "Que cada abogado haga sus propias copias de seguridad",
+            "Imprimir la versión final y guardarla en un archivador"
+          ],
+          "a": 0,
+          "e": "Una sola versión oficial evita errores y reprocesos."
+        },
+        {
+          "q": "Sale un abogado del equipo. ¿Qué garantiza que sus expedientes sigan disponibles?",
+          "o": [
+            "Que entregue un informe escrito antes de su último día",
+            "Que deje su computador a sistemas para revisarlo",
+            "Que todo haya estado siempre en el repositorio común"
+          ],
+          "a": 2,
+          "e": "La gestión del conocimiento es diaria, no un trámite de salida."
+        }
+      ],
+      "C": [
+        {
+          "q": "Legal quiere digitalizar el archivo. ¿Cuál es el orden correcto?",
+          "o": [
+            "Escanear todo y después decidir cómo organizarlo",
+            "Definir el proceso, sistematizarlo y luego automatizar",
+            "Comprar el software y adaptar el proceso a la herramienta"
+          ],
+          "a": 1,
+          "e": "Proceso → sistematizar → automatizar."
+        },
+        {
+          "q": "¿Qué indicador muestra que el archivo funciona bien?",
+          "o": [
+            "Tiempo promedio para encontrar un documento pedido",
+            "Número de documentos guardados en el archivo",
+            "Metros de estantería ocupados por el archivo físico"
+          ],
+          "a": 0,
+          "e": "Lo que importa es la disponibilidad de la información."
+        },
+        {
+          "q": "Tras organizar el archivo, ¿cómo evitar que en un año vuelva el desorden?",
+          "o": [
+            "Una jornada general de organización cada diciembre",
+            "Contratar a alguien que lo ordene cada mes",
+            "Aplicar las reglas a cada documento nuevo"
+          ],
+          "a": 2,
+          "e": "La gobernanza se sostiene aplicándola siempre, no con jornadas de limpieza."
+        }
+      ]
     },
     "21": {
-      "A": {"q": "Según las tendencias, ¿qué será la base tecnológica del área legal?", "o": ["Las redes sociales", "Software de gestión de contratos (CLM)", "La máquina de escribir"], "a": 1, "e": "Según KPMG, el software de gestión de contratos será la base tecnológica del área legal."},
-      "B": {"q": "Compraron el software pero nadie lo usa. ¿Cuál fue el error?", "o": ["No hubo diagnóstico ni capacitación, y no se ajustó a sus procesos", "El software era muy barato", "Hay pocos abogados"], "a": 0, "e": "Comprar tecnología es como un carro nuevo: si no sabes manejar o no cabe en el garaje, no sirve."},
-      "C": {"q": "¿Qué conviene aprovechar del software para gestionar mejor?", "o": ["Solo el color de la interfaz", "Imprimir todo", "Los datos que genera: contratos por mes, tiempos y vencimientos"], "a": 2, "e": "Analizar datos será tan importante como leer términos legales."}
+      "A": [
+        {
+          "q": "Legal quiere comprar un software de gestión de contratos. ¿Qué debe hacer antes?",
+          "o": [
+            "Pedir demostraciones a varios proveedores y elegir",
+            "Diagnosticar su proceso, necesidades y cuellos de botella",
+            "Asegurar el presupuesto del próximo año con la gerencia"
+          ],
+          "a": 1,
+          "e": "Diagnóstico antes que tecnología: saber qué problema se quiere resolver."
+        },
+        {
+          "q": "Según las tendencias del sector, ¿qué papel tendrá el software de gestión de contratos?",
+          "o": [
+            "Será la base tecnológica del área legal",
+            "Reemplazará por completo a los abogados",
+            "Solo lo usarán las grandes multinacionales"
+          ],
+          "a": 0,
+          "e": "KPMG: el software de gestión de contratos será la base tecnológica del área legal."
+        },
+        {
+          "q": "El proveedor del software exige cambiar todos los procesos internos para adaptarse a él. ¿Qué riesgo hay?",
+          "o": [
+            "Que el equipo tarde unas semanas en aprender a usarlo",
+            "Que el software resulte más caro de lo presupuestado",
+            "Que la herramienta no responda a las necesidades reales"
+          ],
+          "a": 2,
+          "e": "Cambiar todo por la herramienta y que no sirva es el peor caso: no se ajusta a lo que se necesitaba."
+        }
+      ],
+      "B": [
+        {
+          "q": "Compraron el software hace 6 meses y casi nadie lo usa. ¿Cuál es la causa más probable?",
+          "o": [
+            "El software tiene errores técnicos que nadie reportó",
+            "No hubo diagnóstico, capacitación ni gestión del cambio",
+            "Los abogados del área se resisten a usar tecnología"
+          ],
+          "a": 1,
+          "e": "El carro nuevo: si no sabes manejar o no cabe en el garaje, no sirve."
+        },
+        {
+          "q": "El software ya se usa, pero cada abogado llena los campos a su manera. ¿Qué pasa con los datos?",
+          "o": [
+            "No son comparables y los reportes no sirven para decidir",
+            "Se ven distintos, pero el sistema los corrige solo",
+            "No afecta, porque lo importante es el documento final"
+          ],
+          "a": 0,
+          "e": "Datos sin reglas producen reportes inútiles."
+        },
+        {
+          "q": "¿Quién debería liderar la adopción del software en el área legal?",
+          "o": [
+            "El proveedor del software, que es quien mejor lo conoce",
+            "El área de sistemas, porque es un proyecto puramente tecnológico",
+            "Operaciones legales, uniendo proceso, personas y tecnología"
+          ],
+          "a": 2,
+          "e": "La gestión legal integra personas, procesos y plataformas."
+        }
+      ],
+      "C": [
+        {
+          "q": "¿Qué conviene aprovechar del software para gestionar mejor el área?",
+          "o": [
+            "La posibilidad de guardar los contratos en la nube",
+            "Los datos que genera: tiempos, volúmenes y vencimientos",
+            "El diseño de la interfaz para mostrarlo a la gerencia"
+          ],
+          "a": 1,
+          "e": "Analizar datos será tan importante como leer términos legales."
+        },
+        {
+          "q": "Tras un año con el software, ¿cómo saber si fue una buena inversión?",
+          "o": [
+            "Comparar tiempos, errores y costos antes y después",
+            "Preguntar a los abogados si les gusta la herramienta",
+            "Revisar cuántos contratos se cargaron en el sistema"
+          ],
+          "a": 0,
+          "e": "El retorno se mide con indicadores del proceso."
+        },
+        {
+          "q": "El software permite automatizar las aprobaciones. ¿Cuándo es buena idea hacerlo?",
+          "o": [
+            "Desde el primer día, para aprovechar al máximo la inversión",
+            "Solo cuando la gerencia lo pida de forma expresa",
+            "Cuando las reglas de aprobación sean claras y estables"
+          ],
+          "a": 2,
+          "e": "Solo se automatiza lo que ya está definido."
+        }
+      ]
     },
     "22": {
-      "A": {"q": "¿Qué es un KPI?", "o": ["Un tipo de demanda", "Un indicador que mide el desempeño, por ejemplo casos atendidos al mes", "Un software legal"], "a": 1, "e": "Los KPIs miden el desempeño; el equipo legal será medido con indicadores como el resto de la empresa."},
-      "B": {"q": "El director general, que es ingeniero, no entiende los reportes de legal. ¿Qué hacer?", "o": ["Convertir el reporte en números e indicadores claros", "Hablar más técnico", "No reportar"], "a": 0, "e": "Cuando legal reportó en números, el director dijo: 'por fin entiendo a qué se dedican'."},
-      "C": {"q": "Un área solo hace contratos y no sabe cuántos hace al mes. ¿Qué le pasa?", "o": ["Está muy bien organizada", "Necesita más sillas", "No conoce su carga de trabajo y no puede demostrar su valor"], "a": 2, "e": "Si no mides tu trabajo, no sabes tu carga ni puedes demostrar tu valor."}
+      "A": [
+        {
+          "q": "En el contexto del área legal, ¿qué es un KPI?",
+          "o": [
+            "Un reporte mensual con todo lo que hizo el equipo",
+            "Un indicador que mide el desempeño frente a una meta",
+            "Un software para controlar las horas de los abogados"
+          ],
+          "a": 1,
+          "e": "Un KPI mide el desempeño contra un objetivo."
+        },
+        {
+          "q": "Legal va a crear su primer tablero de indicadores. ¿Qué debe definir primero?",
+          "o": [
+            "Qué decisiones quiere tomar y qué preguntas responder",
+            "Los colores, gráficos y filtros que se verán en el tablero",
+            "El software de visualización que se va a comprar"
+          ],
+          "a": 0,
+          "e": "El tablero sirve para decidir: primero las preguntas, después la herramienta."
+        },
+        {
+          "q": "¿Cuál de estos es un indicador de resultado y no solo de actividad?",
+          "o": [
+            "Número de correos respondidos por el equipo legal",
+            "Cantidad de reuniones con las áreas del negocio",
+            "Solicitudes entregadas dentro del tiempo pactado"
+          ],
+          "a": 2,
+          "e": "Actividad no es resultado; cumplir el tiempo pactado sí lo es."
+        }
+      ],
+      "B": [
+        {
+          "q": "El director general, que es ingeniero, no entiende los reportes de legal. ¿Qué hacer?",
+          "o": [
+            "Explicarle los conceptos jurídicos con más detalle",
+            "Traducir el trabajo a indicadores y números del negocio",
+            "Enviarle reportes más largos y con mucha más información jurídica"
+          ],
+          "a": 1,
+          "e": "Cuando legal reportó en números, el director dijo: 'por fin entiendo a qué se dedican'."
+        },
+        {
+          "q": "Un área legal hace solo contratos y no sabe cuántos hace al mes. ¿Qué no puede hacer?",
+          "o": [
+            "Demostrar su carga de trabajo ni justificar recursos",
+            "Redactar contratos de buena calidad para el negocio",
+            "Atender a sus clientes internos con buena actitud"
+          ],
+          "a": 0,
+          "e": "Sin medir no se conoce la carga ni se puede demostrar valor."
+        },
+        {
+          "q": "Un indicador muestra que el tiempo de respuesta subió de 3 a 7 días. ¿Qué haría un buen gestor?",
+          "o": [
+            "Pedirle al equipo horas extra para bajarlo pronto",
+            "Cambiar la meta del indicador para que se vea mejor",
+            "Analizar qué etapa o tipo de solicitud lo causa"
+          ],
+          "a": 2,
+          "e": "El indicador alerta; el diagnóstico encuentra la causa."
+        }
+      ],
+      "C": [
+        {
+          "q": "Un equipo de 5 abogados convirtió en números todo lo que hacía. ¿Qué descubrió?",
+          "o": [
+            "Que trabajaba bastante menos de lo que creía la gerencia general",
+            "Por qué tenía tanto trabajo y en qué se le iba el tiempo",
+            "Que no necesitaba medir porque ya lo sabía todo"
+          ],
+          "a": 1,
+          "e": "Ver el trabajo en números cambia radicalmente la toma de decisiones."
+        },
+        {
+          "q": "¿Con qué frecuencia conviene revisar los KPIs del área legal?",
+          "o": [
+            "Con una frecuencia fija que permita reaccionar a tiempo",
+            "Solo al final del año, en el informe anual de gestión",
+            "Únicamente cuando la gerencia lo pida o haya problemas"
+          ],
+          "a": 0,
+          "e": "Medir sirve si se revisa a tiempo para actuar."
+        },
+        {
+          "q": "Según las tendencias del sector, ¿cómo será medido el equipo legal?",
+          "o": [
+            "Por la cantidad de casos que logre ganar cada año",
+            "Por la opinión que tengan de él las otras áreas",
+            "Con KPIs estrictos, como se mide la rentabilidad"
+          ],
+          "a": 2,
+          "e": "KPMG: el equipo legal será medido con indicadores como el resto del negocio."
+        }
+      ]
     }
   },
   "generales": {
     "alerta": [
-      {"q": "¿Cuál es una señal de alerta de mala gestión legal?", "o": ["Los clientes internos se quejan del servicio", "Los casos se entregan a tiempo", "El director entiende los reportes"], "a": 0, "e": "La insatisfacción del cliente es el primer foco rojo."},
-      {"q": "Finanzas dice: 'Están gastando mucho, ¿en qué?'. Esto es:", "o": ["Una felicitación", "Presión de recorte: faltan datos que muestren el valor de legal", "Algo sin importancia"], "a": 1, "e": "Los recortes de presupuesto son una señal de alerta; los datos ayudan a defender el presupuesto."},
-      {"q": "Los directivos piden datos de la operación y legal no los tiene. Es:", "o": ["Normal en legal", "Culpa de sistemas", "Un foco rojo de gestión"], "a": 2, "e": "No tener datos cuando te los piden es una señal clara de ineficiencia."},
-      {"q": "Prometes responder en 5 días y solo recibes quejas. ¿Qué haces primero?", "o": ["Diagnosticar dónde se atora el proceso", "Prometer 3 días", "Ignorar las quejas"], "a": 0, "e": "Primero diagnóstico: encontrar la raíz del problema, no atacar la consecuencia."}
+      {
+        "q": "¿Cuál de estas situaciones es una señal de alerta de mala gestión legal?",
+        "o": [
+          "Las áreas empiezan a evitar consultar a legal",
+          "Legal pide más información antes de firmar",
+          "El negocio tiene muchos contratos este mes"
+        ],
+        "a": 0,
+        "e": "Cuando te evitan, eres el 'stopper': la experiencia del servicio legal está fallando."
+      },
+      {
+        "q": "Finanzas pregunta: 'legal gasta mucho, ¿en qué?'. ¿Qué revela esa pregunta?",
+        "o": [
+          "Que legal debe recortar sus gastos de inmediato",
+          "Que finanzas no entiende el trabajo jurídico",
+          "Que legal no tiene datos que muestren su valor"
+        ],
+        "a": 2,
+        "e": "La presión de presupuesto es una señal de alerta; los datos permiten defender el valor del área."
+      },
+      {
+        "q": "El cuerpo directivo pide datos de la operación y legal no los tiene. Esto es...",
+        "o": [
+          "Normal, porque el trabajo legal no se puede medir",
+          "Un foco rojo de gestión que hay que atender ya",
+          "Un problema que le corresponde resolver a sistemas"
+        ],
+        "a": 1,
+        "e": "No tener datos cuando te los piden es una señal clara de ineficiencia."
+      },
+      {
+        "q": "Legal promete responder en 5 días y solo recibe quejas. ¿Qué debe hacer primero?",
+        "o": [
+          "Diagnosticar en qué etapa se atora el proceso",
+          "Prometer 3 días para mejorar la percepción",
+          "Contratar un abogado más para el volumen actual"
+        ],
+        "a": 0,
+        "e": "Primero el diagnóstico: encontrar la raíz, no atacar la consecuencia."
+      },
+      {
+        "q": "Tecnología presiona a legal para que deje de hacer todo a mano. ¿Qué señal es?",
+        "o": [
+          "Que tecnología quiere quitarle funciones a legal",
+          "Que la empresa se transforma y legal se queda atrás",
+          "Que legal debe comprar el primer software que vea"
+        ],
+        "a": 1,
+        "e": "La transformación digital de la empresa presiona a legal a alinearse; no es comprar por comprar."
+      },
+      {
+        "q": "Los objetivos del área legal se cumplen siempre tarde. ¿Qué indica?",
+        "o": [
+          "Que los objetivos estaban mal planteados",
+          "Que el equipo legal no está comprometido con la empresa",
+          "Una ineficiencia de gestión por diagnosticar"
+        ],
+        "a": 2,
+        "e": "No lograr objetivos a tiempo es el primer síntoma de problemas de gestión."
+      },
+      {
+        "q": "Un director de otra área llama a quejarse de un abogado. ¿Cómo debería leerlo un gestor?",
+        "o": [
+          "Como un foco rojo de insatisfacción del cliente interno",
+          "Como un problema personal entre dos personas que no se entienden",
+          "Como una queja menor si el abogado es muy bueno"
+        ],
+        "a": 0,
+        "e": "La insatisfacción del cliente es la primera alerta de mala gestión."
+      },
+      {
+        "q": "Una solicitud a legal se perdió y nadie sabe dónde se pidió. ¿Qué indica?",
+        "o": [
+          "Que el área solicitante no hizo seguimiento",
+          "Que no hay canal único ni registro de solicitudes",
+          "Que legal tiene demasiadas solicitudes a la vez"
+        ],
+        "a": 1,
+        "e": "'Se pidió y nadie lo anotó' es una de las señales que menciona el podcast."
+      }
     ],
     "kpi": [
-      {"q": "Tu jefe pide tu reporte en un WhatsApp de 180 caracteres. ¿Qué debe tener?", "o": ["Una historia larga del caso", "Datos concretos: casos, tiempos y costos", "Muchos emojis"], "a": 1, "e": "La información debe ser concreta y estar lista en el momento en que la piden."},
-      {"q": "Un equipo de 5 abogados pasó a números todo lo que hacía. ¿Qué descubrió?", "o": ["Que trabajaba poco", "Nada útil", "Por qué tenía tanto trabajo: su carga real"], "a": 2, "e": "Ver el trabajo en números cambia radicalmente la toma de decisiones."},
-      {"q": "¿Para qué sirve generar datos en el área legal?", "o": ["Para tomar decisiones y demostrar valor a la empresa", "Para llenar archivos", "Para castigar a los abogados"], "a": 0, "e": "Los datos permiten decidir y mostrar el valor del área legal."},
-      {"q": "¿Cuál es un buen indicador para el área legal?", "o": ["Color de las carpetas", "Tiempo promedio de respuesta a solicitudes", "Número de cafés al día"], "a": 1, "e": "Un buen KPI mide algo que importa al cliente y al negocio."}
+      {
+        "q": "Tu jefe pide tu reporte en un WhatsApp de 180 caracteres. ¿Cuál es el mejor?",
+        "o": [
+          "'32 solicitudes, 28 cerradas, 4 días promedio, 0 vencidas'",
+          "'Semana intensa, el equipo trabajó a toda su capacidad'",
+          "'Adjunto el informe completo con el detalle de cada caso'"
+        ],
+        "a": 0,
+        "e": "Datos concretos, listos en el momento en que los piden."
+      },
+      {
+        "q": "¿Para qué sirve principalmente medir en el área legal?",
+        "o": [
+          "Para controlar las horas de cada abogado",
+          "Para tomar decisiones y demostrar valor",
+          "Para cumplir un requisito de la auditoría"
+        ],
+        "a": 1,
+        "e": "Los datos permiten decidir y mostrar el valor del área a la empresa."
+      },
+      {
+        "q": "¿Cuál es el mejor indicador de servicio al cliente interno?",
+        "o": [
+          "Número de solicitudes recibidas en el mes",
+          "Cantidad de abogados asignados por área",
+          "Cumplimiento del tiempo de respuesta pactado"
+        ],
+        "a": 2,
+        "e": "Lo que el cliente percibe es si se cumplió lo prometido."
+      },
+      {
+        "q": "Un indicador sin meta ni responsable sirve para...",
+        "o": [
+          "Muy poco, porque nadie actúa sobre él",
+          "Mostrarlo en presentaciones a la gerencia",
+          "Controlar el trabajo diario de los abogados"
+        ],
+        "a": 0,
+        "e": "Un indicador es útil cuando hay una meta y alguien que responda por ella."
+      },
+      {
+        "q": "La gerencia ve que legal cerró 500 solicitudes. ¿Qué le falta a ese dato para ser útil?",
+        "o": [
+          "El nombre de los abogados que las cerraron",
+          "Compararlo con la meta y el periodo anterior",
+          "Una gráfica de colores para presentarlo mejor"
+        ],
+        "a": 1,
+        "e": "Un dato sin contexto (meta, tendencia) no permite decidir."
+      },
+      {
+        "q": "Según las tendencias, para un abogado analizar datos será tan importante como...",
+        "o": [
+          "Hablar inglés para trabajar con multinacionales",
+          "Saber programar en varios lenguajes de software",
+          "Leer y entender bien los términos legales"
+        ],
+        "a": 2,
+        "e": "KPMG: analizar datos será tan importante como leer términos legales."
+      },
+      {
+        "q": "Legal usa 'horas trabajadas' como su indicador principal. ¿Cuál es el problema?",
+        "o": [
+          "Mide esfuerzo, no resultado ni valor para el negocio",
+          "Es un dato difícil de calcular para cada abogado",
+          "Las horas casi siempre se reportan de más en los informes"
+        ],
+        "a": 0,
+        "e": "Medir esfuerzo no muestra resultados ni valor."
+      },
+      {
+        "q": "¿Qué convierte un dato en información útil para decidir?",
+        "o": [
+          "Que venga de un software reconocido del mercado",
+          "Que tenga contexto: meta, tendencia y comparación",
+          "Que lo revise el abogado con más experiencia"
+        ],
+        "a": 1,
+        "e": "El contexto convierte el dato en información para decidir."
+      }
     ],
     "info": [
-      {"q": "El licenciado Martínez renunció y nadie sabe dónde quedaron sus casos. ¿Qué lo evitaría?", "o": ["No dejarlo renunciar", "Gestión del conocimiento: información en sistemas compartidos", "Contratar a otro Martínez"], "a": 1, "e": "La información del área no puede quedar en la cabeza o el PC de una persona."},
-      {"q": "¿De quién son los documentos que produce un abogado en la empresa?", "o": ["Del abogado", "De nadie", "De la empresa: son un activo bajo responsabilidad del área legal"], "a": 2, "e": "Los documentos son activos de la empresa."},
-      {"q": "¿Qué significa gobernanza de la información?", "o": ["Reglas para crear, nombrar, guardar y dar acceso a los documentos", "Que el gobierno revise los documentos", "Borrar documentos viejos"], "a": 0, "e": "Sin reglas de gobernanza, nadie encuentra nada."}
+      {
+        "q": "Renunció el abogado Martínez y nadie sabe dónde quedaron sus casos. ¿Qué lo habría evitado?",
+        "o": [
+          "Pedirle un informe de entrega antes de irse",
+          "Retenerlo en la empresa con un buen aumento de salario",
+          "Tener todo en un repositorio común desde siempre"
+        ],
+        "a": 2,
+        "e": "La información no puede vivir en la cabeza o en el PC de una persona."
+      },
+      {
+        "q": "¿De quién son los documentos que produce un abogado de la empresa?",
+        "o": [
+          "De la empresa: son un activo bajo la responsabilidad de legal",
+          "Del abogado que los redactó y los firmó en su momento",
+          "Del área de negocio que le pidió el documento al equipo legal"
+        ],
+        "a": 0,
+        "e": "Los documentos son activos de la empresa."
+      },
+      {
+        "q": "¿Qué es la gobernanza de la información en el área legal?",
+        "o": [
+          "Que la autoridad revise los documentos de la empresa",
+          "Reglas para crear, nombrar, guardar y dar acceso",
+          "Eliminar los documentos viejos cada cierto tiempo"
+        ],
+        "a": 1,
+        "e": "Sin reglas de gobernanza nadie encuentra nada."
+      },
+      {
+        "q": "Dos abogados redactan desde cero el mismo tipo de contrato cada semana. ¿Qué falta?",
+        "o": [
+          "Mejor comunicación entre los dos abogados",
+          "Más tiempo para redactar contratos de calidad",
+          "Modelos y plantillas compartidos por el equipo"
+        ],
+        "a": 2,
+        "e": "Gestión del conocimiento: no reinventar lo que ya existe."
+      },
+      {
+        "q": "¿Cuál es la mejor prueba de que la información está bien gestionada?",
+        "o": [
+          "Cualquier persona autorizada encuentra el documento rápido",
+          "Hay muchas carpetas creadas, nombradas y ordenadas en el servidor",
+          "Cada abogado tiene su propio archivo bien organizado"
+        ],
+        "a": 0,
+        "e": "La prueba es la disponibilidad, no la cantidad de carpetas."
+      },
+      {
+        "q": "Legal guarda contratos en el correo, en carpetas y en papel. ¿Cuál es el mayor riesgo?",
+        "o": [
+          "Gastar mucho más dinero en impresiones, tinta y papel",
+          "No saber cuál es la versión válida ni dónde está",
+          "Que el correo se llene y deje de funcionar"
+        ],
+        "a": 1,
+        "e": "Varias fuentes sin reglas significan no saber cuál es la versión válida."
+      },
+      {
+        "q": "¿Qué significa que el conocimiento dependa de 'fulanito'?",
+        "o": [
+          "Que fulanito es el mejor abogado del área",
+          "Que la empresa valora mucho la experiencia",
+          "Que si fulanito falta, nadie sabe qué pasó"
+        ],
+        "a": 2,
+        "e": "El conocimiento debe quedar en la organización, no en una persona."
+      },
+      {
+        "q": "¿Qué documento ayuda a que un caso cerrado sirva para los siguientes?",
+        "o": [
+          "Lecciones aprendidas: lo que funcionó y lo que no",
+          "El acta de cierre firmada por el gerente del área",
+          "Un correo de agradecimiento al equipo del caso"
+        ],
+        "a": 0,
+        "e": "Las lecciones aprendidas convierten la experiencia en conocimiento."
+      }
     ],
     "autoridad": [
-      {"q": "¿Por qué la autoridad es un 'cliente' del área legal?", "o": ["Porque paga honorarios", "Porque legal debe responderle y cumplir sus requerimientos a tiempo", "No lo es"], "a": 1, "e": "Los 3 clientes de legal: interno, externo/socios y autoridad."},
-      {"q": "La gestión legal tiene 5 ejes. ¿Cuál NO es uno de ellos?", "o": ["Estrategia", "Información", "Publicidad en redes"], "a": 2, "e": "Los 5 ejes son: estrategia, personal, recursos, información y tecnología."},
-      {"q": "¿Qué es Legal Operations (gestión operativa legal)?", "o": ["Administrar el área legal: estrategia, personal, recursos, información y tecnología", "Operaciones quirúrgicas", "Solo litigar"], "a": 0, "e": "Legal Operations es administrar el área legal como una empresa de servicios."}
+      {
+        "q": "¿Cuáles son los tres tipos de clientes del área legal?",
+        "o": [
+          "Gerencia, empleados y proveedores",
+          "Interno, externo/socios y la autoridad",
+          "Jueces, abogados externos y notarios"
+        ],
+        "a": 1,
+        "e": "Legal atiende al cliente interno, al externo/socios y a la autoridad."
+      },
+      {
+        "q": "La gestión legal administra cinco ejes. ¿Cuál NO es uno de ellos?",
+        "o": [
+          "Información",
+          "Estrategia",
+          "Publicidad"
+        ],
+        "a": 2,
+        "e": "Los 5 ejes son estrategia, personal, recursos, información y tecnología."
+      },
+      {
+        "q": "¿Qué es Legal Operations (gestión operativa legal)?",
+        "o": [
+          "Administrar el área legal como un servicio de negocio",
+          "El área que lleva todos los litigios y demandas de la empresa",
+          "Un software para automatizar los contratos"
+        ],
+        "a": 0,
+        "e": "Legal Operations es administrar el área legal como una empresa de servicios."
+      },
+      {
+        "q": "Según las tendencias, ¿qué rol aparece al lado del director jurídico?",
+        "o": [
+          "Un especialista en litigios internacionales",
+          "El director de operaciones legales",
+          "Un asesor externo permanente de la junta"
+        ],
+        "a": 1,
+        "e": "El director de operaciones legales gestiona mientras el jurídico cuida la certeza legal."
+      },
+      {
+        "q": "¿Por qué legal debe tener su propia estrategia, alineada con la empresa?",
+        "o": [
+          "Para tener más presupuesto que las otras áreas",
+          "Para no depender de las decisiones de la gerencia",
+          "Para dar certeza legal al rumbo del negocio"
+        ],
+        "a": 2,
+        "e": "Legal va al mismo rumbo que la empresa, cuidando la certeza legal."
+      },
+      {
+        "q": "Según KPMG, ¿qué proporción del staff legal no serán abogados?",
+        "o": [
+          "La mitad",
+          "Una cuarta parte",
+          "Casi ninguno"
+        ],
+        "a": 0,
+        "e": "La mitad del staff legal no serán abogados, por el peso administrativo."
+      },
+      {
+        "q": "¿Qué significa que 'el trabajo legal quedará incluido en el negocio'?",
+        "o": [
+          "Que legal desaparecerá como área independiente",
+          "Que cada área del negocio trabajará con legal integrado",
+          "Que los gerentes terminarán haciendo el trabajo de los abogados"
+        ],
+        "a": 1,
+        "e": "Cualquier área de negocio tendrá al abogado integrado a su trabajo."
+      },
+      {
+        "q": "¿Qué valora más un cliente interno del área legal?",
+        "o": [
+          "Que el abogado tenga muchos títulos académicos",
+          "Que todas las respuestas sean formales y escritas",
+          "Respuestas útiles, a tiempo y fáciles de aplicar"
+        ],
+        "a": 2,
+        "e": "La experiencia del cliente será el corazón del servicio legal."
+      }
     ]
   }
 }

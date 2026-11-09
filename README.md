@@ -106,13 +106,21 @@ Las reglas completas están en [`docs/Monopolio_Legal_Documentacion.docx`](docs/
 
 ## ✏️ Editar las preguntas
 
-Todas están en [`data/preguntas.json`](data/preguntas.json):
+Hay **140 preguntas** en [`data/preguntas.json`](data/preguntas.json): **3 por cada carta** (A, B y C) de los 12 proyectos y **8 por cada grupo general** (señales de alerta, datos e indicadores, información y conocimiento, clientes y autoridad). Son casos de gestión legal con opciones de largo parecido, para que la correcta no se adivine por ser la más larga. En cada partida salen al azar y no se repiten hasta agotar el grupo.
+
+Cada carta es una lista de preguntas:
 
 ```json
-{ "q": "¿Qué es un KPI?",
-  "o": ["Un tipo de demanda", "Un indicador que mide el desempeño", "Un software legal"],
-  "a": 1,
-  "e": "Los KPIs miden el desempeño del área legal." }
+"22": {
+  "A": [
+    { "q": "En el contexto del área legal, ¿qué es un KPI?",
+      "o": ["Un reporte mensual con todo lo que hizo el equipo",
+            "Un indicador que mide el desempeño frente a una meta",
+            "Un software para controlar las horas de los abogados"],
+      "a": 1,
+      "e": "Un KPI mide el desempeño contra un objetivo." }
+  ]
+}
 ```
 
 `q` pregunta · `o` 3 opciones · `a` índice de la correcta (0, 1 o 2) · `e` explicación. Las opciones se barajan solas. Después de editar: moderador → **↻ Recargar preguntas.json**.

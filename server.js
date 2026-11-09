@@ -234,17 +234,29 @@ function loadQuestions() {
 
   const byId = {};
 
+  const pools = {};
+
+  // Cada carta (A, B o C) puede tener una sola pregunta o una
+  // lista de preguntas. Si es una lista, en cada partida se sacan
+  // al azar sin repetir hasta agotarla.
   for (const [tile, cards] of Object.entries(raw.proyectos)) {
-    for (const [key, question] of Object.entries(cards)) {
-      byId[`p${tile}${key}`] = {
-        ...question,
-        id: `p${tile}${key}`,
-        cat: BOARD[tile].name
-      };
+    for (const [key, value] of Object.entries(cards)) {
+      const list = Array.isArray(value) ? value : [value];
+      const poolId = `p${tile}${key}`;
+
+      pools[poolId] = list.map((question, i) => {
+        const id = list.length === 1 ? poolId : `${poolId}_${i}`;
+
+        byId[id] = {
+          ...question,
+          id,
+          cat: BOARD[tile].name
+        };
+
+        return id;
+      });
     }
   }
-
-  const pools = {};
 
   for (const [cat, list] of Object.entries(raw.generales)) {
     const labels = {
@@ -755,7 +767,7 @@ function resolveTile(game) {
       if (!owner) {
         return makeQuestion(
           game,
-          `p${tile.i}A`,
+          pickGeneral(game, `p${tile.i}A`),
           playerIndex,
           'adquirir',
           { tile: tile.i },
@@ -789,7 +801,7 @@ function resolveTile(game) {
 
       return makeQuestion(
         game,
-        `p${tile.i}B`,
+        pickGeneral(game, `p${tile.i}B`),
         owner.player,
         'ejecutar',
         {
@@ -955,7 +967,7 @@ function onAnswer(game, pending, correct) {
 
       next = makeQuestion(
         game,
-        `p${ctx.tile}C`,
+        pickGeneral(game, `p${ctx.tile}C`),
         ctx.visitor,
         'robo',
         {
@@ -988,7 +1000,7 @@ function onAnswer(game, pending, correct) {
 
       next = makeQuestion(
         game,
-        `p${ctx.tile}C`,
+        pickGeneral(game, `p${ctx.tile}C`),
         ctx.attacker,
         'robo',
         {
@@ -1643,7 +1655,7 @@ function act(team, type, payload = {}) {
 
     game.pending = makeQuestion(
       game,
-      `p${pending.tile}C`,
+      pickGeneral(game, `p${pending.tile}C`),
       game.turn,
       'mejorar',
       { tile: pending.tile },
@@ -1678,7 +1690,7 @@ function act(team, type, payload = {}) {
 
     game.pending = makeQuestion(
       game,
-      `p${tile}B`,
+      pickGeneral(game, `p${tile}B`),
       owner,
       'demanda_owner',
       {
