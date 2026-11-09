@@ -1,213 +1,4402 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#0B1F33">
-<title>Monopolio Legal</title>
-<style>
-  :root { --navy:#0B1F33; --ink:#1d2733; --muted:#6b7785; --bg:#F3F5F8; --card:#fff; --line:#E2E7EE; --ok:#2E9E5B; --bad:#D1495B; --gold:#E0A526; }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin:0; background:var(--bg); color:var(--ink); font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
-  header { background:var(--navy); color:#fff; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:5; }
-  header b { font-size:16px; letter-spacing:.3px; }
-  header .timer { font-variant-numeric: tabular-nums; font-weight:700; background:rgba(255,255,255,.12); padding:4px 10px; border-radius:20px; font-size:14px; }
-  main { padding:12px; max-width:520px; margin:0 auto; }
-  .card { background:var(--card); border-radius:14px; padding:14px; box-shadow:0 1px 3px rgba(0,0,0,.06); margin-bottom:12px; }
-  h2 { margin:0 0 8px; font-size:18px; }
-  p { margin:6px 0; line-height:1.4; }
-  .muted { color:var(--muted); font-size:13px; }
-  button { font:inherit; border:0; border-radius:12px; padding:14px; font-size:16px; font-weight:600; cursor:pointer; width:100%; }
-  button:disabled { opacity:.45; }
-  .primary { background:var(--navy); color:#fff; }
-  .ghost { background:#E9EDF2; color:var(--ink); }
-  .okbtn { background:var(--ok); color:#fff; }
-  .row { display:flex; gap:8px; }
-  .row > * { flex:1; }
-  .teams { display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; }
-  .teams button { padding:16px 0; font-size:20px; background:#fff; border:2px solid var(--line); color:var(--navy); }
-  .teams button.taken { border-color:var(--gold); }
-  .teams small { display:block; font-size:10px; font-weight:500; color:var(--muted); }
-  input { width:100%; font:inherit; font-size:16px; padding:12px; border:1.5px solid var(--line); border-radius:10px; margin-bottom:8px; }
-  .players { display:grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap:6px; }
-  .pl { border-radius:10px; padding:7px 9px; background:#fff; border:2px solid transparent; font-size:13px; }
-  .pl.turn { border-color:var(--navy); box-shadow:0 0 0 2px rgba(11,31,51,.12); }
-  .pl .nm { font-weight:700; display:flex; align-items:center; gap:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .dot { width:10px; height:10px; border-radius:50%; flex:none; display:inline-block; }
-  .pl .mn { font-variant-numeric: tabular-nums; font-weight:600; }
-  .neg { color:var(--bad); }
-  .board { display:grid; grid-template-columns:repeat(7,1fr); grid-template-rows:repeat(7, 1fr); gap:2px; aspect-ratio:1; margin-bottom:12px; }
-  .cell { background:#fff; border-radius:4px; position:relative; font-size:8.5px; line-height:1.05; padding:7px 2px 2px; text-align:center; overflow:hidden; color:#33404d; }
-  .cell.sp { background:#FFF4E5; font-weight:700; padding-top:3px; }
-  .cell .band { position:absolute; left:0; right:0; top:0; height:5px; }
-  .cell .own { position:absolute; bottom:1px; left:2px; right:2px; height:4px; border-radius:2px; }
-  .cell .off { position:absolute; top:6px; right:1px; font-size:7px; }
-  .cell .tok { position:absolute; bottom:6px; left:0; right:0; display:flex; justify-content:center; gap:1px; }
-  .cell .tok i { width:9px; height:9px; border-radius:50%; border:1.5px solid #fff; box-shadow:0 0 0 1px rgba(0,0,0,.25); }
-  .center { grid-column:2/7; grid-row:2/7; display:flex; flex-direction:column; align-items:center; justify-content:center; background:transparent; text-align:center; }
-  .center .dice { font-size:40px; line-height:1; }
-  .center .lg { font-weight:800; color:var(--navy); font-size:15px; letter-spacing:.5px; }
-  .who { display:inline-flex; align-items:center; gap:6px; background:#EEF2F7; padding:6px 10px; border-radius:20px; font-weight:700; font-size:14px; margin-bottom:8px; }
-  .ctx { font-size:13px; color:var(--muted); margin-bottom:6px; }
-  .q { font-size:17px; font-weight:700; margin:6px 0 12px; line-height:1.35; }
-  .opt { display:block; text-align:left; background:#F3F6FA; border:2px solid var(--line); margin-bottom:8px; font-weight:500; font-size:15px; color:var(--ink); }
-  .opt.elim { text-decoration:line-through; opacity:.35; }
-  .opt b { color:var(--navy); margin-right:6px; }
-  .res { text-align:center; font-size:44px; margin:2px 0; }
-  .fb { background:#F3F6FA; border-radius:10px; padding:10px; margin:10px 0; font-size:14px; }
-  .fb.bad { background:#FDECEE; } .fb.good { background:#E8F6EE; }
-  .move { font-size:13px; background:#FFF8E6; border-radius:8px; padding:7px 9px; margin-bottom:8px; }
-  .feed { font-size:12px; color:var(--muted); margin:0; padding-left:16px; }
-  .err { color:var(--bad); font-size:13px; min-height:16px; margin-top:6px; text-align:center; }
-  .rank div { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); }
-  .link { background:none; color:var(--muted); font-size:12px; padding:6px; width:auto; font-weight:500; }
-  .offline { background:var(--bad); color:#fff; text-align:center; font-size:13px; padding:6px; display:none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#10243A">
+  <title>Monopolio Legal</title>
+
+  <style>
+    :root {
+      --navy: #10243A;
+      --navy-2: #183650;
+      --ink: #182638;
+      --muted: #718096;
+      --bg: #F0F3F8;
+      --card: #FFFFFF;
+      --line: #DFE6EF;
+      --green: #20966B;
+      --green-light: #E7F7EF;
+      --red: #D64550;
+      --red-light: #FFF0F1;
+      --gold: #E9B949;
+      --shadow: 0 8px 28px rgba(20, 42, 68, .07);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 5% 0%, #E7EEF8 0, transparent 28%),
+        var(--bg);
+      font-family:
+        Inter, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, .32);
+      outline-offset: 2px;
+    }
+
+    .topbar {
+      min-height: 76px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 13px clamp(16px, 3vw, 42px);
+      color: white;
+      background: linear-gradient(110deg, #10243A, #183650);
+      box-shadow: 0 5px 20px rgba(16, 36, 58, .14);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .14);
+      font-size: 25px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -.45px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: #BDD0E4;
+      font-size: 11px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .header-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .09);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .live-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #69E5A7;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(105, 229, 167, .12);
+    }
+
+    .offline {
+      display: none;
+      padding: 10px;
+      color: #FFFFFF;
+      background: var(--red);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      width: min(100% - 36px, 1640px);
+      margin: 24px auto 42px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .page-heading h2 {
+      margin: 6px 0 0;
+      font-size: clamp(23px, 2.3vw, 32px);
+      letter-spacing: -1px;
+      color: var(--navy);
+    }
+
+    .page-heading p {
+      max-width: 650px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .card {
+      min-width: 0;
+      background: var(--card);
+      border: 1px solid rgba(220, 228, 238, .9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card-pad {
+      padding: 20px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-heading h2,
+    .section-heading h3 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.2px;
+    }
+
+    .section-heading p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 9px;
+      background: #F0F4F8;
+      color: #46566B;
+      font-size: 10px;
+      line-height: 1.2;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      background: var(--green-light);
+      color: #16734D;
+    }
+
+    .badge.gold {
+      background: #FFF5DB;
+      color: #946708;
+    }
+
+    .badge.red {
+      background: var(--red-light);
+      color: #B72B3C;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 46px;
+      padding: 12px 15px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      transition:
+        transform .15s ease,
+        background .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .btn:not(:disabled):active {
+      transform: scale(.985);
+    }
+
+    .btn-primary {
+      color: white;
+      background: var(--navy);
+      box-shadow: 0 5px 12px rgba(16, 36, 58, .13);
+    }
+
+    .btn-primary:not(:disabled):hover {
+      background: #1E3E5A;
+    }
+
+    .btn-green {
+      color: white;
+      background: var(--green);
+    }
+
+    .btn-green:not(:disabled):hover {
+      background: #167952;
+    }
+
+    .btn-secondary {
+      background: #EDF2F7;
+      color: var(--ink);
+    }
+
+    .btn-danger {
+      background: #FFF0F1;
+      color: #B72B3C;
+    }
+
+    .btn-small {
+      min-height: 38px;
+      padding: 8px 11px;
+      font-size: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 9px;
+    }
+
+    .button-row>* {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .err {
+      min-height: 0;
+      margin-top: 9px;
+      color: var(--red);
+      font-size: 12px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* ------------------------------------------------------
+       SELECCIÓN DE EQUIPO
+    ------------------------------------------------------ */
+
+    .team-picker-wrap {
+      max-width: 800px;
+      margin: 45px auto;
+    }
+
+    .team-picker-hero {
+      overflow: hidden;
+      position: relative;
+      padding: clamp(24px, 4vw, 44px);
+      color: white;
+      background: linear-gradient(135deg, #10243A, #215579);
+      border-radius: 24px 24px 0 0;
+    }
+
+    .team-picker-hero::after {
+      content: "⚖";
+      position: absolute;
+      right: 25px;
+      bottom: -38px;
+      color: rgba(255, 255, 255, .08);
+      font-size: 180px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .team-picker-hero h2 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      max-width: 500px;
+      font-size: clamp(27px, 5vw, 39px);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .team-picker-hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      color: #D1DFEC;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .team-picker-content {
+      padding: 24px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .team-option {
+      min-height: 96px;
+      padding: 13px 7px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #FBFCFE;
+      color: var(--navy);
+      transition: .15s ease;
+    }
+
+    .team-option:hover {
+      border-color: #91A8BE;
+      background: #F2F6FA;
+      transform: translateY(-2px);
+    }
+
+    .team-option.taken {
+      border-color: #F0D38F;
+      background: #FFFAEB;
+    }
+
+    .team-number {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .team-state {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* ------------------------------------------------------
+       DISTRIBUCIÓN PRINCIPAL DEL JUEGO EN COMPUTADORA
+
+       Tablero a la izquierda.
+       Información de jugadores y acciones a la derecha.
+    ------------------------------------------------------ */
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(330px, .9fr);
+      align-items: start;
+      gap: 22px;
+    }
+
+    .board-column,
+    .side-column {
+      min-width: 0;
+    }
+
+    .board-card {
+      overflow: hidden;
+      padding: clamp(10px, 1.3vw, 20px);
+      background:
+        radial-gradient(circle at 50% 45%, #E7EFE8 0, #F4F7F4 70%);
+    }
+
+    .board-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 13px;
+      padding: 2px 3px;
+    }
+
+    .board-topline h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .board-topline span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-rows: repeat(7, minmax(0, 1fr));
+      gap: clamp(3px, .45vw, 7px);
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      padding: clamp(4px, .6vw, 9px);
+      border-radius: 20px;
+      background: #DDE7DD;
+      border: 1px solid #CEDCCF;
+      box-shadow:
+        inset 0 0 0 4px rgba(255, 255, 255, .4),
+        0 8px 22px rgba(40, 73, 50, .06);
+    }
+
+    .cell {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding: 5px 3px 22px;
+      border-radius: 9px;
+      background: #FFFFFF;
+      border: 1px solid rgba(28, 54, 74, .09);
+      box-shadow: 0 2px 4px rgba(30, 60, 40, .04);
+      color: var(--ink);
+    }
+
+    .cell.project {
+      background: linear-gradient(180deg, #FFFFFF, #F9FBFC);
+    }
+
+    .cell.sp {
+      background: linear-gradient(180deg, #FFF9E9, #FFF1D4);
+      border-color: #F0DCA9;
+    }
+
+    .cell.inicio {
+      background: linear-gradient(150deg, #173F36, #267B60);
+      color: white;
+      border-color: #27745A;
+    }
+
+    .cell.sancion,
+    .cell.vaya_sancion {
+      background: linear-gradient(150deg, #FFF0F1, #FFDFE2);
+      border-color: #F2C0C5;
+    }
+
+    .cell.demanda {
+      background: linear-gradient(150deg, #FFF4F0, #FFE5DD);
+      border-color: #F4C7B9;
+    }
+
+    .cell.diagnostico,
+    .cell.cafe {
+      background: linear-gradient(150deg, #EBF5FF, #DCEBFD);
+      border-color: #C4DAF5;
+    }
+
+    .cell.recorte {
+      background: linear-gradient(150deg, #F1EDFF, #E6DFFF);
+      border-color: #D2C5F6;
+    }
+
+    .cell .band {
+      width: calc(100% + 2px);
+      flex-shrink: 0;
+      height: clamp(4px, .5vw, 7px);
+      margin: -1px -1px 5px;
+      border-radius: 8px 8px 3px 3px;
+    }
+
+    .tile-icon {
+      flex-shrink: 0;
+      margin: 2px 0 4px;
+      font-size: clamp(12px, 1.2vw, 19px);
+      line-height: 1.15;
+    }
+
+    .tile-title {
+      max-width: 100%;
+      font-size: clamp(7px, .76vw, 12px);
+      line-height: 1.16;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .tile-price {
+      display: block;
+      max-width: 100%;
+      margin-top: 4px;
+      color: #65768A;
+      font-size: clamp(7px, .65vw, 10px);
+      font-weight: 700;
+    }
+
+    .cell.inicio .tile-price,
+    .cell.inicio .tile-title {
+      color: white;
+    }
+
+    .ownership {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      bottom: 3px;
+      height: 4px;
+      border-radius: 4px;
+    }
+
+    .office-mark {
+      position: absolute;
+      top: 6px;
+      right: 4px;
+      padding: 2px 3px;
+      border-radius: 5px;
+      background: #F2E1A6;
+      color: #775812;
+      font-size: clamp(7px, .65vw, 10px);
+      font-weight: 900;
+    }
+
+    .tokens {
+      position: absolute;
+      bottom: 9px;
+      left: 2px;
+      right: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .board-token {
+      display: inline-grid;
+      place-items: center;
+      width: clamp(14px, 1.45vw, 23px);
+      height: clamp(14px, 1.45vw, 23px);
+      flex-shrink: 0;
+      color: white;
+      border: 1.5px solid white;
+      border-radius: 7px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .22);
+      font-size: clamp(8px, .85vw, 14px);
+      line-height: 1;
+    }
+
+    .board-token.round {
+      border-radius: 50%;
+    }
+
+    .board-token.diamond {
+      transform: rotate(45deg) scale(.88);
+      border-radius: 4px;
+    }
+
+    .board-token.diamond span {
+      transform: rotate(-45deg);
+    }
+
+    .board-token.star {
+      clip-path: polygon(50% 0%, 62% 35%, 100% 38%,
+          72% 62%, 82% 100%, 50% 78%,
+          18% 100%, 28% 62%, 0% 38%,
+          38% 35%);
+      border: none;
+      border-radius: 0;
+    }
+
+    .board-center {
+      grid-column: 2 / 7;
+      grid-row: 2 / 7;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 1.5vw, 20px);
+      padding: clamp(10px, 2vw, 30px);
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 0%, #FFFFFF 0, #E8F1E9 78%);
+      box-shadow: inset 0 0 0 1px rgba(54, 100, 65, .05);
+      text-align: center;
+    }
+
+    .center-symbol {
+      display: grid;
+      place-items: center;
+      width: clamp(48px, 6.2vw, 94px);
+      aspect-ratio: 1;
+      border-radius: 24px;
+      color: #FFFFFF;
+      background: linear-gradient(145deg, #173E36, #2A8061);
+      box-shadow: 0 12px 24px rgba(24, 76, 56, .15);
+      font-size: clamp(27px, 3.5vw, 52px);
+    }
+
+    .center-title {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(14px, 1.55vw, 24px);
+      line-height: 1.16;
+      font-weight: 950;
+      letter-spacing: -.5px;
+    }
+
+    .center-subtitle {
+      max-width: 260px;
+      margin: 7px auto 0;
+      color: var(--muted);
+      font-size: clamp(9px, .78vw, 12px);
+      line-height: 1.5;
+    }
+
+    .center-dice {
+      display: grid;
+      place-items: center;
+      width: clamp(40px, 5vw, 72px);
+      aspect-ratio: 1;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid #DCE7DD;
+      box-shadow: 0 5px 12px rgba(25, 55, 39, .08);
+      color: var(--navy);
+      font-size: clamp(27px, 3.2vw, 45px);
+      line-height: 1;
+    }
+
+    .board-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      justify-content: center;
+      padding: 14px 4px 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ------------------------------------------------------
+       PANEL LATERAL Y JUGADORES
+    ------------------------------------------------------ */
+
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .players-card {
+      padding: 18px;
+    }
+
+    .players-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .player-card {
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #FBFCFE;
+      transition: border-color .15s ease;
+    }
+
+    .player-card.turn {
+      border: 1.5px solid #4E86BA;
+      background: linear-gradient(160deg, #F2F8FF, #FFFFFF);
+      box-shadow: 0 0 0 3px rgba(55, 117, 170, .07);
+    }
+
+    .player-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .token-avatar {
+      display: grid;
+      place-items: center;
+      width: 37px;
+      height: 37px;
+      border-radius: 11px;
+      border: 2px solid rgba(255, 255, 255, .95);
+      flex-shrink: 0;
+      color: white;
+      box-shadow: 0 2px 7px rgba(0, 0, 0, .14);
+      font-size: 20px;
+    }
+
+    .token-avatar.round {
+      border-radius: 50%;
+    }
+
+    .token-avatar.diamond {
+      border-radius: 7px;
+      transform: rotate(45deg) scale(.82);
+    }
+
+    .token-avatar.diamond span {
+      transform: rotate(-45deg);
+    }
+
+    .player-heading {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .player-name {
+      display: block;
+      overflow: hidden;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .player-position {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .player-money {
+      margin-top: 13px;
+      font-size: clamp(16px, 1.4vw, 21px);
+      font-weight: 950;
+      letter-spacing: -.5px;
+      color: var(--green);
+      overflow-wrap: anywhere;
+    }
+
+    .player-money.negative {
+      color: var(--red);
+    }
+
+    .player-stats {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      padding-top: 9px;
+      border-top: 1px solid #E9EEF3;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .player-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .player-status {
+      display: block;
+      margin-top: 9px;
+      color: #3875A4;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    /* ------------------------------------------------------
+       PERSONALIZACIÓN DE FICHAS
+    ------------------------------------------------------ */
+
+    .customization-card {
+      padding: 19px;
+      border-top: 4px solid #477BA6;
+    }
+
+    .customization-intro {
+      padding: 11px 12px;
+      border-radius: 11px;
+      background: #F0F6FC;
+      color: #3F5D78;
+      font-size: 12px;
+      line-height: 1.55;
+      margin-bottom: 15px;
+    }
+
+    .custom-player {
+      padding: 13px 0;
+      border-bottom: 1px solid #EBEFF4;
+    }
+
+    .custom-player:last-of-type {
+      border-bottom: 0;
+    }
+
+    .custom-player-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      margin-bottom: 11px;
+    }
+
+    .custom-player-heading strong {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 12px;
+      color: var(--navy);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .custom-number {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      color: #32678F;
+      background: #E7F1FA;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .custom-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+      gap: 10px;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 10px;
+      font-weight: 900;
+      color: #66768A;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .field-select {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      min-height: 41px;
+      padding: 9px 27px 9px 10px;
+      border: 1px solid #DCE4ED;
+      border-radius: 9px;
+      color: var(--ink);
+      background: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .color-options {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .color-choice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      padding: 8px 2px;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      background: #FFFFFF;
+      color: #526278;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .color-choice.selected {
+      border-color: #668EB7;
+      background: #F1F7FC;
+      box-shadow: 0 0 0 2px rgba(76, 124, 169, .1);
+    }
+
+    .color-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .06);
+    }
+
+    .selection-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ------------------------------------------------------
+       TARJETA DE ACCIÓN Y PREGUNTAS
+    ------------------------------------------------------ */
+
+    .action-card {
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .action-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 13px;
+    }
+
+    .action-topline h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -.3px;
+    }
+
+    .who {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: #EDF3F8;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .who .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .action-message {
+      margin: 7px 0 13px;
+      color: #5A6A7D;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .move-message {
+      margin: 0 0 13px;
+      padding: 10px 12px;
+      border: 1px solid #F0DDA7;
+      border-radius: 11px;
+      background: #FFFAEC;
+      color: #765D21;
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .question-title {
+      margin-bottom: 5px;
+      color: #6F7E91;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .question-text {
+      margin: 7px 0 16px;
+      color: var(--navy);
+      font-size: clamp(16px, 1.4vw, 20px);
+      line-height: 1.45;
+      font-weight: 850;
+      letter-spacing: -.25px;
+      overflow-wrap: anywhere;
+    }
+
+    .question-clock {
+      padding: 13px;
+      margin-bottom: 14px;
+      border: 1px solid #E2EAF2;
+      border-radius: 13px;
+      background: #F5F8FC;
+    }
+
+    .question-clock.urgent {
+      border-color: #F0B8BF;
+      background: #FFF3F4;
+    }
+
+    .clock-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #526981;
+    }
+
+    .clock-value {
+      color: #245D87;
+      font-size: 23px;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -.7px;
+    }
+
+    .question-clock.urgent .clock-value {
+      color: var(--red);
+    }
+
+    .timer-track {
+      overflow: hidden;
+      width: 100%;
+      height: 7px;
+      border-radius: 99px;
+      background: #E1E7EF;
+    }
+
+    .timer-track span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #36A77A, #69CC9E);
+      transition: width .2s linear, background .2s linear;
+    }
+
+    .question-clock.urgent .timer-track span {
+      background: linear-gradient(90deg, #ECA6AD, #D64550);
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option-button {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px;
+      border: 1px solid #DDE5EF;
+      border-radius: 12px;
+      background: #FFFFFF;
+      color: #24354A;
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 650;
+      transition: border-color .15s, background .15s;
+    }
+
+    .option-button:not(:disabled):hover {
+      border-color: #8DAEC9;
+      background: #F3F8FC;
+    }
+
+    .option-letter {
+      display: grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      background: #ECF1F6;
+      color: #355875;
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .option-button.eliminated {
+      opacity: .4;
+      text-decoration: line-through;
+    }
+
+    .option-button.eliminated .option-letter {
+      background: #FBE1E4;
+      color: #B72B3C;
+    }
+
+    .feedback {
+      margin: 12px 0;
+      padding: 13px;
+      border-radius: 12px;
+      background: #F1F5F9;
+      color: #35475A;
+      font-size: 12px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+
+    .feedback.good {
+      background: #E9F8EF;
+      color: #1E6947;
+    }
+
+    .feedback.bad {
+      background: #FFF0F1;
+      color: #A72F3B;
+    }
+
+    .result-symbol {
+      margin: 0 0 8px;
+      font-size: 40px;
+      line-height: 1.1;
+    }
+
+    .result-heading {
+      margin: 0;
+      color: var(--navy);
+      font-size: 21px;
+      font-weight: 950;
+      letter-spacing: -.5px;
+    }
+
+    .dice-result {
+      display: inline-grid;
+      place-items: center;
+      width: 53px;
+      height: 53px;
+      margin: 2px 0 8px;
+      border: 1px solid #DCE6EF;
+      border-radius: 13px;
+      background: #F7F9FC;
+      color: var(--navy);
+      font-size: 35px;
+    }
+
+    /* ------------------------------------------------------
+       ÚLTIMOS MOVIMIENTOS
+    ------------------------------------------------------ */
+
+    .feed-card {
+      padding: 18px;
+    }
+
+    .feed-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .feed-item {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #EDF1F5;
+      color: #526278;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .feed-item:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .feed-marker {
+      display: grid;
+      place-items: center;
+      width: 23px;
+      height: 23px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      background: #EEF3F8;
+      color: #466780;
+      font-size: 11px;
+    }
+
+    /* ------------------------------------------------------
+       RANKING FINAL
+    ------------------------------------------------------ */
+
+    .ranking-list {
+      display: grid;
+      gap: 8px;
+      margin: 15px 0;
+    }
+
+    .ranking-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #FAFCFE;
+    }
+
+    .ranking-position {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background: #ECF1F6;
+      color: #355875;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .ranking-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ranking-name {
+      display: block;
+      font-size: 12px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .ranking-sub {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .ranking-money {
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #63758A;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .link-button:hover {
+      background: #F0F3F7;
+    }
+
+    .footer-note {
+      margin: 25px 0 0;
+      color: #8995A5;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    /* ------------------------------------------------------
+       RESPONSIVE
+    ------------------------------------------------------ */
+
+    @media (min-width: 1500px) {
+      .game-layout {
+        grid-template-columns: minmax(0, 1.8fr) minmax(360px, .85fr);
+      }
+    }
+
+    @media (max-width: 1050px) {
+      main {
+        width: min(100% - 24px, 850px);
+        margin-top: 16px;
+      }
+
+      .game-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .side-column {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+      }
+
+      .players-card {
+        grid-column: 1 / -1;
+      }
+
+      .feed-card {
+        grid-column: 1 / -1;
+      }
+
+      .tile-title {
+        font-size: clamp(8px, 1.15vw, 12px);
+      }
+
+      .tile-price {
+        font-size: clamp(7px, .95vw, 10px);
+      }
+
+      .tile-icon {
+        font-size: clamp(12px, 1.6vw, 18px);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar {
+        min-height: 66px;
+        padding: 10px 13px;
+        gap: 8px;
+      }
+
+      .brand {
+        gap: 8px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        font-size: 21px;
+      }
+
+      .brand h1 {
+        font-size: 15px;
+      }
+
+      .brand p {
+        font-size: 9px;
+        letter-spacing: .7px;
+      }
+
+      .header-pill {
+        min-height: 34px;
+        padding: 7px 9px;
+        font-size: 10px;
+      }
+
+      .topbar-right {
+        gap: 5px;
+      }
+
+      main {
+        width: calc(100% - 16px);
+        margin: 12px auto 25px;
+      }
+
+      .page-heading {
+        margin-bottom: 13px;
+      }
+
+      .page-heading h2 {
+        font-size: 23px;
+      }
+
+      .page-heading p {
+        font-size: 12px;
+      }
+
+      .game-layout {
+        gap: 11px;
+      }
+
+      .board-card {
+        padding: 7px;
+        border-radius: 13px;
+      }
+
+      .board-topline {
+        margin-bottom: 7px;
+      }
+
+      .board-topline h2 {
+        font-size: 13px;
+      }
+
+      .board {
+        gap: 3px;
+        padding: 4px;
+        border-radius: 12px;
+      }
+
+      .cell {
+        border-radius: 5px;
+        padding: 4px 1px 17px;
+      }
+
+      .cell .band {
+        height: 4px;
+        margin-bottom: 3px;
+      }
+
+      .tile-title {
+        font-size: clamp(6px, 1.75vw, 10px);
+        line-height: 1.08;
+      }
+
+      .tile-price {
+        margin-top: 2px;
+        font-size: clamp(6px, 1.4vw, 8px);
+      }
+
+      .tile-icon {
+        margin: 1px 0 3px;
+        font-size: clamp(9px, 2.4vw, 13px);
+      }
+
+      .tokens {
+        bottom: 7px;
+        gap: 1px;
+      }
+
+      .ownership {
+        bottom: 2px;
+        height: 3px;
+      }
+
+      .board-token {
+        width: clamp(10px, 2.9vw, 15px);
+        height: clamp(10px, 2.9vw, 15px);
+        font-size: clamp(6px, 1.8vw, 9px);
+        border-width: 1px;
+        border-radius: 4px;
+      }
+
+      .board-center {
+        padding: 7px;
+        gap: 6px;
+        border-radius: 10px;
+      }
+
+      .center-symbol {
+        width: clamp(32px, 9vw, 47px);
+        border-radius: 11px;
+        font-size: clamp(19px, 5.5vw, 29px);
+      }
+
+      .center-title {
+        font-size: clamp(10px, 2.9vw, 16px);
+      }
+
+      .center-subtitle {
+        margin-top: 4px;
+        font-size: clamp(7px, 1.8vw, 10px);
+      }
+
+      .center-dice {
+        width: clamp(28px, 7vw, 38px);
+        border-radius: 8px;
+        font-size: clamp(18px, 5vw, 27px);
+      }
+
+      .board-legend {
+        gap: 6px 10px;
+        padding-top: 9px;
+        font-size: 9px;
+      }
+
+      .side-column {
+        display: flex;
+        gap: 11px;
+      }
+
+      .players-card,
+      .action-card,
+      .feed-card,
+      .customization-card {
+        padding: 13px;
+        border-radius: 13px;
+      }
+
+      .players-grid {
+        gap: 7px;
+      }
+
+      .player-card {
+        padding: 9px;
+        border-radius: 11px;
+      }
+
+      .token-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      .player-name {
+        font-size: 11px;
+      }
+
+      .player-position {
+        font-size: 9px;
+      }
+
+      .player-money {
+        margin-top: 10px;
+        font-size: 15px;
+      }
+
+      .player-stats {
+        gap: 5px;
+        font-size: 9px;
+      }
+
+      .section-heading {
+        margin-bottom: 12px;
+      }
+
+      .section-heading h2,
+      .section-heading h3 {
+        font-size: 14px;
+      }
+
+      .custom-controls {
+        gap: 7px;
+      }
+
+      .field-select {
+        padding-left: 7px;
+        font-size: 10px;
+      }
+
+      .question-text {
+        font-size: 16px;
+      }
+
+      .team-picker-wrap {
+        margin: 22px auto;
+      }
+
+      .team-picker-hero {
+        padding: 24px 18px;
+        border-radius: 18px 18px 0 0;
+      }
+
+      .team-picker-content {
+        padding: 15px;
+      }
+
+      .team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .team-option {
+        min-height: 75px;
+      }
+
+      .team-number {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 370px) {
+      .brand p {
+        display: none;
+      }
+
+      .header-pill {
+        padding: 6px 7px;
+        font-size: 9px;
+      }
+
+      .players-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .custom-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .cell {
+        padding-bottom: 14px;
+      }
+
+      .board-token {
+        width: 9px;
+        height: 9px;
+        font-size: 6px;
+      }
+    }
+
+    /* ==========================================
+   AJUSTES VISUALES: TABLERO Y JUGADORES
+   ========================================== */
+
+    /* Distribución horizontal para computadora */
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(330px, 0.9fr);
+      align-items: start;
+      gap: 18px;
+    }
+
+    .board-column {
+      width: 100%;
+      max-width: 760px;
+      min-width: 0;
+      margin-inline: auto;
+    }
+
+    .board-card {
+      width: 100%;
+      max-width: 760px;
+      margin-inline: auto;
+      padding: 12px;
+    }
+
+    /* Tablero más pequeño y centrado */
+    .board {
+      width: 100%;
+      max-width: 720px;
+      margin-inline: auto;
+      gap: 5px;
+      padding: 7px;
+      border-radius: 16px;
+      background: #DCE6DD;
+    }
+
+    /* Base para las casillas */
+    .cell {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 7px;
+      color: #FFFFFF;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 2px 4px rgba(13, 30, 45, 0.10);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Elimina las franjas superiores: el color ocupa
+   toda la casilla y permite reconocer cada categoría. */
+    .cell .band {
+      display: none !important;
+    }
+
+    /* CONTRATOS: verde */
+    .cell.project.area-contratos {
+      background: linear-gradient(145deg, #238B57, #17663D);
+      border-color: #145A36;
+      color: #FFFFFF;
+    }
+
+    /* LITIGIOS: rojo intenso */
+    .cell.project.area-litigios {
+      background: linear-gradient(145deg, #CB394C, #982638);
+      border-color: #8B2031;
+      color: #FFFFFF;
+    }
+
+    /* CUMPLIMIENTO: azul */
+    .cell.project.area-cumplimiento {
+      background: linear-gradient(145deg, #326AC1, #1B4389);
+      border-color: #183D7C;
+      color: #FFFFFF;
+    }
+
+    /* INFORMACIÓN Y TECNOLOGÍA: dorado oscuro */
+    .cell.project.area-infotec {
+      background: linear-gradient(145deg, #B77B12, #805000);
+      border-color: #754800;
+      color: #FFFFFF;
+    }
+
+    /* Casillas especiales: colores fuertes y diferenciados */
+    .cell.sp.inicio {
+      background: linear-gradient(145deg, #147653, #084D37);
+      border-color: #063E2C;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.evento {
+      background: linear-gradient(145deg, #7950B7, #4D2B80);
+      border-color: #44246F;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.demanda {
+      background: linear-gradient(145deg, #D75A2C, #983515);
+      border-color: #852C11;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.sancion {
+      background: linear-gradient(145deg, #B7354B, #762033);
+      border-color: #691A2C;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.vaya_sancion {
+      background: linear-gradient(145deg, #96233A, #581526);
+      border-color: #4C1121;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.diagnostico {
+      background: linear-gradient(145deg, #138B9A, #075C6A);
+      border-color: #064E5B;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.cafe {
+      background: linear-gradient(145deg, #A76A2C, #704018);
+      border-color: #623715;
+      color: #FFFFFF;
+    }
+
+    .cell.sp.recorte {
+      background: linear-gradient(145deg, #66788C, #394959);
+      border-color: #303E4C;
+      color: #FFFFFF;
+    }
+
+    /* Tipografía de las casillas */
+    .cell .tile-icon {
+      margin-top: 3px;
+      margin-bottom: 5px;
+      font-size: clamp(12px, 1.05vw, 18px);
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+    }
+
+    .cell .tile-title {
+      color: #FFFFFF;
+      font-size: clamp(7px, 0.7vw, 11px);
+      line-height: 1.15;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .cell .tile-price {
+      color: #FFFFFF;
+      font-size: clamp(7px, 0.62vw, 10px);
+      font-weight: 850;
+      margin-top: 4px;
+    }
+
+    /* Propietario visible sin perder el color del área */
+    .cell .ownership {
+      height: 5px;
+      left: 6%;
+      right: 6%;
+      bottom: 2px;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Oficinas claramente identificables */
+    .cell .office-mark {
+      color: #FFFFFF;
+      background: rgba(15, 25, 38, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      font-size: 7px;
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    /* Los jugadores no deben tapar las etiquetas de propiedad */
+    .cell .tokens {
+      bottom: 9px;
+      gap: 2px;
+      z-index: 3;
+    }
+
+    .cell .board-token {
+      border: 1.5px solid #FFFFFF;
+      box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.30),
+        0 0 0 1px rgba(0, 0, 0, 0.10);
+    }
+
+    /* Centro del tablero */
+    .board-center {
+      background: radial-gradient(circle at 50% 0%, #FFFFFF, #E4EEE5);
+      border: 1px solid #FFFFFF;
+    }
+
+    .center-title {
+      color: #10243A;
+    }
+
+    .center-subtitle {
+      color: #53677B;
+    }
+
+    /* ==========================================
+   JUGADORES: PANEL MÁS COMPACTO
+   ========================================== */
+
+    .players-card {
+      padding: 13px;
+    }
+
+    .players-card .section-heading {
+      margin-bottom: 10px;
+    }
+
+    .players-card .section-heading p {
+      margin-top: 3px;
+      font-size: 10px;
+    }
+
+    .players-grid {
+      gap: 7px;
+    }
+
+    .player-card {
+      padding: 9px;
+      border-radius: 11px;
+    }
+
+    .player-top {
+      gap: 7px;
+    }
+
+    .token-avatar {
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      border-radius: 9px;
+    }
+
+    .player-name {
+      font-size: 11px;
+    }
+
+    .player-position {
+      margin-top: 3px;
+      font-size: 9px;
+    }
+
+    .player-money {
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .player-stats {
+      gap: 6px;
+      margin-top: 6px;
+      padding-top: 6px;
+      font-size: 9px;
+    }
+
+    .player-status {
+      margin-top: 5px;
+      font-size: 9px;
+    }
+
+    /* Menos espacio entre los paneles laterales */
+    .side-column {
+      gap: 12px;
+    }
+
+    /* Opciones ya utilizadas */
+    .color-choice:disabled {
+      cursor: not-allowed;
+      opacity: 0.35;
+      filter: grayscale(0.65);
+      background: #EEF1F5;
+    }
+
+    .color-choice.taken {
+      border-color: #D9E0E8;
+    }
+
+    /* ==========================================
+   ADAPTACIÓN A TABLETS Y MÓVILES
+   ========================================== */
+
+    @media (max-width: 1050px) {
+      .game-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      .board-column,
+      .board-card {
+        max-width: 720px;
+      }
+
+      .side-column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .board-card {
+        padding: 7px;
+      }
+
+      .board {
+        max-width: 100%;
+        gap: 3px;
+        padding: 4px;
+      }
+
+      .cell .tile-title {
+        font-size: clamp(6px, 1.65vw, 9px);
+      }
+
+      .cell .tile-price {
+        font-size: clamp(6px, 1.4vw, 8px);
+      }
+
+      .cell .tile-icon {
+        font-size: clamp(9px, 2.3vw, 13px);
+      }
+
+      .players-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* ===== TABLERO COMPACTO Y DISTRIBUCIÓN ===== */
+
+    main {
+      width: min(calc(100% - 32px), 1420px);
+    }
+
+    .game-layout {
+      grid-template-columns: minmax(0, 1.15fr) minmax(350px, 0.85fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .board-column,
+    .board-card {
+      width: 100%;
+      max-width: 700px;
+      min-width: 0;
+      margin-inline: auto;
+    }
+
+    .board-card {
+      padding: 12px;
+    }
+
+    .board {
+      width: 100%;
+      max-width: 680px;
+      margin-inline: auto;
+      padding: 6px;
+      gap: 4px;
+      border-radius: 15px;
+    }
+
+    /* ===== CASILLAS: COLOR EN TODA LA SUPERFICIE ===== */
+
+    .cell {
+      border: 1px solid rgba(255, 255, 255, 0.30);
+      border-radius: 7px;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .cell .band {
+      display: none !important;
+    }
+
+    /* Contratos */
+    .cell.project.area-contratos {
+      background: linear-gradient(145deg, #26965D, #125B38);
+      border-color: #104C30;
+    }
+
+    /* Litigios */
+    .cell.project.area-litigios {
+      background: linear-gradient(145deg, #D84254, #8F1F32);
+      border-color: #791B2B;
+    }
+
+    /* Cumplimiento */
+    .cell.project.area-cumplimiento {
+      background: linear-gradient(145deg, #397CE0, #193C8C);
+      border-color: #143372;
+    }
+
+    /* Información y tecnología */
+    .cell.project.area-infotec {
+      background: linear-gradient(145deg, #D89A24, #8D5807);
+      border-color: #704500;
+    }
+
+    /* Casillas especiales */
+    .cell.sp.inicio {
+      background: linear-gradient(145deg, #147653, #07462F);
+    }
+
+    .cell.sp.evento {
+      background: linear-gradient(145deg, #8552C7, #4A2878);
+    }
+
+    .cell.sp.demanda {
+      background: linear-gradient(145deg, #E26935, #963515);
+    }
+
+    .cell.sp.sancion {
+      background: linear-gradient(145deg, #BF354B, #711C30);
+    }
+
+    .cell.sp.vaya_sancion {
+      background: linear-gradient(145deg, #9D2440, #551528);
+    }
+
+    .cell.sp.diagnostico {
+      background: linear-gradient(145deg, #1598A6, #075663);
+    }
+
+    .cell.sp.cafe {
+      background: linear-gradient(145deg, #AE7138, #704019);
+    }
+
+    .cell.sp.recorte {
+      background: linear-gradient(145deg, #74879B, #364655);
+    }
+
+    /* Texto de las casillas */
+    .cell .tile-title,
+    .cell .tile-price {
+      color: #FFFFFF;
+      font-weight: 850;
+    }
+
+    .cell .tile-title {
+      font-size: clamp(7px, 0.70vw, 11px);
+      line-height: 1.13;
+    }
+
+    .cell .tile-price {
+      font-size: clamp(7px, 0.62vw, 10px);
+      margin-top: 3px;
+    }
+
+    .cell .tile-icon {
+      font-size: clamp(12px, 1.05vw, 17px);
+    }
+
+    /* Identificación del propietario */
+    .cell .ownership {
+      height: 5px;
+      bottom: 2px;
+      border: 1px solid white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.30);
+    }
+
+    .cell .office-mark {
+      z-index: 4;
+      color: white;
+      background: rgba(10, 20, 32, 0.85);
+    }
+
+    .cell .tokens {
+      z-index: 5;
+      bottom: 9px;
+    }
+
+    /* ===== CENTRO DEL TABLERO Y DADO ANIMADO ===== */
+
+    .center-roll-info {
+      max-width: 240px;
+      color: #35556D;
+      font-size: 11px;
+      font-weight: 850;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .center-dice.rolling {
+      animation: dice-tumble 0.16s linear infinite;
+      background: linear-gradient(145deg, #FFFFFF, #DDE9F5);
+      border: 2px solid #6596BE;
+      box-shadow: 0 8px 22px rgba(35, 75, 110, 0.22);
+    }
+
+    @keyframes dice-tumble {
+      0% {
+        transform: rotate(-12deg) scale(0.92);
+      }
+
+      25% {
+        transform: rotate(12deg) scale(1.08);
+      }
+
+      50% {
+        transform: rotate(-9deg) scale(0.97);
+      }
+
+      75% {
+        transform: rotate(9deg) scale(1.06);
+      }
+
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+    }
+
+    /* ===== PARTICIPANTES MÁS COMPACTOS ===== */
+
+    .players-card {
+      padding: 12px;
+    }
+
+    .players-card .section-heading {
+      margin-bottom: 9px;
+    }
+
+    .players-grid {
+      gap: 7px;
+    }
+
+    .player-card {
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    .token-avatar {
+      width: 29px;
+      height: 29px;
+      font-size: 15px;
+    }
+
+    .player-name {
+      font-size: 11px;
+    }
+
+    .player-position {
+      font-size: 9px;
+      margin-top: 2px;
+    }
+
+    .player-money {
+      margin-top: 7px;
+      font-size: 15px;
+    }
+
+    .player-stats {
+      margin-top: 5px;
+      padding-top: 5px;
+      gap: 5px;
+      font-size: 9px;
+    }
+
+    .player-status {
+      margin-top: 4px;
+      font-size: 9px;
+    }
+
+    /* Preguntas y acciones antes de participantes */
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    /* Tabletas y móviles */
+    @media (max-width: 1050px) {
+      .game-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .board-column,
+      .board-card {
+        max-width: 680px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .board-card {
+        padding: 6px;
+      }
+
+      .board {
+        max-width: 100%;
+        gap: 3px;
+        padding: 4px;
+      }
+
+      .cell .tile-title {
+        font-size: clamp(6px, 1.65vw, 9px);
+      }
+
+      .cell .tile-price {
+        font-size: clamp(6px, 1.4vw, 8px);
+      }
+
+      .players-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* ===== PALETA PASTEL PARA LAS CASILLAS ===== */
+
+    .cell {
+      color: #253247;
+      text-shadow: none;
+      border: 1px solid rgba(48, 65, 85, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+
+    /* Proyectos por área */
+    .cell.project.area-contratos {
+      background: linear-gradient(145deg, #C8E8D3, #A9D8BB);
+      border-color: #A3CEB2;
+    }
+
+    .cell.project.area-litigios {
+      background: linear-gradient(145deg, #F5CDD2, #EFB4BE);
+      border-color: #E4A9B3;
+    }
+
+    .cell.project.area-cumplimiento {
+      background: linear-gradient(145deg, #C9DDF8, #AFCBF0);
+      border-color: #A6C2E7;
+    }
+
+    .cell.project.area-infotec {
+      background: linear-gradient(145deg, #F6E3B7, #EED39A);
+      border-color: #E3CB91;
+    }
+
+    /* Casillas especiales */
+    .cell.sp.inicio {
+      background: #B8E3D0;
+    }
+
+    .cell.sp.evento {
+      background: #DED0F3;
+    }
+
+    .cell.sp.demanda {
+      background: #F5D0B8;
+    }
+
+    .cell.sp.sancion,
+    .cell.sp.vaya_sancion {
+      background: #F1C3CA;
+    }
+
+    .cell.sp.diagnostico {
+      background: #BDE7E9;
+    }
+
+    .cell.sp.cafe {
+      background: #EAD5C1;
+    }
+
+    .cell.sp.recorte {
+      background: #D7DFE8;
+    }
+
+    /* Textos legibles */
+    .cell .tile-title,
+    .cell .tile-price,
+    .cell .tile-icon {
+      color: #253247;
+      text-shadow: none;
+      font-weight: 800;
+    }
+
+    /* Las fichas siguen destacándose sobre las casillas */
+    .cell .tokens i {
+      border: 2px solid white;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    /* ===== CASITAS SOBRE LAS PROPIEDADES ===== */
+
+    .cell .houses {
+      position: absolute;
+      z-index: 6;
+      top: 5px;
+      right: 3px;
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 2px;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+
+    .cell .house {
+      position: relative;
+      display: inline-block;
+      width: 11px;
+      height: 9px;
+      margin-top: 5px;
+      border: 1px solid #17613A;
+      border-radius: 1px;
+      background: linear-gradient(135deg, #65CB78, #26944B);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+
+    .cell .house::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      left: 0.5px;
+      top: -5px;
+      background: #258C46;
+      border-top: 1px solid #17613A;
+      border-left: 1px solid #17613A;
+      transform: rotate(45deg);
+      border-radius: 1px;
+    }
+
+    .cell .house::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      bottom: 0;
+      left: 4px;
+      width: 3px;
+      height: 5px;
+      background: #E8F5E9;
+      border-radius: 1px 1px 0 0;
+    }
+
+    .cell .houses.blindada .house {
+      background: linear-gradient(135deg, #D5B7F5, #9870D1);
+      border-color: #68449A;
+    }
+
+    .cell .houses.blindada .house::before {
+      background: #8960C2;
+      border-color: #68449A;
+    }
+
+    .cell .houses.blindada .house::after {
+      background: #F4EFFF;
+    }
+  </style>
 </head>
+
 <body>
-<header><b>🎲 Monopolio Legal</b><span id="hdr" class="timer"></span></header>
-<div class="offline" id="offline">Sin conexión con el servidor… reconectando</div>
-<main id="app"><div class="card">Conectando…</div></main>
-<script src="/socket.io/socket.io.js"></script>
-<script>
-const $ = (s) => document.querySelector(s);
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
-const money = (n) => (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString('es-CO');
-const DICE = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
-let shownSetup = null, S = null, team = null, offset = 0, busy = false, err = '';
-try { team = Number(localStorage.getItem('ml_team')) || null; } catch (e) {}
 
-const sock = io({ transports: ['websocket', 'polling'] });
-sock.on('connect', () => { $('#offline').style.display = 'none'; if (team) sock.emit('join', { team }); });
-sock.on('disconnect', () => { $('#offline').style.display = 'block'; });
-sock.on('state', (s) => { S = s; offset = s.now - Date.now(); busy = false; render(); });
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">⚖</div>
+      <div>
+        <h1>Monopolio Legal</h1>
+        <p>Gestión Legal · Equipo 4</p>
+      </div>
+    </div>
 
-function pickTeam(t) { team = t; try { localStorage.setItem('ml_team', t); } catch (e) {} sock.emit('join', { team }); }
-function leaveTeam() { if (!confirm('¿Cambiar de equipo en este celular?')) return; team = null; try { localStorage.removeItem('ml_team'); } catch (e) {} render(); }
-function action(type, payload) {
-  if (busy) return; busy = true; err = ''; render();
-  sock.emit('action', { team, type, payload }, (r) => { if (r && r.error) { busy = false; err = r.error; render(); } });
-  setTimeout(() => { if (busy) { busy = false; render(); } }, 4000);
-}
-function setup(e) {
-  e.preventDefault();
-  const names = [...document.querySelectorAll('.nm-in')].map((i) => i.value.trim()).filter(Boolean);
-  sock.emit('setup', { team, names }, (r) => { if (r && r.error) { err = r.error; render(); } });
-}
+    <div class="topbar-right">
+      <div class="header-pill" id="teamBadge">
+        <span class="live-dot"></span>
+        <span id="teamHeader">Sala de juego</span>
+      </div>
 
-function timerText() {
-  if (!S) return '';
-  if (S.status === 'lobby') return 'Esperando inicio';
-  if (S.status === 'paused') return '⏸ Pausa';
-  if (S.status === 'ended') return 'Fin del juego';
-  if (!S.endsAt) return 'En juego';
-  const ms = Math.max(0, S.endsAt - (Date.now() + offset));
-  const m = Math.floor(ms / 60000), s = Math.floor((ms % 60000) / 1000);
-  return `⏱ ${m}:${String(s).padStart(2, '0')}`;
-}
-setInterval(() => { $('#hdr').textContent = (team ? `Equipo ${team} · ` : '') + timerText(); }, 500);
+      <div class="header-pill" title="Tiempo restante de la partida">
+        <span>◷</span>
+        <span id="hdr">Conectando...</span>
+      </div>
+    </div>
+  </header>
 
-const POS = (() => { const p = {}; for (let i = 0; i < 7; i++) p[i] = [0, i]; for (let i = 7; i < 13; i++) p[i] = [i - 6, 6]; for (let i = 13; i < 19; i++) p[i] = [6, 18 - i]; for (let i = 19; i < 24; i++) p[i] = [24 - i, 0]; return p; })();
-function boardHtml(g) {
-  let h = '<div class="board">';
-  S.board.forEach((t, i) => {
-    const [r, c] = POS[i], o = g.owners[i];
-    const toks = g.players.map((p) => (p.pos === i ? `<i style="background:${p.color}"></i>` : '')).join('');
-    h += `<div class="cell ${t.type === 'proyecto' ? '' : 'sp'}" style="grid-row:${r + 1};grid-column:${c + 1}">`
-      + (t.type === 'proyecto' ? `<div class="band" style="background:${S.areas[t.area].color}"></div>` : '')
-      + esc(t.short)
-      + (o ? `<div class="own" style="background:${g.players[o.player].color}"></div>` : '')
-      + (o && o.offices ? `<span class="off">${o.offices === 2 ? '🛡️' : '🏢'}</span>` : '')
-      + `<div class="tok">${toks}</div></div>`;
-  });
-  h += `<div class="center">${g.dice ? `<div class="dice">${DICE[g.dice]}</div>` : ''}<div class="lg">MONOPOLIO<br>LEGAL</div></div></div>`;
-  return h;
-}
-function playersHtml(g) {
-  return '<div class="players" style="margin-bottom:10px">' + g.players.map((p, i) => `
-    <div class="pl ${i === g.turn && g.phase !== 'ended' ? 'turn' : ''}">
-      <div class="nm"><span class="dot" style="background:${p.color}"></span>${esc(p.name)}${p.jailed ? ' 🚨' : ''}</div>
-      <div class="mn ${p.money < 0 ? 'neg' : ''}">${money(p.money)}</div>
-      <div class="muted">✅ ${p.correct} · ❌ ${p.wrong}${p.pistas ? ` · 💡${p.pistas}` : ''}</div>
-    </div>`).join('') + '</div>';
-}
-function whoTag(g, i, label) { const p = g.players[i]; return `<div class="who"><span class="dot" style="background:${p.color}"></span>${label} ${esc(p.name)}</div>`; }
+  <div class="offline" id="offline">
+    Sin conexión con el servidor. Intentando reconectar...
+  </div>
 
-function actionHtml(g) {
-  const p = g.players[g.turn], pd = g.pending, dis = busy ? 'disabled' : '';
-  if (g.phase === 'ended' || S.status === 'ended') {
-    const r = g.players.map((x) => x).sort((a, b) => b.patrimonio - a.patrimonio);
-    return `<div class="card"><h2>🏆 Fin de la partida</h2><div class="rank">${r.map((x, i) => `<div><span>${['🥇','🥈','🥉','4.'][i]} <span class="dot" style="background:${x.color}"></span> ${esc(x.name)}</span><b>${money(x.patrimonio)}</b></div>`).join('')}</div>
-      <p class="muted">Patrimonio = dinero + valor de proyectos + $100 por oficina.</p></div>`;
-  }
-  if (S.status === 'paused') return `<div class="card"><h2>⏸ Juego en pausa</h2><p>El moderador pausó el juego. Esperen un momento.</p></div>`;
-  if (S.status === 'lobby') return `<div class="card"><h2>Listos ✅</h2><p>La partida del equipo ${team} está creada. Esperen a que el moderador inicie el juego.</p></div>`;
-  if (g.phase === 'roll') {
-    return `<div class="card">${whoTag(g, g.turn, 'Turno de')}
-      ${p.jailed ? '<p>Estás en <b>Sanción</b> 🚨. Responde una pregunta para salir.</p>' : '<p>Tira el dado para avanzar por el tablero.</p>'}
-      <button class="primary" ${dis} onclick="action('roll')">${p.jailed ? '🚨 Responder para salir' : '🎲 Tirar dado'}</button></div>`;
-  }
-  if (!pd) return '';
-  const move = pd.moveText ? `<div class="move">${esc(pd.moveText)}</div>` : '';
-  if (pd.kind === 'question') {
-    const w = g.players[pd.who];
-    return `<div class="card">${move}${whoTag(g, pd.who, 'Responde:')}
-      <div class="ctx">${esc(pd.title)}</div><div class="q">${esc(pd.text)}</div>
-      ${pd.options.map((o, i) => `<button class="opt ${pd.eliminated.includes(i) ? 'elim' : ''}" ${dis || pd.eliminated.includes(i) ? 'disabled' : ''} onclick="action('answer',{idx:${i}})"><b>${'ABC'[i]}</b>${esc(o)}</button>`).join('')}
-      ${w.pistas > 0 && !pd.eliminated.length ? `<button class="ghost" ${dis} onclick="action('pista')">💡 Usar comodín PISTA (${w.pistas})</button>` : ''}</div>`;
-  }
-  if (pd.kind === 'result') {
-    return `<div class="card"><div class="res">${pd.correct ? '✅' : '❌'}</div>
-      <h2 style="text-align:center">${pd.correct ? '¡Correcto!' : 'Incorrecto'} — ${esc(g.players[pd.who].name)}</h2>
-      ${pd.correct ? '' : `<div class="fb bad">Respondiste: <i>${esc(pd.chosen)}</i><br><b>Correcta:</b> ${esc(pd.correctText)}</div>`}
-      <div class="fb ${pd.correct ? 'good' : ''}">📘 <b>¿Por qué?</b> ${esc(pd.explanation)}</div>
-      <p><b>${esc(pd.effect)}</b></p>
-      <button class="primary" ${dis} onclick="action('continue')">Continuar</button></div>`;
-  }
-  if (pd.kind === 'info') {
-    return `<div class="card">${move}<h2>${esc(pd.title)}</h2><div class="fb ${pd.tone === 'good' ? 'good' : pd.tone === 'bad' ? 'bad' : ''}">${esc(pd.text)}</div>
-      <button class="primary" ${dis} onclick="action('continue')">Continuar</button></div>`;
-  }
-  if (pd.kind === 'buy') {
-    return `<div class="card"><h2>${esc(pd.title)}</h2><p>${esc(pd.text)}</p>
-      <div class="row"><button class="okbtn" ${dis} onclick="action('buy',{yes:true})">Comprar</button><button class="ghost" ${dis} onclick="action('buy',{yes:false})">No, gracias</button></div></div>`;
-  }
-  if (pd.kind === 'build') {
-    return `<div class="card">${move}<h2>${esc(pd.title)}</h2><p>${esc(pd.text)}</p>
-      <div class="row"><button class="okbtn" ${dis} onclick="action('build',{yes:true})">Construir 🏢</button><button class="ghost" ${dis} onclick="action('build',{yes:false})">Pasar</button></div></div>`;
-  }
-  if (pd.kind === 'demanda') {
-    return `<div class="card">${move}<h2>${esc(pd.title)}</h2><p>${esc(pd.text)}</p>
-      ${pd.targets.map((t) => `<button class="opt" ${dis} onclick="action('demanda',{tile:${t}})"><span class="dot" style="background:${g.players[g.owners[t].player].color}"></span> ${esc(S.board[t].name)} <span class="muted">(${esc(g.players[g.owners[t].player].name)})</span></button>`).join('')}
-      <button class="ghost" ${dis} onclick="action('demanda',{tile:-1})">No demandar</button></div>`;
-  }
-  return '';
-}
+  <main id="app">
+    <div class="card card-pad">
+      Conectando con el servidor...
+    </div>
+  </main>
 
-function render() {
-  const app = $('#app');
-  if (!S) return;
-  if (!team) {
-    let h = '<div class="card"><h2>¿Cuál es su equipo?</h2><p class="muted">Un celular por equipo. Si ya tenían partida, al elegir su número la recuperan.</p><div class="teams">';
-    for (let t = 1; t <= S.numTeams; t++) { const tk = S.teamsTaken.includes(t); h += `<button class="${tk ? 'taken' : ''}" onclick="pickTeam(${t})">${t}<small>${tk ? 'en juego' : 'libre'}</small></button>`; }
-    shownSetup = null; app.innerHTML = h + '</div></div>'; return;
-  }
-  const g = S.game;
-  if (!g) {
-    if (shownSetup === team && app.querySelector('form')) { app.querySelector('.err').textContent = err; return; }
-    shownSetup = team;
-    app.innerHTML = `<div class="card"><h2>Equipo ${team}: ¿quiénes juegan?</h2>
-      <p class="muted">Escriban el nombre de cada integrante (2 a 4). Se turnan este celular: cuando sea tu turno o te toque responder, te pasan el teléfono.</p>
-      <form onsubmit="setup(event)">${[1,2,3,4].map((i) => `<input class="nm-in" maxlength="18" placeholder="Jugador ${i}${i === 4 ? ' (opcional)' : ''}" autocomplete="off">`).join('')}
-      <button class="primary" type="submit">Crear partida</button></form><div class="err">${esc(err)}</div>
-      <button class="link" onclick="leaveTeam()">← Elegir otro equipo</button></div>`;
-    return;
-  }
-  shownSetup = null;
-  app.innerHTML = playersHtml(g) + actionHtml(g) + `<div class="err">${esc(err)}</div>` + boardHtml(g)
-    + `<div class="card"><b style="font-size:13px">Últimos movimientos</b><ul class="feed">${g.feed.slice(0, 6).map((f) => `<li>${esc(f.text)}</li>`).join('')}</ul></div>`
-    + `<div style="text-align:center"><button class="link" onclick="leaveTeam()">Cambiar de equipo</button></div>`;
-}
-</script>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+    // ========================================================
+    // ESTADO DEL CLIENTE
+    // ========================================================
+
+    const $ = (selector) => document.querySelector(selector);
+
+    const esc = (value) =>
+      String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+
+    const money = (value) =>
+      (value < 0 ? '-$' : '$') +
+      Math.abs(value).toLocaleString('es-CO');
+
+    const DICE = [
+      '',
+      '⚀',
+      '⚁',
+      '⚂',
+      '⚃',
+      '⚄',
+      '⚅'
+    ];
+
+    let S = null;
+    let team = null;
+    let offset = 0;
+    let busy = false;
+    let err = '';
+    let shownSetup = null;
+    let diceAnimating = false;
+    let animatedDiceFace = 1;
+    let awaitingRollAnimation = false;
+    let awaitingRollSignature = null;
+    let diceAnimationInterval = null;
+    let diceAnimationTimeout = null;
+    let feedBeforeRoll = null;
+
+    try {
+      team = Number(localStorage.getItem('ml_team')) || null;
+    } catch (error) {
+      team = null;
+    }
+
+    // ========================================================
+    // CONEXIÓN SOCKET.IO
+    // ========================================================
+
+    const sock = io({
+      transports: ['websocket', 'polling']
+    });
+
+    function rollSignature(game) {
+      if (!game || !game.lastMove) return 'sin-lanzamiento';
+
+      const move = game.lastMove;
+
+      return [
+        game.turns,
+        move.player,
+        move.dice,
+        move.tile
+      ].join(':');
+    }
+
+    function startDiceAnimation(move) {
+      if (!move || !Number.isFinite(Number(move.dice))) return;
+
+      clearInterval(diceAnimationInterval);
+      clearTimeout(diceAnimationTimeout);
+
+      diceAnimating = true;
+      animatedDiceFace = 1 + Math.floor(Math.random() * 6);
+
+      // Cada 75 ms muestra una cara aleatoria del dado.
+      diceAnimationInterval = setInterval(() => {
+        animatedDiceFace = 1 + Math.floor(Math.random() * 6);
+
+        const die = $('#centerDieFace');
+
+        if (die && diceAnimating) {
+          die.textContent = DICE[animatedDiceFace];
+        }
+      }, 75);
+
+      // La duración visual de la tirada es de 2 segundos.
+      diceAnimationTimeout = setTimeout(() => {
+        clearInterval(diceAnimationInterval);
+
+        diceAnimating = false;
+        animatedDiceFace = Number(move.dice);
+
+        feedBeforeRoll = null;
+        // Renderiza la cara final que decidió el servidor.
+        render();
+        updateLiveClocks();
+      }, 2000);
+    }
+
+    sock.on('connect', () => {
+      $('#offline').style.display = 'none';
+
+      if (team) {
+        sock.emit('join', { team });
+      }
+    });
+
+    sock.on('disconnect', () => {
+      $('#offline').style.display = 'block';
+    });
+
+    sock.on('connect_error', () => {
+      $('#offline').style.display = 'block';
+    });
+
+    sock.on('state', (state) => {
+      S = state;
+
+      offset = Number(state.now || Date.now()) - Date.now();
+      busy = false;
+
+      if (awaitingRollAnimation && S.game) {
+        const signature = rollSignature(S.game);
+
+        if (
+          S.game.lastMove &&
+          signature !== awaitingRollSignature
+        ) {
+          awaitingRollAnimation = false;
+          awaitingRollSignature = null;
+
+          startDiceAnimation(S.game.lastMove);
+        } else if (
+          S.game.phase !== 'roll' &&
+          S.game.pending &&
+          S.game.pending.kind === 'question'
+        ) {
+          // Si el jugador estaba en Sanción, se genera
+          // una pregunta, pero no se ha tirado ningún dado.
+          awaitingRollAnimation = false;
+          awaitingRollSignature = null;
+        }
+      }
+
+      render();
+      updateLiveClocks();
+    });
+
+    // ========================================================
+    // SELECCIÓN DE EQUIPO
+    // ========================================================
+
+    function pickTeam(number) {
+      team = Number(number);
+      err = '';
+      shownSetup = null;
+
+      try {
+        localStorage.setItem('ml_team', team);
+      } catch (error) { }
+
+      sock.emit('join', { team });
+    }
+
+    function leaveTeam() {
+      if (!confirm('¿Cambiar de equipo en este celular?')) {
+        return;
+      }
+
+      team = null;
+      err = '';
+      busy = false;
+      shownSetup = null;
+
+      try {
+        localStorage.removeItem('ml_team');
+      } catch (error) { }
+
+      render();
+    }
+
+    // ========================================================
+    // CREACIÓN DE LA PARTIDA
+    // ========================================================
+
+    function setup(event) {
+      event.preventDefault();
+
+      const names = [
+        ...document.querySelectorAll('.nm-in')
+      ]
+        .map((input) => input.value.trim())
+        .filter(Boolean);
+
+      err = '';
+
+      sock.emit('setup', { team, names }, (response) => {
+        if (response && response.error) {
+          err = response.error;
+          render();
+        }
+      });
+    }
+
+    // ========================================================
+    // ACCIONES GENERALES DEL JUEGO
+    // ========================================================
+
+    function action(type, payload = {}) {
+      if (busy || !team || diceAnimating) return;
+
+      if (type === 'roll' && S && S.game) {
+        feedBeforeRoll = [...S.game.feed];
+        awaitingRollAnimation = true;
+        awaitingRollSignature = rollSignature(S.game);
+      }
+
+      busy = true;
+      err = '';
+
+      render();
+
+      sock.emit(
+        'action',
+        { team, type, payload },
+        (response) => {
+          if (response && response.error) {
+            busy = false;
+            err = response.error;
+            render();
+          }
+        }
+      );
+
+      // Evita dejar los botones bloqueados indefinidamente
+      // si se interrumpe la respuesta del servidor.
+      setTimeout(() => {
+        if (busy) {
+          busy = false;
+          render();
+        }
+      }, 4500);
+    }
+
+    // ========================================================
+    // PERSONALIZACIÓN DE CADA JUGADOR
+    //
+    // El servidor recibe una acción "customize" independiente
+    // para la ficha o el color seleccionado.
+    // ========================================================
+
+    function customize(playerIndex, field, value) {
+      if (
+        !S ||
+        !S.game ||
+        !team ||
+        !['token', 'color'].includes(field)
+      ) {
+        return;
+      }
+
+      if (!canCustomize(S.game)) {
+        err = 'La personalización se cierra después del primer lanzamiento.';
+        render();
+        return;
+      }
+
+      const payload = {
+        player: Number(playerIndex)
+      };
+
+      payload[field] = value;
+
+      err = '';
+
+      sock.emit(
+        'action',
+        {
+          team,
+          type: 'customize',
+          payload
+        },
+        (response) => {
+          if (response && response.error) {
+            err = response.error;
+            render();
+          }
+        }
+      );
+    }
+
+    function canCustomize(game) {
+      return Boolean(
+        S &&
+        S.status === 'lobby' &&
+        game &&
+        game.phase === 'roll' &&
+        game.turns === 0 &&
+        !game.lastMove &&
+        game.dice === null
+      );
+    }
+
+    function allPlayersReady(game) {
+      return Boolean(
+        game &&
+        game.players.length > 0 &&
+        (
+          S.status !== 'lobby' ||
+          game.players.every(
+            (player) => player.tokenChosen && player.colorChosen
+          )
+        )
+      );
+    }
+
+    // ========================================================
+    // FICHAS
+    // ========================================================
+
+    function pieceFor(id) {
+      const pieces = S && Array.isArray(S.pieces)
+        ? S.pieces
+        : [];
+
+      return pieces.find((piece) => piece.id === id) || {
+        id: id || 'gavel',
+        name: 'Mazo legal',
+        symbol: '🔨'
+      };
+    }
+
+    function tokenShape(id) {
+      if (id === 'scales') return 'round';
+      if (id === 'shield') return 'diamond';
+      if (id === 'star') return 'star';
+      return '';
+    }
+
+    function tokenAvatar(player) {
+      const piece = pieceFor(player.token);
+      const shape = tokenShape(player.token);
+
+      if (shape === 'star') {
+        return `
+          <div class="token-avatar"
+               style="background:${esc(player.color)}">
+            <span style="display:none">${esc(piece.symbol)}</span>
+            ${esc(piece.symbol)}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="token-avatar ${shape}"
+             style="background:${esc(player.color)}">
+          <span>${esc(piece.symbol)}</span>
+        </div>
+      `;
+    }
+
+    function boardToken(player) {
+      const piece = pieceFor(player.token);
+      const shape = tokenShape(player.token);
+
+      if (shape === 'star') {
+        return `
+          <span class="board-token star"
+                style="background:${esc(player.color)}"
+                title="${esc(player.name)} · ${esc(piece.name)}">
+            <span style="display:none">${esc(piece.symbol)}</span>
+          </span>
+        `;
+      }
+
+      return `
+        <span class="board-token ${shape}"
+              style="background:${esc(player.color)}"
+              title="${esc(player.name)} · ${esc(piece.name)}">
+          <span>${esc(piece.symbol)}</span>
+        </span>
+      `;
+    }
+
+    // ========================================================
+    // TEMPORIZADOR GENERAL Y POR PREGUNTA
+    // ========================================================
+
+    function formatTime(milliseconds) {
+      const seconds = Math.max(
+        0,
+        Math.ceil(milliseconds / 1000)
+      );
+
+      const minutes = Math.floor(seconds / 60);
+      const remainder = seconds % 60;
+
+      return (
+        String(minutes).padStart(2, '0') +
+        ':' +
+        String(remainder).padStart(2, '0')
+      );
+    }
+
+    function timerText() {
+      if (!S) {
+        return 'Conectando...';
+      }
+
+      if (S.status === 'lobby') {
+        return 'En espera';
+      }
+
+      if (S.status === 'paused') {
+        return 'En pausa';
+      }
+
+      if (S.status === 'ended') {
+        return 'Finalizado';
+      }
+
+      if (!S.endsAt) {
+        return 'Sin límite';
+      }
+
+      const remaining = Math.max(
+        0,
+        S.endsAt - (Date.now() + offset)
+      );
+
+      return formatTime(remaining);
+    }
+
+    function questionRemaining(game) {
+      if (!game || !game.pending) {
+        return 0;
+      }
+
+      const pending = game.pending;
+
+      if (pending.kind !== 'question') {
+        return 0;
+      }
+
+      if (S.status === 'paused') {
+        return Math.max(
+          0,
+          Number(
+            pending.remainingMs ??
+            S.questionTimeMs ??
+            30000
+          )
+        );
+      }
+
+      if (!Number.isFinite(pending.deadlineAt)) {
+        return Number(S.questionTimeMs || 30000);
+      }
+
+      return Math.max(
+        0,
+        pending.deadlineAt - (Date.now() + offset)
+      );
+    }
+
+    function updateLiveClocks() {
+      if (diceAnimating) {
+        $('#app').querySelectorAll('button').forEach((button) => {
+          button.disabled = true;
+        });
+      }
+      if (!S) {
+        return;
+      }
+
+      const header = $('#hdr');
+      const teamHeader = $('#teamHeader');
+
+      if (header) {
+        header.textContent = timerText();
+      }
+
+      if (teamHeader) {
+        teamHeader.textContent = team
+          ? `Equipo ${team}`
+          : 'Sala de juego';
+      }
+
+      const clock = $('[data-question-clock]');
+
+      if (!clock) {
+        return;
+      }
+
+      const game = S.game;
+      const remaining = questionRemaining(game);
+
+      const duration = Number(
+        S.questionTimeMs || 30000
+      );
+
+      const seconds = Math.ceil(remaining / 1000);
+      const value = clock.querySelector('.clock-value');
+
+      if (value) {
+        value.textContent = formatTime(remaining);
+      }
+
+      const bar = clock.querySelector('.timer-track span');
+
+      if (bar) {
+        const percentage = Math.max(
+          0,
+          Math.min(100, (remaining / duration) * 100)
+        );
+
+        bar.style.width = percentage + '%';
+      }
+
+      clock.classList.toggle(
+        'urgent',
+        remaining <= 10000
+      );
+
+      if (S.status === 'paused') {
+        const label = clock.querySelector('.clock-label');
+
+        if (label) {
+          label.textContent = 'Tiempo restante · Pausado';
+        }
+      }
+
+      // Evita respuestas cuando la cuenta regresiva ya llegó
+      // a cero. La validación definitiva la realiza el servidor.
+      if (seconds <= 0 && S.status === 'playing') {
+        clock
+          .closest('.action-card')
+          ?.querySelectorAll('[data-answer-button]')
+          .forEach((button) => {
+            button.disabled = true;
+          });
+      }
+    }
+
+    setInterval(updateLiveClocks, 200);
+
+    // ========================================================
+    // DISTRIBUCIÓN SIMÉTRICA DE LAS 24 CASILLAS
+    // ========================================================
+
+    const POS = (() => {
+      const positions = {};
+
+      for (let i = 0; i < 7; i++) {
+        positions[i] = [0, i];
+      }
+
+      for (let i = 7; i < 13; i++) {
+        positions[i] = [i - 6, 6];
+      }
+
+      for (let i = 13; i < 19; i++) {
+        positions[i] = [6, 18 - i];
+      }
+
+      for (let i = 19; i < 24; i++) {
+        positions[i] = [24 - i, 0];
+      }
+
+      return positions;
+    })();
+
+    const SPECIAL_ICONS = {
+      inicio: '🏁',
+      evento: '📣',
+      demanda: '⚖️',
+      sancion: '🚨',
+      vaya_sancion: '🚨',
+      diagnostico: '🔎',
+      cafe: '☕',
+      recorte: '📉'
+    };
+
+    function boardHtml(game) {
+      let html = '<div class="board">';
+
+      const lastMove = game.lastMove;
+      const roller = lastMove
+        ? game.players[lastMove.player]
+        : null;
+
+      const visibleFace = diceAnimating
+        ? animatedDiceFace
+        : game.dice;
+
+      const rollInfo = diceAnimating
+        ? 'El dado está girando...'
+        : lastMove && roller
+          ? `${roller.name} sacó ${lastMove.dice}`
+          : 'Esperando el lanzamiento';
+
+      S.board.forEach((tile, index) => {
+        const position = POS[index];
+        if (!position) return;
+
+        const [row, column] = position;
+        const owner = game.owners[index];
+        const ownerPlayer = owner
+          ? game.players[owner.player]
+          : null;
+
+        const isProject = tile.type === 'proyecto';
+
+        const tileClass = isProject
+          ? `project area-${tile.area}`
+          : `sp ${tile.type}`;
+
+        const tokens = game.players
+          .filter((player) => player.pos === index)
+          .map((player) => boardToken(player))
+          .join('');
+
+        const icon = isProject
+          ? '⚖️'
+          : (SPECIAL_ICONS[tile.type] || '•');
+
+        html += `
+      <div class="cell ${tileClass}"
+           style="grid-row:${row + 1};grid-column:${column + 1}"
+           title="${esc(tile.name)}">
+
+        <span class="tile-icon">${icon}</span>
+
+        <span class="tile-title">
+          ${esc(tile.short || tile.name)}
+        </span>
+
+        ${isProject
+            ? `<span class="tile-price">${money(tile.price)}</span>`
+            : ''
+          }
+
+        ${ownerPlayer
+            ? `<div class="ownership"
+                    style="background:${esc(ownerPlayer.color)}"
+                    title="Propietario: ${esc(ownerPlayer.name)}"></div>`
+            : ''
+          }
+
+        ${owner && owner.offices
+            ? `<div class="houses ${owner.offices >= 2 ? 'blindada' : ''}"
+          title="${owner.offices >= 2 ? 'Propiedad blindada' : 'Una oficina'}">
+       ${Array.from(
+              { length: Math.min(2, owner.offices) },
+              () => '<span class="house"></span>'
+            ).join('')}
+     </div>`
+            : ''
+          }
+
+        <div class="tokens">${tokens}</div>
+      </div>
+    `;
+      });
+
+      html += `
+    <div class="board-center">
+      <div class="center-symbol">⚖</div>
+
+      <div>
+        <h2 class="center-title">MONOPOLIO<br>LEGAL</h2>
+
+        <p class="center-subtitle">
+          Gestiona proyectos, responde desafíos y
+          construye tu estrategia legal.
+        </p>
+      </div>
+
+      <div id="centerDieFace"
+           class="center-dice ${diceAnimating ? 'rolling' : ''}">
+        ${visibleFace ? DICE[visibleFace] : '🎲'}
+      </div>
+
+      <div id="centerRollInfo" class="center-roll-info">
+        ${esc(rollInfo)}
+      </div>
+    </div>
+  `;
+
+      html += '</div>';
+      return html;
+    }
+
+
+    // ========================================================
+    // TARJETAS DE JUGADORES
+    // ========================================================
+
+    function playersHtml(game) {
+      return `
+        <section class="card players-card">
+          <div class="section-heading">
+            <div>
+              <h2>Participantes</h2>
+              <p>Dinero, estadísticas y turno actual.</p>
+            </div>
+
+            <span class="badge">
+              ${game.players.length} jugadores
+            </span>
+          </div>
+
+          <div class="players-grid">
+            ${game.players.map((player, index) => {
+        const isTurn =
+          index === game.turn &&
+          game.phase !== 'ended';
+
+        const piece = pieceFor(player.token);
+
+        return `
+                <article class="player-card ${isTurn ? 'turn' : ''}">
+                  <div class="player-top">
+                    ${tokenAvatar(player)}
+
+                    <div class="player-heading">
+                      <span class="player-name">
+                        ${esc(player.name)}
+                      </span>
+
+                      <span class="player-position">
+                        Casilla ${player.pos + 1}
+                      </span>
+
+                      ${player.jailed
+            ? '<span class="badge red" style="margin-top:6px">En sanción</span>'
+            : ''
+          }
+                    </div>
+                  </div>
+
+                  <div class="player-money ${player.money < 0 ? 'negative' : ''}">
+                    ${money(player.money)}
+                  </div>
+
+                  <div class="player-stats">
+                    <span class="player-stat">
+                      ✓ ${player.correct}
+                    </span>
+
+                    <span class="player-stat">
+                      ✕ ${player.wrong}
+                    </span>
+
+                    <span class="player-stat">
+                      ◆ ${player.pistas || 0}
+                    </span>
+                  </div>
+
+                  <div class="player-stats">
+                    <span class="player-stat">
+                      🏢 ${game.players[index].patrimonio !== undefined
+            ? money(game.players[index].patrimonio)
+            : money(player.money)}
+                    </span>
+                  </div>
+
+                  ${isTurn
+            ? '<span class="player-status">● Turno actual</span>'
+            : ''
+          }
+
+                  <span class="player-position" style="margin-top:8px">
+                    ${esc(piece.name)}
+                  </span>
+                </article>
+              `;
+      }).join('')}
+          </div>
+        </section>
+      `;
+    }
+
+    // ========================================================
+    // SELECTORES DE FICHAS Y COLORES
+    // ========================================================
+
+
+    function pieceOwner(game, pieceId, currentIndex) {
+      return game.players.find((player, index) =>
+        index !== currentIndex &&
+        player.tokenChosen &&
+        player.token === pieceId
+      ) || null;
+    }
+
+    function colorOwner(game, colorHex, currentIndex) {
+      return game.players.find((player, index) =>
+        index !== currentIndex &&
+        player.colorChosen &&
+        String(player.color).toLowerCase() ===
+        String(colorHex).toLowerCase()
+      ) || null;
+    }
+
+
+
+    function customizationHtml(game) {
+      // La personalización solo existe durante la sala de espera.
+      if (!canCustomize(game)) {
+        return '';
+      }
+
+      const ready = allPlayersReady(game);
+
+      return `
+    <section class="card customization-card">
+      <div class="section-heading">
+        <div>
+          <h2>Personaliza tu ficha</h2>
+          <p>Cada integrante debe elegir una ficha y un color únicos.</p>
+        </div>
+
+        <span class="badge ${ready ? 'green' : 'gold'}">
+          ${ready ? 'Completado' : 'Pendiente'}
+        </span>
+      </div>
+
+      <div class="customization-intro">
+        Las fichas y los colores elegidos quedan reservados.
+        Los demás participantes no podrán seleccionar los mismos.
+        Una vez que el moderador inicie el juego, la personalización
+        se cerrará.
+      </div>
+
+      ${game.players.map((player, index) => {
+        const selectedPiece = Boolean(player.tokenChosen);
+        const selectedColor = Boolean(player.colorChosen);
+
+        const playerReady = selectedPiece && selectedColor;
+
+        return `
+          <div class="custom-player">
+            <div class="custom-player-heading">
+              <span class="custom-number">${index + 1}</span>
+
+              <strong>${esc(player.name)}</strong>
+
+              <span class="badge ${playerReady ? 'green' : 'gold'}">
+                ${playerReady ? 'Listo' : 'Elegir'}
+              </span>
+            </div>
+
+            <div class="custom-controls">
+              <div>
+                <label class="field-label" for="piece-${index}">
+                  Tipo de ficha
+                </label>
+
+                <select
+                  class="field-select"
+                  id="piece-${index}"
+                  onchange="customize(${index}, 'token', this.value)"
+                >
+                  <option
+                    value=""
+                    disabled
+                    ${selectedPiece ? '' : 'selected'}
+                  >
+                    Elige una ficha
+                  </option>
+
+                  ${(S.pieces || []).map((piece) => {
+          const otherOwner = pieceOwner(
+            game,
+            piece.id,
+            index
+          );
+
+          const isMine =
+            selectedPiece &&
+            player.token === piece.id;
+
+          const disabled =
+            Boolean(otherOwner) && !isMine;
+
+          let label = `${piece.symbol} ${piece.name}`;
+
+          if (otherOwner) {
+            label += ` — elegida por ${otherOwner.name}`;
+          }
+
+          return `
+                      <option
+                        value="${esc(piece.id)}"
+                        ${disabled ? 'disabled' : ''}
+                        ${isMine ? 'selected' : ''}
+                      >
+                        ${esc(label)}
+                      </option>
+                    `;
+        }).join('')}
+                </select>
+              </div>
+
+              <div>
+                <span class="field-label">Color</span>
+
+                <div class="color-options">
+                  ${(S.colors || []).map((color) => {
+          const otherOwner = colorOwner(
+            game,
+            color.hex,
+            index
+          );
+
+          const isMine =
+            selectedColor &&
+            player.color.toLowerCase() ===
+            color.hex.toLowerCase();
+
+          const disabled =
+            Boolean(otherOwner) && !isMine;
+
+          let title = color.name;
+
+          if (otherOwner) {
+            title = `Elegido por ${otherOwner.name}`;
+          }
+
+          return `
+                      <button
+                        type="button"
+                        class="color-choice
+                          ${isMine ? 'selected' : ''}
+                          ${otherOwner ? 'taken' : ''}"
+                        title="${esc(title)}"
+                        aria-label="Elegir color ${esc(color.name)}"
+                        ${disabled ? 'disabled' : ''}
+                        onclick="customize(
+                          ${index},
+                          'color',
+                          '${esc(color.hex)}'
+                        )"
+                      >
+                        <span
+                          class="color-swatch"
+                          style="background:${esc(color.hex)}"
+                        ></span>
+
+                        <span>${esc(color.name)}</span>
+
+                        ${otherOwner
+              ? '<span>Ocupado</span>'
+              : ''
+            }
+                      </button>
+                    `;
+        }).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="selection-status">
+              <span>
+                Ficha: ${selectedPiece ? '✓ Elegida' : 'Pendiente'}
+              </span>
+
+              <span>
+                Color: ${selectedColor ? '✓ Elegido' : 'Pendiente'}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('')}
+
+      <div class="err">${esc(err)}</div>
+
+      ${ready
+          ? `
+            <div class="feedback good">
+              Todos los jugadores tienen una ficha y un color
+              diferentes. El equipo está preparado.
+            </div>
+          `
+          : `
+            <p class="small muted">
+              El primer lanzamiento se habilitará cuando todos
+              los participantes hayan completado sus elecciones.
+            </p>
+          `
+        }
+    </section>
+  `;
+    }
+
+
+
+    // ========================================================
+    // IDENTIFICACIÓN DEL JUGADOR ACTIVO
+    // ========================================================
+
+    function whoTag(game, playerIndex, label) {
+      const player = game.players[playerIndex];
+
+      if (!player) {
+        return '';
+      }
+
+      return `
+        <div class="who">
+          <span class="dot"
+                style="background:${esc(player.color)}"></span>
+
+          ${esc(label)} ${esc(player.name)}
+        </div>
+      `;
+    }
+
+    // ========================================================
+    // TARJETA DE RESULTADO FINAL
+    // ========================================================
+
+    function endedHtml(game) {
+      const ranking = game.players
+        .map((player) => ({
+          ...player,
+          patrimonio: player.patrimonio ?? player.money
+        }))
+        .sort((a, b) => b.patrimonio - a.patrimonio);
+
+      return `
+        <section class="card action-card">
+          <div class="result-symbol">🏆</div>
+
+          <span class="eyebrow">Partida concluida</span>
+
+          <h2 class="result-heading">
+            ¡Fin del Monopolio Legal!
+          </h2>
+
+          <p class="action-message">
+            La clasificación final se calcula sumando el dinero,
+            el valor de los proyectos y el valor de las oficinas.
+          </p>
+
+          <div class="ranking-list">
+            ${ranking.map((player, index) => `
+              <div class="ranking-row">
+                <span class="ranking-position">
+                  ${index + 1}
+                </span>
+
+                ${tokenAvatar(player)}
+
+                <div class="ranking-details">
+                  <span class="ranking-name">
+                    ${esc(player.name)}
+                  </span>
+
+                  <span class="ranking-sub">
+                    ${player.correct} aciertos ·
+                    ${player.wrong} errores
+                  </span>
+                </div>
+
+                <span class="ranking-money">
+                  ${money(player.patrimonio)}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+
+          <p class="small muted">
+            Para comenzar otra partida, el moderador debe
+            reiniciar el juego desde el panel de administración.
+          </p>
+        </section>
+      `;
+    }
+
+    // ========================================================
+    // PANTALLA DE ACCIONES
+    // ========================================================
+
+    function actionHtml(game) {
+      if (
+        game.phase === 'ended' ||
+        S.status === 'ended'
+      ) {
+        return endedHtml(game);
+      }
+
+      if (S.status === 'paused') {
+        const pending = game.pending;
+
+        const pausedQuestion =
+          pending && pending.kind === 'question';
+
+        return `
+          <section class="card action-card">
+            <div class="result-symbol">Ⅱ</div>
+
+            <h2 class="result-heading">
+              Juego en pausa
+            </h2>
+
+            <p class="action-message">
+              El moderador pausó la partida. No se puede
+              responder ni realizar movimientos hasta que
+              el juego se reanude.
+            </p>
+
+            ${pausedQuestion
+            ? `
+                  <div class="feedback">
+                    Tiempo restante de la pregunta:
+                    <strong>
+                      ${formatTime(
+              Number(
+                pending.remainingMs ??
+                S.questionTimeMs ??
+                30000
+              )
+            )}
+                    </strong>
+                  </div>
+                `
+            : ''
+          }
+          </section>
+        `;
+      }
+
+      if (S.status === 'lobby') {
+        return `
+          <section class="card action-card">
+            <div class="action-topline">
+              <h2>Partida preparada</h2>
+              <span class="badge gold">En espera</span>
+            </div>
+
+            <p class="action-message">
+              El equipo ya está registrado. Cada integrante
+              puede seleccionar su ficha y su color antes
+              de comenzar.
+            </p>
+
+            <div class="feedback">
+              El moderador debe presionar
+              <strong>Iniciar</strong> desde el panel de
+              administración para habilitar los dados.
+            </div>
+          </section>
+        `;
+      }
+
+      const player = game.players[game.turn];
+      const pending = game.pending;
+
+      if (!player) {
+        return `
+          <section class="card action-card">
+            No se encontró el jugador del turno actual.
+          </section>
+        `;
+      }
+
+      // ------------------------------------------------------
+      // TURNO PARA TIRAR DADO
+      // ------------------------------------------------------
+
+      if (game.phase === 'roll') {
+        const ready = allPlayersReady(game);
+        const beforeFirstRoll =
+          game.turns === 0 &&
+          !game.lastMove &&
+          game.dice === null;
+
+        return `
+          <section class="card action-card">
+            <div class="action-topline">
+              <h2>Tu próximo movimiento</h2>
+              <span class="badge green">En juego</span>
+            </div>
+
+            ${whoTag(game, game.turn, 'Turno de')}
+
+            <p class="action-message">
+              ${player.jailed
+            ? 'Estás en Sanción. Tendrás que responder una pregunta para salir.'
+            : 'Lanza el dado para avanzar por el tablero y resolver la casilla en la que caigas.'
+          }
+            </p>
+
+            ${beforeFirstRoll && !ready
+            ? `
+                  <div class="feedback bad">
+                    Primero, cada integrante debe seleccionar
+                    su ficha y su color en el panel de personalización.
+                  </div>
+                `
+            : ''
+          }
+
+            <button class="btn btn-primary"
+                    ${busy || !ready ? 'disabled' : ''}
+                    onclick="action('roll')">
+
+              ${player.jailed ? 'Responder para salir' : '🎲 Tirar dado'}
+            </button>
+
+            ${!ready
+            ? `
+                  <p class="small muted" style="margin-bottom:0">
+                    El primer lanzamiento se habilitará
+                    cuando todos hayan elegido ficha y color.
+                  </p>
+                `
+            : ''
+          }
+
+            <div class="err">${esc(err)}</div>
+          </section>
+        `;
+      }
+
+      if (!pending) {
+        return `
+          <section class="card action-card">
+            <h2>Esperando acción</h2>
+            <p class="action-message">
+              Esperando el siguiente estado del juego.
+            </p>
+          </section>
+        `;
+      }
+
+      const move = pending.moveText
+        ? `<div class="move-message">${esc(pending.moveText)}</div>`
+        : '';
+
+      // ------------------------------------------------------
+      // PREGUNTA
+      // ------------------------------------------------------
+
+      if (pending.kind === 'question') {
+
+        // Ocultar la pregunta mientras se anima el lanzamiento.
+        if (diceAnimating) {
+          return `
+            <section class="card action-card">
+              <div class="result-symbol">🎲</div>
+              <h2 class="result-heading">Lanzamiento en curso</h2>
+              <p class="action-message">
+                Espera a que termine la tirada del dado
+                para conocer tu desafío legal.
+              </p>
+            </section>
+          `;
+        }
+
+        const answeringPlayer = game.players[pending.who];
+        const remaining = questionRemaining(game);
+        const duration = Number(S.questionTimeMs || 30000);
+
+        const percentage = Math.max(
+          0,
+          Math.min(100, (remaining / duration) * 100)
+        );
+
+        const eliminated = pending.eliminated || [];
+
+        const canHint =
+          answeringPlayer &&
+          answeringPlayer.pistas > 0 &&
+          eliminated.length === 0;
+
+        return `
+          <section class="card action-card">
+            ${move}
+
+            <div class="action-topline">
+              <h2>Desafío legal</h2>
+              <span class="badge gold">Pregunta</span>
+            </div>
+
+            ${whoTag(game, pending.who, 'Responde')}
+
+            <div class="question-title">${esc(pending.title || '')}</div>
+
+            <div class="question-clock ${remaining <= 10000 ? 'urgent' : ''}"
+                 data-question-clock>
+              <div class="clock-top">
+                <span class="clock-label">Tiempo restante</span>
+                <span class="clock-value">${formatTime(remaining)}</span>
+              </div>
+              <div class="timer-track">
+                <span style="width:${percentage}%"></span>
+              </div>
+            </div>
+
+            <div class="question-text">${esc(pending.text)}</div>
+
+            <div class="options">
+              ${pending.options.map((option, i) => `
+                <button class="option-button ${eliminated.includes(i) ? 'eliminated' : ''}"
+                        data-answer-button
+                        ${busy || eliminated.includes(i) ? 'disabled' : ''}
+                        onclick="action('answer', {idx:${i}})">
+                  <span class="option-letter">${'ABC'[i]}</span>
+                  <span>${esc(option)}</span>
+                </button>
+              `).join('')}
+            </div>
+
+            ${canHint
+            ? `<button class="btn btn-secondary"
+                         style="margin-top:10px"
+                         ${busy ? 'disabled' : ''}
+                         onclick="action('pista')">
+                   ◆ Usar pista (${answeringPlayer.pistas})
+                 </button>`
+            : ''
+          }
+
+            <div class="err">${esc(err)}</div>
+          </section>
+        `;
+      }
+      // A partir de aquí continúa todo tu código actual
+      // que muestra la pregunta y sus opciones.
+
+
+
+      // ------------------------------------------------------
+      // RESULTADO DE LA PREGUNTA
+      // ------------------------------------------------------
+
+      if (pending.kind === 'result') {
+        return `
+          <section class="card action-card">
+            <div class="result-symbol">
+              ${pending.timedOut ? '⏱' : (pending.correct ? '✓' : '✕')}
+            </div>
+
+            <span class="badge ${pending.correct ? 'green' : 'red'}">
+              ${pending.timedOut
+            ? 'Tiempo agotado'
+            : (pending.correct ? 'Respuesta correcta' : 'Respuesta incorrecta')
+          }
+            </span>
+
+            <h2 class="result-heading" style="margin-top:10px">
+              ${esc(game.players[pending.who]?.name || 'Jugador')}
+            </h2>
+
+            ${pending.timedOut
+            ? `
+                  <div class="feedback bad">
+                    Se agotaron los 30 segundos disponibles
+                    para responder esta pregunta.
+                  </div>
+                `
+            : ''
+          }
+
+            ${!pending.correct
+            ? `
+                  <div class="feedback bad">
+                    <strong>Tu respuesta:</strong><br>
+                    ${esc(pending.chosen)}
+                    <br><br>
+
+                    <strong>Respuesta correcta:</strong><br>
+                    ${esc(pending.correctText)}
+                  </div>
+                `
+            : ''
+          }
+
+            <div class="feedback ${pending.correct ? 'good' : ''}">
+              <strong>¿Por qué?</strong><br>
+              ${esc(pending.explanation)}
+            </div>
+
+            <p class="action-message">
+              <strong>${esc(pending.effect)}</strong>
+            </p>
+
+            <button class="btn btn-primary"
+                    ${busy ? 'disabled' : ''}
+                    onclick="action('continue')">
+              Continuar
+            </button>
+
+            <div class="err">${esc(err)}</div>
+          </section>
+        `;
+      }
+
+      // ------------------------------------------------------
+      // INFORMACIÓN
+      // ------------------------------------------------------
+
+      if (pending.kind === 'info') {
+        return `
+          <section class="card action-card">
+            ${move}
+
+            <div class="action-topline">
+              <h2>${esc(pending.title)}</h2>
+
+              <span class="badge ${pending.tone === 'good'
+            ? 'green'
+            : pending.tone === 'bad'
+              ? 'red'
+              : ''
+          }">
+                Evento
+              </span>
+            </div>
+
+            <div class="feedback ${pending.tone === 'good'
+            ? 'good'
+            : pending.tone === 'bad'
+              ? 'bad'
+              : ''
+          }">
+              ${esc(pending.text)}
+            </div>
+
+            <button class="btn btn-primary"
+                    ${busy ? 'disabled' : ''}
+                    onclick="action('continue')">
+              Continuar
+            </button>
+          </section>
+        `;
+      }
+
+      // ------------------------------------------------------
+      // COMPRA DE PROYECTO
+      // ------------------------------------------------------
+
+      if (pending.kind === 'buy') {
+        return `
+          <section class="card action-card">
+            ${move}
+
+            <div class="action-topline">
+              <h2>${esc(pending.title)}</h2>
+              <span class="badge green">Oportunidad</span>
+            </div>
+
+            <p class="action-message">
+              ${esc(pending.text)}
+            </p>
+
+            <div class="button-row">
+              <button class="btn btn-green"
+                      ${busy ? 'disabled' : ''}
+                      onclick="action('buy', {yes:true})">
+                Comprar
+              </button>
+
+              <button class="btn btn-secondary"
+                      ${busy ? 'disabled' : ''}
+                      onclick="action('buy', {yes:false})">
+                No, gracias
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      // ------------------------------------------------------
+      // MEJORAR PROYECTO
+      // ------------------------------------------------------
+
+      if (pending.kind === 'build') {
+        return `
+          <section class="card action-card">
+            ${move}
+
+            <div class="action-topline">
+              <h2>${esc(pending.title)}</h2>
+              <span class="badge gold">Mejora</span>
+            </div>
+
+            <p class="action-message">
+              ${esc(pending.text)}
+            </p>
+
+            <div class="button-row">
+              <button class="btn btn-green"
+                      ${busy ? 'disabled' : ''}
+                      onclick="action('build', {yes:true})">
+                Construir oficina
+              </button>
+
+              <button class="btn btn-secondary"
+                      ${busy ? 'disabled' : ''}
+                      onclick="action('build', {yes:false})">
+                Pasar
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      // ------------------------------------------------------
+      // DEMANDA
+      // ------------------------------------------------------
+
+      if (pending.kind === 'demanda') {
+        return `
+          <section class="card action-card">
+            ${move}
+
+            <div class="action-topline">
+              <h2>${esc(pending.title)}</h2>
+              <span class="badge red">Demanda</span>
+            </div>
+
+            <p class="action-message">
+              ${esc(pending.text)}
+            </p>
+
+            <div class="options">
+              ${(pending.targets || []).map((tileIndex) => {
+          const owner = game.owners[tileIndex];
+
+          if (!owner) {
+            return '';
+          }
+
+          const ownerPlayer =
+            game.players[owner.player];
+
+          return `
+                  <button class="option-button"
+                          ${busy ? 'disabled' : ''}
+                          onclick="action('demanda', {tile:${tileIndex}})">
+
+                    <span class="option-letter">⚖</span>
+
+                    <span>
+                      <strong>
+                        ${esc(S.board[tileIndex].name)}
+                      </strong>
+                      <br>
+                      <span class="muted">
+                        Propietario: ${esc(ownerPlayer.name)}
+                      </span>
+                    </span>
+                  </button>
+                `;
+        }).join('')}
+            </div>
+
+            <button class="btn btn-secondary"
+                    style="margin-top:10px"
+                    ${busy ? 'disabled' : ''}
+                    onclick="action('demanda', {tile:-1})">
+              No demandar
+            </button>
+          </section>
+        `;
+      }
+
+      return '';
+    }
+
+    // ========================================================
+    // ÚLTIMOS MOVIMIENTOS
+    // ========================================================
+
+    function feedHtml(game) {
+      const entries = (diceAnimating && feedBeforeRoll
+        ? feedBeforeRoll
+        : game.feed
+      ).slice(0, 6);
+
+      return `
+        <section class="card feed-card">
+          <div class="section-heading">
+            <div>
+              <h3>Últimos movimientos</h3>
+              <p>Actividad reciente del equipo.</p>
+            </div>
+
+            <span class="badge">
+              ${entries.length} registros
+            </span>
+          </div>
+
+          ${entries.length
+          ? `
+                <ul class="feed-list">
+                  ${entries.map((entry) => `
+                    <li class="feed-item">
+                      <span class="feed-marker">↗</span>
+                      <span>${esc(entry.text)}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              `
+          : `
+                <p class="small muted">
+                  Los movimientos aparecerán aquí al comenzar la partida.
+                </p>
+              `
+        }
+        </section>
+      `;
+    }
+
+    // ========================================================
+    // SELECCIÓN DE EQUIPO
+    // ========================================================
+
+    function teamPickerHtml() {
+      return `
+        <div class="team-picker-wrap">
+          <section class="card" style="overflow:hidden">
+            <div class="team-picker-hero">
+              <span class="eyebrow" style="color:#9DE4BE">
+                Gestión Legal · Juego didáctico
+              </span>
+
+              <h2>Elige tu equipo y comienza a jugar.</h2>
+
+              <p>
+                Cada equipo tendrá su propia partida.
+                Los integrantes compartirán un celular
+                y se turnarán para jugar.
+              </p>
+            </div>
+
+            <div class="team-picker-content">
+              <div class="section-heading">
+                <div>
+                  <h2>Seleccionar equipo</h2>
+                  <p>
+                    Si ya habías ingresado, elige el mismo número
+                    para recuperar tu partida.
+                  </p>
+                </div>
+              </div>
+
+              <div class="team-grid">
+                ${Array.from(
+        { length: S.numTeams },
+        (_, i) => i + 1
+      ).map((number) => {
+        const taken =
+          (S.teamsTaken || []).includes(number);
+
+        return `
+                    <button class="team-option ${taken ? 'taken' : ''}"
+                            onclick="pickTeam(${number})">
+
+                      <span class="team-number">
+                        ${number}
+                      </span>
+
+                      <span class="team-state">
+                        ${taken ? 'Reingresar' : 'Disponible'}
+                      </span>
+                    </button>
+                  `;
+      }).join('')}
+              </div>
+
+              <div class="err">${esc(err)}</div>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    // ========================================================
+    // FORMULARIO DE REGISTRO DE PARTICIPANTES
+    // ========================================================
+
+    function setupHtml() {
+      return `
+        <section class="card card-pad"
+                 style="max-width:680px;margin:35px auto">
+
+          <span class="eyebrow">
+            Configuración del equipo
+          </span>
+
+          <h2 style="margin:8px 0;color:var(--navy);font-size:25px">
+            Equipo ${team}: ¿quiénes juegan?
+          </h2>
+
+          <p class="muted small">
+            Introduce entre dos y cuatro nombres. Después,
+            cada integrante podrá elegir su propia ficha y color.
+          </p>
+
+          <form onsubmit="setup(event)">
+            <div style="display:grid;gap:10px;margin-top:20px">
+              <label>
+                <span class="field-label">Jugador 1</span>
+                <input class="nm-in field-select"
+                       style="font-size:13px"
+                       maxlength="18"
+                       placeholder="Nombre del primer jugador"
+                       autocomplete="off"
+                       required>
+              </label>
+
+              <label>
+                <span class="field-label">Jugador 2</span>
+                <input class="nm-in field-select"
+                       style="font-size:13px"
+                       maxlength="18"
+                       placeholder="Nombre del segundo jugador"
+                       autocomplete="off"
+                       required>
+              </label>
+
+              <label>
+                <span class="field-label">Jugador 3 (opcional)</span>
+                <input class="nm-in field-select"
+                       style="font-size:13px"
+                       maxlength="18"
+                       placeholder="Nombre del tercer jugador"
+                       autocomplete="off">
+              </label>
+
+              <label>
+                <span class="field-label">Jugador 4 (opcional)</span>
+                <input class="nm-in field-select"
+                       style="font-size:13px"
+                       maxlength="18"
+                       placeholder="Nombre del cuarto jugador"
+                       autocomplete="off">
+              </label>
+            </div>
+
+            <button class="btn btn-primary"
+                    style="margin-top:18px"
+                    type="submit">
+              Crear partida
+            </button>
+          </form>
+
+          <div class="err">${esc(err)}</div>
+
+          <button class="link-button" onclick="leaveTeam()">
+            ← Elegir otro equipo
+          </button>
+        </section>
+      `;
+    }
+
+    // ========================================================
+    // RENDER PRINCIPAL
+    // ========================================================
+
+    function render() {
+      const app = $('#app');
+
+      if (!S) {
+        return;
+      }
+
+      // Paso 1: elegir equipo.
+      if (!team) {
+        shownSetup = null;
+        app.innerHTML = teamPickerHtml();
+        updateLiveClocks();
+        return;
+      }
+
+      const game = S.game;
+
+      // Paso 2: registrar jugadores.
+      if (!game) {
+        if (
+          shownSetup === team &&
+          app.querySelector('form')
+        ) {
+          const errorNode = app.querySelector('.err');
+
+          if (errorNode) {
+            errorNode.textContent = err;
+          }
+
+          return;
+        }
+
+        shownSetup = team;
+        app.innerHTML = setupHtml();
+
+        updateLiveClocks();
+        return;
+      }
+
+      shownSetup = null;
+
+      // Tablero y panel lateral quedan alineados en dos
+      // columnas en escritorio. En pantallas pequeñas,
+      // CSS los apila para conservar la legibilidad.
+      app.innerHTML = `
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">Partida del equipo ${team}</span>
+            <h2>Centro de operaciones legales</h2>
+            <p>
+              Administra proyectos, responde preguntas y
+              construye tu estrategia para ganar.
+            </p>
+          </div>
+
+          <span class="badge green">
+            ${S.status === 'playing'
+          ? 'Partida activa'
+          : S.status === 'paused'
+            ? 'Partida pausada'
+            : S.status === 'ended'
+              ? 'Partida finalizada'
+              : 'Esperando inicio'}
+          </span>
+        </div>
+
+        <div class="game-layout">
+          <section class="board-column">
+            <div class="card board-card">
+              <div class="board-topline">
+                <h2>Tablero de proyectos legales</h2>
+                <span>24 casillas · 4 áreas</span>
+              </div>
+
+              ${boardHtml(game)}
+
+              <div class="board-legend">
+                <span class="legend-item">
+                  <span class="legend-dot" style="background:#4E9F5B"></span>
+                  Contratos
+                </span>
+
+                <span class="legend-item">
+                  <span class="legend-dot" style="background:#D1495B"></span>
+                  Litigios
+                </span>
+
+                <span class="legend-item">
+                  <span class="legend-dot" style="background:#3D6FB0"></span>
+                  Cumplimiento
+                </span>
+
+                <span class="legend-item">
+                  <span class="legend-dot" style="background:#E0A526"></span>
+                  Información y tecnología
+                </span>
+              </div>
+            </div>
+          </section>
+
+          <aside class="side-column">
+  ${customizationHtml(game)}
+  ${actionHtml(game)}
+  ${playersHtml(game)}
+  ${feedHtml(game)}
+  <button class="link-button" onclick="leaveTeam()">
+    Cambiar de equipo en este celular
+  </button>
+</aside>
+
+        </div>
+
+        <p class="footer-note">
+          Monopolio Legal · Equipo 4 · Gestión de Proyectos · Universidad de Caldas
+        </p>
+      `;
+
+      updateLiveClocks();
+    }
+  </script>
 </body>
+
 </html>
